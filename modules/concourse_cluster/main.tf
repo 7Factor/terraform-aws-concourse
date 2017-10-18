@@ -33,7 +33,7 @@ resource "aws_security_group" "conc_web_sg" {
 }
 
 resource "aws_security_group" "conc_tsa_sg" {
-  name        = "conc-web-sg-${var.region}"
+  name        = "conc-tsa-sg-${var.region}"
   description = "Security group for all TSA access in ${var.region}."
   vpc_id      = "${var.vpc_id}"
 
@@ -249,7 +249,9 @@ data "aws_ami" "ecs_linux" {
 
 resource "aws_instance" "concourse_web" {
   count      = "${var.conc_web_count}"
-  depends_on = ["aws_instance.concourse_db"]
+  depends_on = [
+    "aws_instance.concourse_db", 
+  ]
 
   ami           = "${data.aws_ami.ecs_linux.id}"
   instance_type = "${var.conc_web_instance_type}"
@@ -297,7 +299,7 @@ resource "aws_instance" "concourse_web" {
       "sudo yum -y update",
       "sudo docker pull concourse/concourse",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 concourse/concourse web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.public_ip}?sslmode=disable --external-url ${var.conc_fqdn} --no-really-i-dont-want-any-auth",
+      "docker run -d -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 concourse/concourse web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.public_ip}?sslmode=disable --external-url ${var.conc_fqdn} --no-really-i-dont-want-any-auth",
     ]
 
     connection {
@@ -317,11 +319,20 @@ resource "aws_elb" "concourse_lb" {
     "${aws_security_group.conc_tsa_sg.id}",
   ]
 
+  instances = ["${aws_instance.concourse_web.*.id}"]
+
   listener {
     instance_port     = 8080
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
+  }
+
+  listener {
+    instance_port     = 2222
+    instance_protocol = "tcp"
+    lb_port           = 2222
+    lb_protocol       = "tcp"
   }
 
   health_check {
@@ -332,7 +343,6 @@ resource "aws_elb" "concourse_lb" {
     interval            = 30
   }
 
-  instances                   = ["${aws_instance.concourse_web.*.id}"]
   idle_timeout                = 400
   connection_draining         = true
   connection_draining_timeout = 400
@@ -349,7 +359,7 @@ resource "aws_elb" "concourse_lb" {
 #---------------------------------------------------------
 resource "aws_instance" "concourse_worker" {
   count      = "${var.conc_worker_count}"
-  depends_on = ["aws_instance.concourse_web"]
+  depends_on = ["aws_elb.concourse_lb"]
 
   ami           = "${data.aws_ami.ecs_linux.id}"
   instance_type = "${var.conc_worker_instance_type}"
@@ -362,7 +372,7 @@ resource "aws_instance" "concourse_worker" {
   ]
 
   tags {
-    Name        = "concourse-wrk"
+    Name        = "concourse-worker"
     Application = "concourse"
     Cluster     = "${var.cluster_name}"
   }
@@ -381,7 +391,7 @@ resource "aws_instance" "concourse_worker" {
   }
 
   provisioner "file" {
-    source      = "${var.conc_web_keys_dir}"
+    source      = "${var.conc_worker_keys_dir}"
     destination = "~/keys/"
 
     connection {
@@ -396,6 +406,7 @@ resource "aws_instance" "concourse_worker" {
       "sudo yum -y update",
       "sudo docker pull concourse/concourse",
       "sudo mv ~/keys /etc/concourse/",
+      "sudo docker run -d --privileged=true -v /etc/concourse/keys/:/concourse-keys -p 2222:2222 concourse/concourse worker --tsa-host ${aws_elb.concourse_lb.dns_name}"
     ]
 
     connection {

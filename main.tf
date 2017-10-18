@@ -39,4 +39,5 @@ module "concourse_cluster" {
   conc_worker_count = "${var.conc_worker_count}"
   conc_tsa_ingress_cidr = "${var.conc_tsa_ingress_cidr}"
   conc_worker_instance_type = "${var.conc_worker_instance_type}"
+  conc_worker_keys_dir      = "${path.root}/keys/worker/"
 }

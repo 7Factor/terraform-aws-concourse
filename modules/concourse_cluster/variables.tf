@@ -26,5 +26,6 @@ variable conc_web_keys_dir {}
 variable conc_tsa_ingress_cidr {}
 
 # Worker variables
+variable conc_worker_keys_dir {}
 variable conc_worker_count {}
 variable conc_worker_instance_type {}

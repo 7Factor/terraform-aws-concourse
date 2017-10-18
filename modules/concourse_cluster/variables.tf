@@ -1,11 +1,9 @@
+# Common variables
 variable region {}
 
-# Network
-variable conc_vpc_id {}
-
-variable conc_subnet_id {}
-
-# Common variables
+variable cluster_name {}
+variable vpc_id {}
+variable subnet_id {}
 variable conc_ssh_key_name {}
 
 # security group variables
@@ -24,6 +22,7 @@ variable conc_web_instance_type {}
 variable conc_web_count {}
 variable conc_web_cert_arn {}
 variable conc_fqdn {}
+variable conc_web_keys_dir {}
 variable conc_tsa_ingress_cidr {}
 
 # Worker variables

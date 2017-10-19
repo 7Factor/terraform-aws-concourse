@@ -323,9 +323,9 @@ resource "aws_elb" "concourse_lb" {
 
   listener {
     instance_port     = 8080
-    instance_protocol = "http"
+    instance_protocol = "tcp"
     lb_port           = 80
-    lb_protocol       = "http"
+    lb_protocol       = "tcp"
   }
 
   listener {
@@ -406,7 +406,7 @@ resource "aws_instance" "concourse_worker" {
       "sudo yum -y update",
       "sudo docker pull concourse/concourse",
       "sudo mv ~/keys /etc/concourse/",
-      "sudo docker run -d --privileged=true -v /etc/concourse/keys/:/concourse-keys -p 2222:2222 concourse/concourse worker --tsa-host ${aws_elb.concourse_lb.dns_name}"
+      "sudo docker run -d --privileged=true -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 2222:2222 concourse/concourse worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp"
     ]
 
     connection {

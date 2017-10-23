@@ -1,19 +1,18 @@
 # Common variables
 variable region {}
-
 variable cluster_name {}
 variable vpc_id {}
 variable subnet_id {}
+
 variable conc_ssh_key_name {}
+variable conc_image {}
 
 # security group variables
 variable conc_web_ingress_cidr {}
-
 variable conc_ssh_ingress_cidr {}
 
 # DB variables
 variable conc_db_instance_type {}
-
 variable conc_db_ingress_cidr {}
 variable conc_db_pw {}
 

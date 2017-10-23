@@ -279,27 +279,27 @@ resource "aws_instance" "concourse_web" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/keys/${var.ssh_key_name}.pem")}"
     }
   }
 
   provisioner "file" {
-    source      = "${var.conc_web_keys_dir}"
-    destination = "~/keys/"
+    source      = "env"
+    destination = "~/env"
 
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/keys/${var.ssh_key_name}.pem")}"
     }
   }
 
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
-      "sudo docker pull concourse/concourse",
+      "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 concourse/concourse web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.public_ip}?sslmode=disable --external-url ${var.conc_fqdn} --no-really-i-dont-want-any-auth",
+      "docker run -d -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.public_ip}?sslmode=disable --external-url ${var.conc_fqdn} --no-really-i-dont-want-any-auth",
     ]
 
     connection {
@@ -404,9 +404,9 @@ resource "aws_instance" "concourse_worker" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
-      "sudo docker pull concourse/concourse",
+      "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "sudo docker run -d --privileged=true -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 2222:2222 concourse/concourse worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp"
+      "sudo docker run -d --privileged=true -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 2222:2222 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp"
     ]
 
     connection {

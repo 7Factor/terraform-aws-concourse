@@ -2,11 +2,11 @@ variable region {}
 
 # Network
 variable conc_vpc_id {}
-
 variable conc_subnet_id {}
 
 # Common variables
 variable conc_ssh_key_name {}
+variable conc_image {}
 
 # security group variables
 variable conc_web_ingress_cidr {}

@@ -17,6 +17,7 @@ module "concourse_cluster" {
   cluster_name = "7fbuild-cluster"
   vpc_id       = "${var.conc_vpc_id}"
   subnet_id    = "${var.conc_subnet_id}"
+  conc_image   = "${var.conc_image}"
 
   # SSH config
   conc_ssh_key_name     = "${var.conc_ssh_key_name}"

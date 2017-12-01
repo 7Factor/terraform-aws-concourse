@@ -279,18 +279,18 @@ resource "aws_instance" "concourse_web" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = "${file("${path.root}/keys/${var.ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
   }
 
   provisioner "file" {
-    source      = "env"
-    destination = "~/env"
+    source      = "${var.conc_web_keys_dir}"
+    destination = "~/keys/"
 
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = "${file("${path.root}/keys/${var.ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
   }
 
@@ -375,6 +375,10 @@ resource "aws_instance" "concourse_worker" {
     Name        = "concourse-worker"
     Application = "concourse"
     Cluster     = "${var.cluster_name}"
+  }
+
+  root_block_device {
+    volume_size = "20"
   }
 
   provisioner "remote-exec" {

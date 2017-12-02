@@ -22,7 +22,6 @@ variable conc_web_count {}
 variable conc_web_cert_arn {}
 variable conc_fqdn {}
 variable conc_web_keys_dir {}
-variable conc_tsa_ingress_cidr {}
 
 # Auth
 variable github_client_id {}
@@ -34,3 +33,4 @@ variable conc_worker_keys_dir {}
 variable conc_worker_count {}
 variable conc_worker_instance_type {}
 variable conc_worker_vol_size {}
+variable conc_worker_ingress_cidr {}

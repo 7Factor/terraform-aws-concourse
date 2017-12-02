@@ -24,7 +24,6 @@ variable conc_web_instance_type {}
 variable conc_web_count {}
 variable conc_web_cert_arn {}
 variable conc_fqdn {}
-variable conc_tsa_ingress_cidr {}
 
 # Auth
 variable github_client_id {}
@@ -35,3 +34,4 @@ variable github_org {}
 variable conc_worker_count {}
 variable conc_worker_instance_type {}
 variable conc_worker_vol_size {}
+variable conc_worker_ingress_cidr {}

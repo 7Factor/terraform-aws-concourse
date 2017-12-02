@@ -1,12 +1,17 @@
 #---------------------------------------------------------
 # DEPLOYING CONCOURSE IN AWS
-# Concourse is a wonderful CI server that builds your stuff
+# Concourse is a great CI server that builds your stuff
 # inside containers. It can be pretty difficult to set up 
 # in a distributed way, and this template will help reduce
 # that difficulty.
 #---------------------------------------------------------
 provider "aws" {
   region = "${var.region}"
+}
+
+# Backend state
+terraform {
+    backend "s3" {}
 }
 
 module "concourse_cluster" {
@@ -37,14 +42,14 @@ module "concourse_cluster" {
   conc_web_keys_dir      = "${path.root}/keys/web/"
 
   # auth
-  github_client_id = "${var.github_client_id}"
+  github_client_id     = "${var.github_client_id}"
   github_client_secret = "${var.github_client_secret}"
-  github_org = "${var.github_org}"
+  github_org           = "${var.github_org}"
 
   # Worker
-  conc_worker_count = "${var.conc_worker_count}"
-  conc_worker_ingress_cidr = "${var.conc_worker_ingress_cidr}"
+  conc_worker_count         = "${var.conc_worker_count}"
+  conc_worker_ingress_cidr  = "${var.conc_worker_ingress_cidr}"
   conc_worker_instance_type = "${var.conc_worker_instance_type}"
   conc_worker_keys_dir      = "${path.root}/keys/worker/"
-  conc_worker_vol_size = "${var.conc_worker_vol_size}"
+  conc_worker_vol_size      = "${var.conc_worker_vol_size}"
 }

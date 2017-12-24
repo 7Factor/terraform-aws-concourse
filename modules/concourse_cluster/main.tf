@@ -34,14 +34,46 @@ resource "aws_security_group" "conc_web_sg" {
 
 resource "aws_security_group" "conc_tsa_sg" {
   name        = "conc-tsa-sg-${var.region}"
-  description = "Security group for all TSA access in ${var.region}."
+  description = "Security group for TSA ssh access in ${var.region}."
   vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port   = 2222
     to_port     = 2222
     protocol    = "tcp"
-    cidr_blocks = ["${var.conc_tsa_ingress_cidr}"]
+    cidr_blocks = ["${var.conc_web_ingress_cidr}", "${var.conc_worker_ingress_cidr}"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Application = "concourse"
+    Cluster     = "${var.cluster_name}"
+  }
+}
+
+resource "aws_security_group" "conc_worker_sg" {
+  name        = "conc-worker-sg-${var.region}"
+  description = "Security group for concourse worker BaggageClaim and Garden access in ${var.region}"
+  vpc_id      = "${var.vpc_id}"
+
+  ingress {
+    from_port   = 7777
+    to_port     = 7777
+    protocol    = "tcp"
+    cidr_blocks = ["${var.conc_worker_ingress_cidr}", "${var.conc_web_ingress_cidr}"]
+  }
+
+  ingress {
+    from_port   = 7788
+    to_port     = 7788
+    protocol    = "tcp"
+    cidr_blocks = ["${var.conc_worker_ingress_cidr}", "${var.conc_web_ingress_cidr}"]
   }
 
   egress {
@@ -248,9 +280,10 @@ data "aws_ami" "ecs_linux" {
 }
 
 resource "aws_instance" "concourse_web" {
-  count      = "${var.conc_web_count}"
+  count = "${var.conc_web_count}"
+
   depends_on = [
-    "aws_instance.concourse_db", 
+    "aws_instance.concourse_db",
   ]
 
   ami           = "${data.aws_ami.ecs_linux.id}"
@@ -262,6 +295,7 @@ resource "aws_instance" "concourse_web" {
     "${aws_security_group.conc_web_sg.id}",
     "${aws_security_group.conc_ssh_access.id}",
     "${aws_security_group.conc_tsa_sg.id}",
+    "${aws_security_group.conc_worker_sg.id}",
   ]
 
   tags {
@@ -367,8 +401,10 @@ resource "aws_instance" "concourse_worker" {
   key_name      = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [
-    "${aws_security_group.conc_tsa_sg.id}",
+    "${aws_security_group.conc_web_sg.id}",
     "${aws_security_group.conc_ssh_access.id}",
+    "${aws_security_group.conc_tsa_sg.id}",
+    "${aws_security_group.conc_worker_sg.id}",
   ]
 
   tags {
@@ -410,7 +446,7 @@ resource "aws_instance" "concourse_worker" {
       "sudo yum -y update",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "sudo docker run -d --privileged=true -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 2222:2222 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp"
+      "sudo docker run -d --privileged=true -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 2222:2222 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp",
     ]
 
     connection {

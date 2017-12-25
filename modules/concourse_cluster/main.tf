@@ -13,35 +13,17 @@ resource "aws_security_group" "conc_web_sg" {
   vpc_id      = "${var.vpc_id}"
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["${var.conc_web_ingress_cidr}"]
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.conc_httplb_sg.id}"]
   }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags {
-    Application = "concourse"
-    Cluster     = "${var.cluster_name}"
-  }
-}
-
-resource "aws_security_group" "conc_tsa_sg" {
-  name        = "conc-tsa-sg-${var.region}"
-  description = "Security group for TSA ssh access in ${var.region}."
-  vpc_id      = "${var.vpc_id}"
 
   ingress {
-    from_port   = 2222
-    to_port     = 2222
-    protocol    = "tcp"
-    cidr_blocks = ["${var.conc_web_ingress_cidr}", "${var.conc_worker_ingress_cidr}"]
+    from_port       = 2222
+    to_port         = 2222
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.conc_httplb_sg.id}"]
   }
 
   egress {
@@ -59,21 +41,27 @@ resource "aws_security_group" "conc_tsa_sg" {
 
 resource "aws_security_group" "conc_worker_sg" {
   name        = "conc-worker-sg-${var.region}"
-  description = "Security group for concourse worker BaggageClaim and Garden access in ${var.region}"
-  vpc_id      = "${var.vpc_id}"
+  description = "Opens all the appropriate concourse worker ports in ${var.region}"
 
   ingress {
-    from_port   = 7777
-    to_port     = 7777
-    protocol    = "tcp"
-    cidr_blocks = ["${var.conc_worker_ingress_cidr}", "${var.conc_web_ingress_cidr}"]
+    from_port       = 2222
+    to_port         = 2222
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.conc_web_sg.id}"]
   }
 
   ingress {
-    from_port   = 7788
-    to_port     = 7788
-    protocol    = "tcp"
-    cidr_blocks = ["${var.conc_worker_ingress_cidr}", "${var.conc_web_ingress_cidr}"]
+    from_port       = 7777
+    to_port         = 7777
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.conc_web_sg.id}"]
+  }
+
+  ingress {
+    from_port       = 7788
+    to_port         = 7788
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.conc_web_sg.id}"]
   }
 
   egress {
@@ -118,14 +106,14 @@ resource "aws_security_group" "conc_ssh_access" {
 
 resource "aws_security_group" "conc_db_sg" {
   name        = "conc-db-sg-${var.region}"
-  description = "Security group for all concourse DB servers in ${var.region}."
+  description = "Security group for all concourse postgres DB servers in ${var.region}."
   vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = ["${aws_security_group.conc_web_sg.id}"]
   }
 
   egress {
@@ -156,6 +144,14 @@ resource "aws_security_group" "conc_httplb_sg" {
   ingress {
     from_port   = 443
     to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["${var.conc_web_ingress_cidr}"]
+  }
+
+  # For external worker registration
+  ingress {
+    from_port   = 2222
+    to_port     = 2222
     protocol    = "tcp"
     cidr_blocks = ["${var.conc_web_ingress_cidr}"]
   }
@@ -294,8 +290,6 @@ resource "aws_instance" "concourse_web" {
   vpc_security_group_ids = [
     "${aws_security_group.conc_web_sg.id}",
     "${aws_security_group.conc_ssh_access.id}",
-    "${aws_security_group.conc_tsa_sg.id}",
-    "${aws_security_group.conc_worker_sg.id}",
   ]
 
   tags {
@@ -333,7 +327,7 @@ resource "aws_instance" "concourse_web" {
       "sudo yum -y update",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.public_ip}?sslmode=disable --external-url ${var.conc_fqdn} --github-auth-client-id=${var.github_client_id} --github-auth-client-secret=${var.github_client_secret} --github-auth-organization=${var.github_org}",
+      "docker run -d --name concourse_web -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.private_ip}?sslmode=disable --external-url ${var.conc_fqdn} --github-auth-client-id=${var.github_client_id} --github-auth-client-secret=${var.github_client_secret} --github-auth-organization=${var.github_org}",
     ]
 
     connection {
@@ -350,18 +344,19 @@ resource "aws_elb" "concourse_lb" {
 
   security_groups = [
     "${aws_security_group.conc_httplb_sg.id}",
-    "${aws_security_group.conc_tsa_sg.id}",
   ]
 
   instances = ["${aws_instance.concourse_web.*.id}"]
 
   listener {
-    instance_port     = 8080
-    instance_protocol = "tcp"
-    lb_port           = 80
-    lb_protocol       = "tcp"
+    instance_port      = 8080
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = "${var.conc_web_cert_arn}"
   }
 
+  # For external workers
   listener {
     instance_port     = 2222
     instance_protocol = "tcp"
@@ -401,9 +396,7 @@ resource "aws_instance" "concourse_worker" {
   key_name      = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [
-    "${aws_security_group.conc_web_sg.id}",
     "${aws_security_group.conc_ssh_access.id}",
-    "${aws_security_group.conc_tsa_sg.id}",
     "${aws_security_group.conc_worker_sg.id}",
   ]
 
@@ -446,7 +439,7 @@ resource "aws_instance" "concourse_worker" {
       "sudo yum -y update",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "sudo docker run -d --privileged=true -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 2222:2222 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp",
+      "sudo docker run -d --name concourse_worker --privileged=true -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 2222:2222 -p 7777:7777 -p 7788:7788 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp",
     ]
 
     connection {

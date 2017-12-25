@@ -11,7 +11,7 @@ provider "aws" {
 
 # Backend state
 terraform {
-    backend "s3" {}
+  backend "s3" {}
 }
 
 module "concourse_cluster" {
@@ -19,7 +19,7 @@ module "concourse_cluster" {
   region = "${var.region}"
 
   # Common config
-  cluster_name = "7fbuild-cluster"
+  cluster_name = "${var.cluster_name}"
   vpc_id       = "${var.conc_vpc_id}"
   subnet_id    = "${var.conc_subnet_id}"
   conc_image   = "${var.conc_image}"
@@ -48,7 +48,6 @@ module "concourse_cluster" {
 
   # Worker
   conc_worker_count         = "${var.conc_worker_count}"
-  conc_worker_ingress_cidr  = "${var.conc_worker_ingress_cidr}"
   conc_worker_instance_type = "${var.conc_worker_instance_type}"
   conc_worker_keys_dir      = "${path.root}/keys/worker/"
   conc_worker_vol_size      = "${var.conc_worker_vol_size}"

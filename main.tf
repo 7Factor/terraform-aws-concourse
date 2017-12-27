@@ -3,13 +3,18 @@ terraform {
   required_version = ">=0.10.7"
 }
 
+# Grab the current region to be used everywhere
+data "aws_region" "current" {
+  current = true
+}
+
 #---------------------------------------------------------
 # SGs for access to concourse servers. One for the web farm
 # and another for SSH access and another for DB access.
 #---------------------------------------------------------
 resource "aws_security_group" "conc_web_sg" {
-  name        = "conc-web-sg-${var.region}"
-  description = "Security group for all concourse web servers in ${var.region}."
+  name        = "conc-web-sg-${data.aws_region.current.name}"
+  description = "Security group for all concourse web servers in ${data.aws_region.current.name}."
   vpc_id      = "${var.vpc_id}"
 
   ingress {
@@ -40,8 +45,8 @@ resource "aws_security_group" "conc_web_sg" {
 }
 
 resource "aws_security_group" "conc_worker_sg" {
-  name        = "conc-worker-sg-${var.region}"
-  description = "Opens all the appropriate concourse worker ports in ${var.region}"
+  name        = "conc-worker-sg-${data.aws_region.current.name}"
+  description = "Opens all the appropriate concourse worker ports in ${data.aws_region.current.name}"
 
   ingress {
     from_port       = 2222
@@ -78,8 +83,8 @@ resource "aws_security_group" "conc_worker_sg" {
 }
 
 resource "aws_security_group" "conc_ssh_access" {
-  name        = "conc-ssh-sg-${var.region}"
-  description = "Opens SSH to concourse servers in ${var.region}"
+  name        = "conc-ssh-sg-${data.aws_region.current.name}"
+  description = "Opens SSH to concourse servers in ${data.aws_region.current.name}"
   vpc_id      = "${var.vpc_id}"
 
   // Assumes default ports
@@ -105,8 +110,8 @@ resource "aws_security_group" "conc_ssh_access" {
 }
 
 resource "aws_security_group" "conc_db_sg" {
-  name        = "conc-db-sg-${var.region}"
-  description = "Security group for all concourse postgres DB servers in ${var.region}."
+  name        = "conc-db-sg-${data.aws_region.current.name}"
+  description = "Security group for all concourse postgres DB servers in ${data.aws_region.current.name}."
   vpc_id      = "${var.vpc_id}"
 
   ingress {
@@ -130,8 +135,8 @@ resource "aws_security_group" "conc_db_sg" {
 }
 
 resource "aws_security_group" "conc_httplb_sg" {
-  name        = "conc-lb-sg-${var.region}"
-  description = "Security group for the LB in ${var.region}."
+  name        = "conc-lb-sg-${data.aws_region.current.name}"
+  description = "Security group for the LB in ${data.aws_region.current.name}."
   vpc_id      = "${var.vpc_id}"
 
   ingress {
@@ -339,7 +344,7 @@ resource "aws_instance" "concourse_web" {
 }
 
 resource "aws_elb" "concourse_lb" {
-  name    = "conc-lb-${var.region}"
+  name    = "conc-lb-${data.aws_region.current.name}"
   subnets = ["${var.subnet_id}"]
 
   security_groups = [

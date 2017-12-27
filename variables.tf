@@ -1,7 +1,3 @@
-variable region {
-  description = "The region to install concourse into. We make no assumptions."
-}
-
 variable cluster_name {
   description = "Name your cluster! This will show up in tags."
 }

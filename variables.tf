@@ -1,64 +1,88 @@
-# The ever required region variable. Set this
-# to wherever you want stuff installed.
-variable region {}
+variable region {
+  description = "The region to install concourse into. We make no assumptions."
+}
 
-# The VPC ID where you want the cluster installed.
-# We assume you already have this set up (as you should)
-variable conc_vpc_id {}
+variable cluster_name {
+  description = "Name your cluster! This will show up in tags."
+}
 
-# There's not much need to deploy concourse on seperate subnets.
-# Unless you have a very special case give it the subnet where you
-# have some room.
-variable conc_subnet_id {}
+variable vpc_id {
+  description = "The ID of the VPC you'll be installing concourse into. We make no assumptions about your networking stack, so you should provide this."
+}
 
-# Name your cluster!
-variable cluster_name {}
+variable subnet_id {
+  description = "The subnet ID you'll be installing concourse into. Again, we make no assumptions. This should be large enough to support your cluster."
+}
 
-# Name the SSH key you use for deploying these boxes.
-variable conc_ssh_key_name {}
+variable conc_ssh_key_name {
+  description = "The PEM key name for accessing and provisioning stuff."
+}
 
-# The image name to pull. Defaults to latest, but feel free to lock this 
-# to a specific version (we do).
-variable conc_image { default = "concourse/concourse" }
+variable conc_image {
+  default     = "concourse/concourse"
+  description = "The image name for concourse. Defaults to latest, but you should lock this down."
+}
 
 # security group variables
-variable conc_web_ingress_cidr {}
+variable conc_web_ingress_cidr {
+  default     = "0.0.0.0/0"
+  description = "The CIDR block from whence web traffic may come. Defaults to anywhere, but override it as necessary. This is applied to the ELB."
+}
 
-# Ingress IP range for ssh access to your concourse cluster. Set this to
-# something interesting like a bastion host or your VPN CIDR.
-variable conc_ssh_ingress_cidr {}
+variable conc_ssh_ingress_cidr {
+  description = "The CIDR block from whence SSH traffic may come. Set this to your bastion host or your VPN IP range."
+}
 
-# The type of DB instance to run. In this deploy we've chosen to not store
-# this inside RDS (it's expensive). We use a micro instance and it's fine.
-variable conc_db_instance_type {}
+variable conc_db_instance_type {
+  description = "The instance type for our teensy DB server. We don't use RDS because it's expensive and heavy."
+}
 
-# The password to set for the postgres user. You should definitely keep this
-# secret and safe.
-variable conc_db_pw {}
+variable conc_db_pw {
+  description = "The password for the postgres user. Make sure this is secret and safe."
+}
 
-# Web box instance types. Usually an m3.large gets it done.
-variable conc_web_instance_type {}
+variable conc_web_instance_type {
+  description = "The web instance type. Usually around an m3.large gets it done, but do what you want."
+}
 
-# The number of web boxes. Usually two gets it done.
-variable conc_web_count {}
+variable conc_web_count {
+  default     = 2
+  description = "The number of web boxes to run. Defaults to a pair."
+}
 
-# The ARN for the cert to apply to the load balancer. Note that we have to 
-# use a classic ELB in order to support SSH port 2222 for remote workers.
-variable conc_web_cert_arn {}
+variable conc_web_cert_arn {
+  description = "The ARN to the SSL cert we'll apply to the ELB."
+}
 
-# The FQDN to set your concourse server to. You need to provide this, and
-# if it's not pointed at the generated ELB you might run into some wonkiness.
-variable conc_fqdn {}
+variable conc_fqdn {
+  description = "The FQDN where your cluster will live. Point this via your DNS to the ELB DNS provided in the output of this module otherwise you'll get some wonkiness."
+}
 
-# Auth defaults to none, but you should add something!
-variable authentication_config { default = "--no-really-i-dont-want-any-auth" }
+variable conc_web_keys_dir {
+  description = "The path to the keys you should generate for the web boxes in order to allow the workers and web boxes to talk. See documentation."
+}
 
-# Total number of concourse workers to deploy
-variable conc_worker_count {}
+# Auth defaults to none, but you should override it
+variable authentication_config {
+  default     = "--no-i-realy-dont-want-any-auth"
+  description = "Toss your authentication scheme here. See documentation. Defaults to no auth."
+}
 
-# The instance type for concourse workers
-variable conc_worker_instance_type {}
+# Worker variables
+variable conc_worker_keys_dir {
+  description = "The path to the keys you should generate for workers so they can talk to the web boxes. See documentation."
+}
 
-# We recommend using instance storage since it's ephemeral, pluse
-# this simplifies your need for deploying EBS volumes
-variable conc_worker_vol_size {}
+variable conc_worker_count {
+  default     = 2
+  description = "The number of worker boxes to spin up. Defaults to 2."
+}
+
+variable conc_worker_instance_type {
+  description = "The worker instance types. Pick something kinda big but not huge."
+}
+
+variable conc_worker_vol_size {
+  default     = 40
+  description = "We'll assign instanve volumes of this size to your workers. Suggested retail size of 40GB."
+}

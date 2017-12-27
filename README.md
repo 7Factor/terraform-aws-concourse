@@ -18,4 +18,4 @@ See the examples directory for more information on how to deploy this to your ac
 
 First, you need a decent understanding of how to use Terraform. [Hit the docs](https://www.terraform.io/intro/index.html) for that. Then, you should understand the [concourse architecture](http://concourse.ci/architecture.html). Once you're good there clone this repository and build out your ```.tfvars``` file. Then, plan your run and deploy. Not much can go wrong here, but [file issues](https://github.com/7Factor/7fpub-aws-concourse/issues) as you need to. Be sure to read our [issues guide](https://7factor.github.io/7fpub-ghissues/) before hand please.
 
-![architecture](./docs/concourse.svg)
+![architecture](./docs/concourse.png)

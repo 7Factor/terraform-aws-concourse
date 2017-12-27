@@ -327,7 +327,7 @@ resource "aws_instance" "concourse_web" {
       "sudo yum -y update",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d --name concourse_web -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.private_ip}?sslmode=disable --external-url ${var.conc_fqdn} --github-auth-client-id=${var.github_client_id} --github-auth-client-secret=${var.github_client_secret} --github-auth-organization=${var.github_org}",
+      "docker run -d --name concourse_web -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.private_ip}?sslmode=disable --external-url ${var.conc_fqdn} ${var.authentication_config}",
     ]
 
     connection {

@@ -42,9 +42,7 @@ module "concourse_cluster" {
   conc_web_keys_dir      = "${path.root}/keys/web/"
 
   # auth
-  github_client_id     = "${var.github_client_id}"
-  github_client_secret = "${var.github_client_secret}"
-  github_org           = "${var.github_org}"
+  authentication_config     = "${var.authentication_config}"
 
   # Worker
   conc_worker_count         = "${var.conc_worker_count}"

@@ -27,11 +27,8 @@ variable conc_web_cert_arn {}
 variable conc_fqdn {}
 variable conc_web_keys_dir {}
 
-# Auth
-variable github_client_id {}
-
-variable github_client_secret {}
-variable github_org {}
+# Auth defaults to none, but you should override it
+variable authentication_config {}
 
 # Worker variables
 variable conc_worker_keys_dir {}

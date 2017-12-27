@@ -10,7 +10,7 @@ terraform {
 resource "aws_security_group" "conc_web_sg" {
   name        = "conc-web-sg-${var.region}"
   description = "Security group for all concourse web servers in ${var.region}."
-  vpc_id      = "${var.conc_vpc_id}"
+  vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port       = 8080
@@ -196,7 +196,7 @@ data "aws_ami" "ec2_linux" {
 resource "aws_instance" "concourse_db" {
   ami           = "${data.aws_ami.ec2_linux.id}"
   instance_type = "${var.conc_db_instance_type}"
-  subnet_id     = "${var.conc_subnet_id}"
+  subnet_id     = "${var.subnet_id}"
   key_name      = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [
@@ -284,7 +284,7 @@ resource "aws_instance" "concourse_web" {
 
   ami           = "${data.aws_ami.ecs_linux.id}"
   instance_type = "${var.conc_web_instance_type}"
-  subnet_id     = "${var.conc_subnet_id}"
+  subnet_id     = "${var.subnet_id}"
   key_name      = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [
@@ -340,7 +340,7 @@ resource "aws_instance" "concourse_web" {
 
 resource "aws_elb" "concourse_lb" {
   name    = "conc-lb-${var.region}"
-  subnets = ["${var.conc_subnet_id}"]
+  subnets = ["${var.subnet_id}"]
 
   security_groups = [
     "${aws_security_group.conc_httplb_sg.id}",
@@ -392,7 +392,7 @@ resource "aws_instance" "concourse_worker" {
 
   ami           = "${data.aws_ami.ecs_linux.id}"
   instance_type = "${var.conc_worker_instance_type}"
-  subnet_id     = "${var.conc_subnet_id}"
+  subnet_id     = "${var.subnet_id}"
   key_name      = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [

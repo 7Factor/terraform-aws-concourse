@@ -60,7 +60,7 @@ variable conc_web_keys_dir {
 
 # Auth defaults to none, but you should override it
 variable authentication_config {
-  default     = "--no-i-realy-dont-want-any-auth"
+  default     = "--no-really-i-dont-want-any-auth"
   description = "Toss your authentication scheme here. See documentation. Defaults to no auth."
 }
 

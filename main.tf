@@ -140,13 +140,6 @@ resource "aws_security_group" "conc_httplb_sg" {
   vpc_id      = "${var.vpc_id}"
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["${var.conc_web_ingress_cidr}"]
-  }
-
-  ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -332,7 +325,7 @@ resource "aws_instance" "concourse_web" {
       "sudo yum -y update",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d --name concourse_web -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.private_ip}?sslmode=disable --external-url ${var.conc_fqdn} ${var.authentication_config}",
+      "docker run -d --name concourse_web -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source postgres://concourse:${var.conc_db_pw}@${aws_instance.concourse_db.private_ip}?sslmode=disable --external-url ${var.conc_fqdn} ${var.authentication_config}"
     ]
 
     connection {

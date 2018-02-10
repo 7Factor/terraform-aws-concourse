@@ -1,6 +1,6 @@
 # Concourse on AWS via Terraform
 
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/7Factor/7fpub-aws-concourse.svg?columns=all)](https://waffle.io/7Factor/7fpub-aws-concourse)
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/7Factor/terraform-aws-concourse.svg?columns=all)](https://waffle.io/7Factor/terraform-aws-concourse)
 
 This module will allow you to publish concourse on your own AWS infrastructure. Why another module? We needed something a little more prescriptive than the current module that's available (don't get us wrong, it's great) so we built this. It's a very straightforward deploy and will work in enterprise or startup situations. Proper networking design is left up to the reader.
 

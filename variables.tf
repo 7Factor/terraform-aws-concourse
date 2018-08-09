@@ -80,5 +80,5 @@ variable conc_worker_instance_type {
 
 variable conc_worker_vol_size {
   default     = 40
-  description = "We'll assign instanve volumes of this size to your workers. Suggested retail size of 40GB."
+  description = "We'll assign instance volumes of this size to your workers. Suggested retail size of 40GB."
 }

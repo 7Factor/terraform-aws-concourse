@@ -37,8 +37,9 @@ resource "aws_instance" "concourse_web" {
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
   # across the configured subnets.
-  subnet_id     = "${var.web_public_subnets[count.index % length(var.web_public_subnets)]}"
-  key_name      = "${var.conc_ssh_key_name}"
+  subnet_id = "${var.web_public_subnets[count.index % length(var.web_public_subnets)]}"
+
+  key_name = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [
     "${aws_security_group.web_sg.id}",
@@ -46,9 +47,8 @@ resource "aws_instance" "concourse_web" {
   ]
 
   tags {
-    Name        = "concourse-web"
-    Application = "concourse"
-    Cluster     = "${var.cluster_name}"
+    Name    = "Concourse Web"
+    Cluster = "${var.cluster_name}"
   }
 
   provisioner "remote-exec" {
@@ -78,9 +78,10 @@ resource "aws_instance" "concourse_web" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
+      "sleep 5",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d --name concourse_web -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source ${var.postgres_connection} --external-url ${var.fqdn} ${var.authentication_config}"
+      "docker run -d --name concourse_web -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source ${var.postgres_connection} --external-url ${var.fqdn} ${var.authentication_config}",
     ]
 
     connection {
@@ -88,51 +89,6 @@ resource "aws_instance" "concourse_web" {
       user        = "ec2-user"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
-  }
-}
-
-resource "aws_elb" "concourse_lb" {
-  name    = "conc-lb-${data.aws_region.current.name}"
-  subnets = ["${var.web_public_subnets}"]
-
-  security_groups = [
-    "${aws_security_group.httplb_sg.id}",
-  ]
-
-  instances = ["${aws_instance.concourse_web.*.id}"]
-
-  listener {
-    instance_port      = 8080
-    instance_protocol  = "http"
-    lb_port            = 443
-    lb_protocol        = "https"
-    ssl_certificate_id = "${var.web_cert_arn}"
-  }
-
-  # For external workers
-  listener {
-    instance_port     = 2222
-    instance_protocol = "tcp"
-    lb_port           = 2222
-    lb_protocol       = "tcp"
-  }
-
-  health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 3
-    target              = "HTTP:8080/"
-    interval            = 30
-  }
-
-  idle_timeout                = 400
-  connection_draining         = true
-  connection_draining_timeout = 400
-
-  tags {
-    Name        = "concourse-lb"
-    Application = "concourse"
-    Cluster     = "${var.cluster_name}"
   }
 }
 
@@ -148,8 +104,9 @@ resource "aws_instance" "concourse_worker" {
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
   # across the configured subnets.
-  subnet_id     = "${var.worker_subnets[count.index % length(var.worker_subnets)]}"
-  key_name      = "${var.conc_ssh_key_name}"
+  subnet_id = "${var.worker_subnets[count.index % length(var.worker_subnets)]}"
+
+  key_name = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [
     "${var.ssh_access}",
@@ -157,9 +114,8 @@ resource "aws_instance" "concourse_worker" {
   ]
 
   tags {
-    Name        = "concourse-worker"
-    Application = "concourse"
-    Cluster     = "${var.cluster_name}"
+    Name    = "Concourse Worker"
+    Cluster = "${var.cluster_name}"
   }
 
   root_block_device {
@@ -193,6 +149,7 @@ resource "aws_instance" "concourse_worker" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
+      "sleep 5",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
       "sudo docker run -d --name concourse_worker --privileged=true -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 2222:2222 -p 7777:7777 -p 7788:7788 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp",

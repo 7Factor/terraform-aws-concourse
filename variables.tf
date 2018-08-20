@@ -33,7 +33,7 @@ variable web_count {
 }
 
 variable web_public_subnets {
-  type = "list"
+  type        = "list"
   description = "The subnet IDs you'll be installing concourse web boxes into. Again, we make no assumptions. This should be large enough to support your cluster."
 }
 
@@ -62,10 +62,9 @@ variable worker_count {
 }
 
 variable worker_subnets {
-  type = "list"
+  type        = "list"
   description = "The subnet IDs you'll be installing concourse worker boxes into. Again, we make no assumptions. This should be large enough to support your cluster."
 }
-
 
 variable worker_instance_type {
   description = "The worker instance types. Pick something kinda big but not huge."
@@ -74,6 +73,10 @@ variable worker_instance_type {
 variable worker_vol_size {
   default     = 40
   description = "We'll assign instance volumes of this size to your workers. Suggested retail size of 40GB."
+}
+
+variable web_lb_security_policy {
+  description = "Load balancer policy string for the HTTPS ALB. Required else AWS will become unhappy."
 }
 
 # security group variables

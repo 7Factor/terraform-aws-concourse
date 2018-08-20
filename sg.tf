@@ -29,21 +29,15 @@ resource "aws_security_group" "web_sg" {
   }
 
   tags {
-    Application = "concourse"
-    Cluster     = "${var.cluster_name}"
+    Name    = "Concourse Web Boxes"
+    Cluster = "${var.cluster_name}"
   }
 }
 
 resource "aws_security_group" "worker_sg" {
   name        = "conc-worker-sg-${data.aws_region.current.name}"
   description = "Opens all the appropriate concourse worker ports in ${data.aws_region.current.name}"
-
-  ingress {
-    from_port       = 2222
-    to_port         = 2222
-    protocol        = "tcp"
-    security_groups = ["${aws_security_group.web_sg.id}"]
-  }
+  vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port       = 7777
@@ -59,6 +53,13 @@ resource "aws_security_group" "worker_sg" {
     security_groups = ["${aws_security_group.web_sg.id}"]
   }
 
+  ingress {
+    from_port       = 7799
+    to_port         = 7799
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.web_sg.id}"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -67,8 +68,8 @@ resource "aws_security_group" "worker_sg" {
   }
 
   tags {
-    Application = "concourse"
-    Cluster     = "${var.cluster_name}"
+    Name    = "Concourse Worker Boxes"
+    Cluster = "${var.cluster_name}"
   }
 }
 
@@ -100,7 +101,7 @@ resource "aws_security_group" "httplb_sg" {
   }
 
   tags {
-    Application = "concourse"
-    Cluster     = "${var.cluster_name}"
+    Name    = "Concourse Load Balancer"
+    Cluster = "${var.cluster_name}"
   }
 }

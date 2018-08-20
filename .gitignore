@@ -4,3 +4,4 @@ terraform.tfstate.backup
 *.tfvars
 .vscode
 keys
+backend.tf

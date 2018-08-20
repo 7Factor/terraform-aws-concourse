@@ -6,10 +6,6 @@ variable vpc_id {
   description = "The ID of the VPC you'll be installing concourse into. We make no assumptions about your networking stack, so you should provide this."
 }
 
-variable subnet_id {
-  description = "The subnet ID you'll be installing concourse into. Again, we make no assumptions. This should be large enough to support your cluster."
-}
-
 variable conc_ssh_key_name {
   description = "The PEM key name for accessing and provisioning web and worker boxes."
 }
@@ -23,6 +19,10 @@ variable postgres_connection {
   description = "The connection string for the postgres database. Make sure this is secret and safe."
 }
 
+variable fqdn {
+  description = "The FQDN where your cluster will live. Point this via your DNS to the ELB DNS provided in the output of this module otherwise you'll get some wonkiness."
+}
+
 variable web_instance_type {
   description = "The web instance type. Usually around an m3.large gets it done, but do what you want."
 }
@@ -32,12 +32,13 @@ variable web_count {
   description = "The number of web boxes to run. Defaults to a pair."
 }
 
-variable web_cert_arn {
-  description = "The ARN to the SSL cert we'll apply to the ELB."
+variable web_public_subnets {
+  type = "list"
+  description = "The subnet IDs you'll be installing concourse web boxes into. Again, we make no assumptions. This should be large enough to support your cluster."
 }
 
-variable fqdn {
-  description = "The FQDN where your cluster will live. Point this via your DNS to the ELB DNS provided in the output of this module otherwise you'll get some wonkiness."
+variable web_cert_arn {
+  description = "The ARN to the SSL cert we'll apply to the ELB."
 }
 
 variable web_keys_dir {
@@ -59,6 +60,12 @@ variable worker_count {
   default     = 2
   description = "The number of worker boxes to spin up. Defaults to 2."
 }
+
+variable worker_subnets {
+  type = "list"
+  description = "The subnet IDs you'll be installing concourse worker boxes into. Again, we make no assumptions. This should be large enough to support your cluster."
+}
+
 
 variable worker_instance_type {
   description = "The worker instance types. Pick something kinda big but not huge."

@@ -34,7 +34,10 @@ resource "aws_instance" "concourse_web" {
 
   ami           = "${data.aws_ami.ecs_linux.id}"
   instance_type = "${var.web_instance_type}"
-  subnet_id     = "${var.subnet_id}"
+
+  # We're doing some magic here to allow for any number of count that's evenly distributed
+  # across the configured subnets.
+  subnet_id     = "${var.web_public_subnets[count.index % length(var.web_public_subnets)]}"
   key_name      = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [
@@ -90,7 +93,7 @@ resource "aws_instance" "concourse_web" {
 
 resource "aws_elb" "concourse_lb" {
   name    = "conc-lb-${data.aws_region.current.name}"
-  subnets = ["${var.subnet_id}"]
+  subnets = ["${var.web_public_subnets}"]
 
   security_groups = [
     "${aws_security_group.httplb_sg.id}",
@@ -142,7 +145,10 @@ resource "aws_instance" "concourse_worker" {
 
   ami           = "${data.aws_ami.ecs_linux.id}"
   instance_type = "${var.worker_instance_type}"
-  subnet_id     = "${var.subnet_id}"
+
+  # We're doing some magic here to allow for any number of count that's evenly distributed
+  # across the configured subnets.
+  subnet_id     = "${var.worker_subnets[count.index % length(var.worker_subnets)]}"
   key_name      = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [

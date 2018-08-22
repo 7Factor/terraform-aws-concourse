@@ -86,6 +86,6 @@ variable web_ingress_cidr {
   description = "The CIDR block from whence web traffic may come for web boxes servicing traffic from workers. Defaults to anywhere, but override it as necessary. This is applied to the ELB."
 }
 
-variable ssh_access_sg {
-  description = "Pass in the ID of your SSH access security group here."
+variable utility_accessible_sg {
+  description = "Pass in the ID of your access security group here."
 }

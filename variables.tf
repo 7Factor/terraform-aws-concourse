@@ -19,6 +19,7 @@ variable postgres_connection {
   description = "The connection string for the postgres database. Make sure this is secret and safe."
 }
 
+# Web variables
 variable fqdn {
   description = "The FQDN where your cluster will live. Point this via your DNS to the ELB DNS provided in the output of this module otherwise you'll get some wonkiness."
 }

@@ -12,7 +12,7 @@ resource "aws_instance" "concourse_web" {
 
   vpc_security_group_ids = [
     "${aws_security_group.web_sg.id}",
-    "${var.ssh_access}",
+    "${var.ssh_access_sg}",
   ]
 
   tags {
@@ -78,7 +78,7 @@ resource "aws_instance" "concourse_worker" {
   key_name = "${var.conc_ssh_key_name}"
 
   vpc_security_group_ids = [
-    "${var.ssh_access}",
+    "${var.ssh_access_sg}",
     "${aws_security_group.worker_sg.id}",
   ]
 

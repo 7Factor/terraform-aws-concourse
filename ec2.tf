@@ -6,7 +6,7 @@ resource "aws_instance" "concourse_web" {
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
   # across the configured subnets.
-  subnet_id = "${var.web_public_subnets[count.index % length(var.web_public_subnets)]}"
+  subnet_id = "${var.web_private_subnets[count.index % length(var.web_private_subnets)]}"
 
   key_name = "${var.conc_ssh_key_name}"
 

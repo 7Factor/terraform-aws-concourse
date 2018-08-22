@@ -35,7 +35,12 @@ variable web_count {
 
 variable web_public_subnets {
   type        = "list"
-  description = "The subnet IDs you'll be installing concourse web boxes into. Again, we make no assumptions. This should be large enough to support your cluster."
+  description = "The IDs of public subnets corresponding to private subnets inside which concourse will be installed"
+}
+
+variable web_private_subnets {
+  type        = "list"
+  description = "The subnet IDs the concourse machines will actually be installed into."
 }
 
 variable web_cert_arn {

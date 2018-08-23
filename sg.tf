@@ -87,10 +87,10 @@ resource "aws_security_group" "httplb_sg" {
 
   # For external worker registration
   ingress {
-    from_port       = 2222
-    to_port         = 2222
-    protocol        = "tcp"
-    security_groups = ["${aws_security_group.worker_sg.id}"]
+    from_port   = 2222
+    to_port     = 2222
+    protocol    = "tcp"
+    cidr_blocks = ["${var.web_ingress_cidr}"]
   }
 
   egress {

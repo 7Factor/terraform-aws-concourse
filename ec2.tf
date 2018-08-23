@@ -23,6 +23,7 @@ resource "aws_instance" "concourse_web" {
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p /etc/concourse/keys",
+      "sudo chown -R ec2-user:ec2-user /etc/concourse",
       "mkdir -p ~/keys",
     ]
 
@@ -52,7 +53,7 @@ resource "aws_instance" "concourse_web" {
       "sudo usermod -aG docker ec2-user",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "sudo chmod 400 /etc/concourse/*",
+      "sudo find /etc/concourse/keys/ -type f -exec chmod 400 {} \;",
       "sudo docker run -d --name concourse_web --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --peer-url http://${self.private_ip}:8080 --postgres-data-source ${var.postgres_connection} --log-level debug --external-url ${var.fqdn} ${var.authentication_config}",
     ]
 
@@ -97,6 +98,7 @@ resource "aws_instance" "concourse_worker" {
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p /etc/concourse/keys",
+      "sudo chown -R ec2-user:ec2-user /etc/concourse",
       "mkdir -p ~/keys",
     ]
 
@@ -126,7 +128,7 @@ resource "aws_instance" "concourse_worker" {
       "sudo usermod -aG docker ec2-user",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "sudo chmod 400 /etc/concourse/*",
+      "sudo find /etc/concourse/keys/ -type f -exec chmod 400 {} \;",
       "sudo docker run -d --name concourse_worker --privileged=true --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 7777:7777 -p 7788:7788 -p 7799:7799 ${var.conc_image} worker --peer-ip ${self.private_ip} --bind-ip 0.0.0.0 --log-level debug --tsa-host ${aws_elb.concourse_lb.dns_name}:2222 --work-dir /concourse-tmp",
     ]
 

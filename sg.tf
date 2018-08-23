@@ -22,8 +22,8 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
-    from_port = 2222
-    to_port   = 2222
+    from_port = 8080
+    to_port   = 8080
     protocol  = "tcp"
     self      = true
   }

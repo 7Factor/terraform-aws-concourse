@@ -49,12 +49,10 @@ resource "aws_instance" "concourse_web" {
       "sudo yum -y update",
       "sudo yum -y install docker",
       "sudo service docker start",
-      "whoami",
-      "sudo service docker status",
       "sudo usermod -aG docker ec2-user",
-      "docker pull ${var.conc_image}",
+      "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d --name concourse_web --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --peer-url http://${self.private_ip}:8080 --postgres-data-source ${var.postgres_connection} --external-url ${var.fqdn} ${var.authentication_config}",
+      "sudo docker run -d --name concourse_web --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --peer-url http://${self.private_ip}:8080 --postgres-data-source ${var.postgres_connection} --external-url ${var.fqdn} ${var.authentication_config}",
     ]
 
     connection {
@@ -125,11 +123,9 @@ resource "aws_instance" "concourse_worker" {
       "sudo yum -y install docker",
       "sudo service docker start",
       "sudo usermod -aG docker ec2-user",
-      "whoami",
-      "sudo service docker status",
-      "docker pull ${var.conc_image}",
+      "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d --name concourse_worker --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 7777:7777 -p 7788:7788 -p 7799:7799 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name}:2222 --work-dir /concourse-tmp",
+      "sudo docker run -d --name concourse_worker --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 7777:7777 -p 7788:7788 -p 7799:7799 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name}:2222 --work-dir /concourse-tmp",
     ]
 
     connection {

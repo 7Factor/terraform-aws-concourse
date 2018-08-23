@@ -50,7 +50,7 @@ resource "aws_instance" "concourse_web" {
       "sleep 10",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "docker run -d --name concourse_web --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --postgres-data-source ${var.postgres_connection} --external-url ${var.fqdn} ${var.authentication_config}",
+      "docker run -d --name concourse_web --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --peer-url http://${aws_instance.concourse_web.private_ip} --postgres-data-source ${var.postgres_connection} --external-url ${var.fqdn} ${var.authentication_config}",
     ]
 
     connection {

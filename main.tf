@@ -6,16 +6,12 @@ terraform {
 # Grab the current region to be used everywhere
 data "aws_region" "current" {}
 
-#---------------------------------------------------------
-# Concourse web server farm. We'll go with a passed in
-# number of boxes and a load balancer.
-#---------------------------------------------------------
-data "aws_ami" "ecs_linux" {
+data "aws_ami" "aws_linux" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["amzn-ami-*-amazon-ecs-optimized"]
+    values = ["amzn-ami-*-x86_64-gp2"]
   }
 
   filter {

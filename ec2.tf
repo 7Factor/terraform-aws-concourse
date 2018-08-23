@@ -1,7 +1,7 @@
 resource "aws_instance" "concourse_web" {
   count = "${var.web_count}"
 
-  ami           = "${data.aws_ami.ecs_linux.id}"
+  ami           = "${data.aws_ami.aws_linux.id}"
   instance_type = "${var.web_instance_type}"
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
@@ -47,6 +47,9 @@ resource "aws_instance" "concourse_web" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
+      "sudo yum -y install docker",
+      "sudo service docker start",
+      "sudo usermod -a -G docker ec2-user",
       "sleep 10",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
@@ -68,7 +71,7 @@ resource "aws_instance" "concourse_worker" {
   count      = "${var.worker_count}"
   depends_on = ["aws_elb.concourse_lb"]
 
-  ami           = "${data.aws_ami.ecs_linux.id}"
+  ami           = "${data.aws_ami.aws_linux.id}"
   instance_type = "${var.worker_instance_type}"
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
@@ -118,6 +121,9 @@ resource "aws_instance" "concourse_worker" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
+      "sudo yum -y install docker",
+      "sudo service docker start",
+      "sudo usermod -a -G docker ec2-user",
       "sleep 10",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",

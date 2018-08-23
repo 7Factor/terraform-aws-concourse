@@ -121,7 +121,7 @@ resource "aws_instance" "concourse_worker" {
       "sleep 10",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
-      "sudo docker run -d --name concourse_worker --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 7777:7777 -p 7788:7788 -p 7799:7799 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name} --work-dir /concourse-tmp",
+      "sudo docker run -d --name concourse_worker --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 7777:7777 -p 7788:7788 -p 7799:7799 ${var.conc_image} worker --tsa-host ${aws_elb.concourse_lb.dns_name}:2222 --work-dir /concourse-tmp",
     ]
 
     connection {

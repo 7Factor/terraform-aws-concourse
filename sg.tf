@@ -21,6 +21,13 @@ resource "aws_security_group" "web_sg" {
     security_groups = ["${aws_security_group.httplb_sg.id}"]
   }
 
+  ingress {
+    from_port = 2222
+    to_port   = 2222
+    protocol  = "tcp"
+    self      = true
+  }
+
   egress {
     from_port   = 0
     to_port     = 0

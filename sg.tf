@@ -48,10 +48,19 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-resource "aws_security_group_rule" "allow_worker_to_web" {
+resource "aws_security_group_rule" "allow_worker_to_register" {
   type = "ingress"
   from_port = 2222
   to_port = 2222
+  protocol = "tcp"
+  source_security_group_id = "${aws_security_group.worker_sg.id}"
+  security_group_id = "${aws_security_group.web_sg.id}"
+}
+
+resource "aws_security_group_rule" "allow_worker_to_web" {
+  type = "ingress"
+  from_port = 8080
+  to_port = 8080
   protocol = "tcp"
   source_security_group_id = "${aws_security_group.worker_sg.id}"
   security_group_id = "${aws_security_group.web_sg.id}"

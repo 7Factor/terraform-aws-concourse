@@ -22,6 +22,13 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
+    from_port       = 2222
+    to_port         = 2222
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.httplb_sg.id}"]
+  }
+
+  ingress {
     from_port = 8080
     to_port   = 8080
     protocol  = "tcp"
@@ -39,6 +46,14 @@ resource "aws_security_group" "web_sg" {
     Name    = "Concourse Web Boxes"
     Cluster = "${var.cluster_name}"
   }
+}
+
+resource "aws_security_group_rule" "allow_worker_to_web" {
+  type = "ingress"
+  from_port = 2222
+  to_port = 2222
+  protocol = "tcp"
+  security_group_id = "${aws_security_group.worker_sg.id}"
 }
 
 resource "aws_security_group" "worker_sg" {

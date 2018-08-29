@@ -81,6 +81,11 @@ variable worker_vol_size {
   description = "We'll assign instance volumes of this size to your workers. Suggested retail size of 40GB."
 }
 
+variable worker_launch_options {
+  default     = ""
+  description = "Other options to provide to docker containers on run. Only passed to the concourse binary, not the container."
+}
+
 variable web_lb_security_policy {
   description = "Load balancer policy string for the HTTPS ALB. Required else AWS will become unhappy."
 }
@@ -89,6 +94,11 @@ variable web_lb_security_policy {
 variable web_ingress_cidr {
   default     = "0.0.0.0/0"
   description = "The CIDR block from whence web traffic may come for web boxes servicing traffic from workers. Defaults to anywhere, but override it as necessary. This is applied to the ELB."
+}
+
+variable web_launch_options {
+  default     = ""
+  description = "Other options to provide to docker containers on run. Only passed to the concourse binary, not the container."
 }
 
 variable utility_accessible_sg {

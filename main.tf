@@ -11,7 +11,7 @@ data "aws_ami" "aws_linux" {
 
   filter {
     name   = "name"
-    values = ["amzn-ami-*-x86_64-gp2"]
+    values = ["amzn2-ami-*-x86_64-gp2"]
   }
 
   filter {

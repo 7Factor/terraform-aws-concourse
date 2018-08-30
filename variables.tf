@@ -90,6 +90,11 @@ variable web_lb_security_policy {
   description = "Load balancer policy string for the HTTPS ALB. Required else AWS will become unhappy."
 }
 
+variable worker_bind_ip {
+  default     = "0.0.0.0"
+  description = "Binding IP for all worker components. Passed to --bind-ip, --baggageclaim-bind-ip, and --garden-bind-ip."
+}
+
 # security group variables
 variable web_ingress_cidr {
   default     = "0.0.0.0/0"

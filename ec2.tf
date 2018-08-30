@@ -30,6 +30,7 @@ resource "aws_instance" "concourse_web" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
+      host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
   }
@@ -41,6 +42,7 @@ resource "aws_instance" "concourse_web" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
+      host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
   }
@@ -60,6 +62,7 @@ resource "aws_instance" "concourse_web" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
+      host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
   }
@@ -105,6 +108,7 @@ resource "aws_instance" "concourse_worker" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
+      host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
   }
@@ -116,6 +120,7 @@ resource "aws_instance" "concourse_worker" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
+      host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
   }
@@ -135,6 +140,7 @@ resource "aws_instance" "concourse_worker" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
+      host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
   }

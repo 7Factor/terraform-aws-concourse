@@ -56,7 +56,7 @@ resource "aws_instance" "concourse_web" {
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
       "sudo find /etc/concourse/keys/ -type f -exec chmod 400 {} \\;",
-      "sudo docker run -d --network host --name concourse_web --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys ${var.conc_image} web --peer-url http://${self.private_ip}:8080 --postgres-host ${var.concdb_host} --postgres-port ${var.concdb_port} --postgres-user ${var.concdb_user} --postgres-password ${var.concdb_password} --postgres-database ${var.concdb_database} --external-url ${var.fqdn} ${var.authentication_config} ${var.web_launch_options}",
+      "sudo docker run -d --name concourse_web --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --peer-url http://${self.private_ip}:8080 --postgres-host ${var.concdb_host} --postgres-port ${var.concdb_port} --postgres-user ${var.concdb_user} --postgres-password ${var.concdb_password} --postgres-database ${var.concdb_database} --external-url ${var.fqdn} ${var.authentication_config} ${var.web_launch_options}",
     ]
 
     connection {
@@ -134,7 +134,7 @@ resource "aws_instance" "concourse_worker" {
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
       "sudo find /etc/concourse/keys/ -type f -exec chmod 400 {} \\;",
-      "sudo docker run -d --network host --name concourse_worker --privileged=true --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp ${var.conc_image} worker --bind-ip ${var.worker_bind_ip} --baggageclaim-bind-ip ${var.worker_bind_ip} --garden-bind-ip ${var.worker_bind_ip} --peer-ip ${self.private_ip} --tsa-host ${aws_elb.concourse_lb.dns_name}:2222 --work-dir /concourse-tmp --garden-dns-proxy-enable ${var.worker_launch_options}",
+      "sudo docker run -d --name concourse_worker --privileged=true --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp -p 7777:7777 -p 7788:7788 -p 7799:7799 ${var.conc_image} worker --bind-ip ${var.worker_bind_ip} --baggageclaim-bind-ip ${var.worker_bind_ip} --garden-bind-ip ${var.worker_bind_ip} --peer-ip ${self.private_ip} --tsa-host ${aws_elb.concourse_lb.dns_name}:2222 --work-dir /concourse-tmp --garden-dns-proxy-enable ${var.worker_launch_options}",
     ]
 
     connection {

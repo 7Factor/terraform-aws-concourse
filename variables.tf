@@ -15,25 +15,25 @@ variable conc_image {
   description = "The image name for concourse. Defaults to latest, but you should lock this down."
 }
 
-variable concoursedb_host {
+variable concdb_host {
   description = "Concourse database host name. Required in the new 4.1 build."
 }
 
-variable concoursedb_port {
+variable concdb_port {
   default     = 5432
   description = "Concourse database port. Override if you really need to, defaults to what you'd expect."
 }
 
-variable concoursedb_user {
+variable concdb_user {
   default     = "concourse"
   description = "Concourse DB username. Defaults to the old value for backward compatibility with older concourse installs, but change it to what you want."
 }
 
-variable concoursedb_pass {
+variable concdb_pass {
   description = "Concourse DB password. required in th enew 4.1 build."
 }
 
-variable concoursedb_database {
+variable concdb_database {
   default     = "concourse"
   description = "Concourse DB name. Defaults to the old value for backward compatibility."
 }

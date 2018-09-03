@@ -5,3 +5,4 @@ terraform.tfstate.backup
 .vscode
 keys
 backend.tf
+.idea

@@ -70,10 +70,14 @@ variable web_keys_dir {
   description = "The path to the keys you should generate for the web boxes in order to allow the workers and web boxes to talk. See documentation."
 }
 
-# Auth defaults to none, but you should override it
 variable authentication_config {
   default     = "--no-really-i-dont-want-any-auth"
   description = "Toss your authentication scheme here. See documentation. Defaults to no auth."
+}
+
+variable cred_store_config {
+  default     = ""
+  description = "Pass options for your target cred store here. Passed to the concourse web binary, not the container."
 }
 
 # Worker variables
@@ -102,7 +106,7 @@ variable worker_vol_size {
 
 variable worker_launch_options {
   default     = ""
-  description = "Other options to provide to docker containers on run. Only passed to the concourse binary, not the container."
+  description = "Other options to provide to docker containers on run. Passed to the concourse binary, not the container."
 }
 
 variable web_lb_security_policy {

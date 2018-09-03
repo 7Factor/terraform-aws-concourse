@@ -29,7 +29,7 @@ variable concdb_user {
   description = "Concourse DB username. Defaults to the old value for backward compatibility with older concourse installs, but change it to what you want."
 }
 
-variable concdb_pass {
+variable concdb_password {
   description = "Concourse DB password. required in th enew 4.1 build."
 }
 

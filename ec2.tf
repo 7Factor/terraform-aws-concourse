@@ -134,7 +134,7 @@ resource "aws_instance" "concourse_worker" {
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
       "sudo find /etc/concourse/keys/ -type f -exec chmod 400 {} \\;",
-      "sudo docker run -d --network host --name concourse_worker --privileged=true --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp ${var.conc_image} worker --bind-ip ${var.worker_bind_ip} --baggageclaim-bind-ip ${var.worker_bind_ip} --garden-bind-ip ${var.worker_bind_ip} --peer-ip ${self.private_ip} --tsa-host ${aws_elb.concourse_lb.dns_name}:2222 --work-dir /concourse-tmp ${var.worker_launch_options}",
+      "sudo docker run -d --network host --name concourse_worker --privileged=true --restart=unless-stopped -v /etc/concourse/keys/:/concourse-keys -v /tmp/:/concourse-tmp ${var.conc_image} worker --bind-ip ${var.worker_bind_ip} --baggageclaim-bind-ip ${var.worker_bind_ip} --garden-bind-ip ${var.worker_bind_ip} --peer-ip ${self.private_ip} --tsa-host ${aws_elb.concourse_lb.dns_name}:2222 --work-dir /concourse-tmp --garden-dns-proxy-enable ${var.worker_launch_options}",
     ]
 
     connection {

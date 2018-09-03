@@ -15,8 +15,27 @@ variable conc_image {
   description = "The image name for concourse. Defaults to latest, but you should lock this down."
 }
 
-variable postgres_connection {
-  description = "The connection string for the postgres database. Make sure this is secret and safe."
+variable concoursedb_host {
+  description = "Concourse database host name. Required in the new 4.1 build."
+}
+
+variable concoursedb_port {
+  default     = 5432
+  description = "Concourse database port. Override if you really need to, defaults to what you'd expect."
+}
+
+variable concoursedb_user {
+  default     = "concourse"
+  description = "Concourse DB username. Defaults to the old value for backward compatibility with older concourse installs, but change it to what you want."
+}
+
+variable concoursedb_pass {
+  description = "Concourse DB password. required in th enew 4.1 build."
+}
+
+variable concoursedb_database {
+  default     = "concourse"
+  description = "Concourse DB name. Defaults to the old value for backward compatibility."
 }
 
 # Web variables

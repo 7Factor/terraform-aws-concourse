@@ -1,3 +1,8 @@
+variable internal {
+  default     = false
+  description = "Whether or not the concourse web load balancer is internal or not"
+}
+
 variable cluster_name {
   description = "Name your cluster! This will show up in tags."
 }

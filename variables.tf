@@ -76,7 +76,7 @@ variable web_keys_dir {
 }
 
 variable authentication_config {
-  default     = "--no-really-i-dont-want-any-auth"
+  default     = "--main-team-allow-all-users"
   description = "Toss your authentication scheme here. See documentation. Defaults to no auth."
 }
 

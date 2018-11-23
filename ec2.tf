@@ -50,7 +50,7 @@ resource "aws_instance" "concourse_web" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
-      "sudo yum -y install docker",
+      "sudo amazon-linux-extras install docker",
       "sudo service docker start",
       "sudo usermod -aG docker ec2-user",
       "sudo docker pull ${var.conc_image}",

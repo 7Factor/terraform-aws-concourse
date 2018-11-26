@@ -75,8 +75,8 @@ resource "aws_instance" "concourse_worker" {
   count      = "${var.worker_count}"
   depends_on = ["aws_elb.concourse_lb"]
 
-  ami           = "${data.aws_ami.aws_linux.id}"
-  instance_type = "${var.worker_instance_type}"
+  ami                  = "${data.aws_ami.aws_linux.id}"
+  instance_type        = "${var.worker_instance_type}"
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
   # across the configured subnets.

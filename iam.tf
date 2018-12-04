@@ -65,7 +65,12 @@ resource "aws_iam_policy" "concourse_policy" {
         "Effect": "Allow",
         "Action": "rds:*",
         "Resource": "*"
-    }
+    },
+    {
+        "Effect": "Allow",
+        "Action": "iam:passrole",
+        "Resource": "arn:aws:iam::*:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
+    },
   ]
 }
 EOF

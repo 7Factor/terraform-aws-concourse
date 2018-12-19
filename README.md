@@ -6,21 +6,16 @@ Currently we support the following features:
 
 1. Docker based deployment. The module uses the most recent ECS AMI for deployment and runs concourse inside containers in those instances. No binary installs here.
 2. Configurable number of workers and webs along with volume sizes and instance types. Everything has a sane default but customize to your liking.
-3. Requires AWS classic load balancing complete with SSL termination. We may upgrade this in the future, but it works fine. Why bother?
+3. Requires AWS classic load balancing complete with SSL termination. Classic ELBs are required because we need the ability to service weird ports like 2222. ALBs support only HTTPS/HTTP and network LBs don't allow SSL termination.
 4. Configurable authentication scheme (you need to know what you're doing though). Pass your secrets through the appropriate configuration variable and we'll pass that to the docker container.
-5. Configurable PostGres installation because you don't need RDS for this. Unless you're doing massive amounts of builds you'll never run out of storage with the added bonus of a cheaper DB instance.
-6. Inherits the current AWS region from parent modules.
+5. Configurable cred store. Pass in your credential store switches.
 
-See the examples directory for more information on how to deploy this to your account. You shouldn't need to this very much. Check ```variables.tf``` for information on all the bits you'll need and also see the ```main.tf``` in the root directory for an example of how to call the module.
+Most of what you need to know is provided in an example tfvars file, and feel free to peruse the `variables.tf` for documentation on the required variables to run the terraform.
+
+For persistent storage we usually combine this module with an outer shell that provisiones an RDS PostgreSQL instance and we pass the credentials in securely. We do this because it allows us to segregate the RDS instance from concourse so if we need to blow away the concourse instance we can without worrying about having to reprovision a database.
 
 ## Prerequisites
 
-First, you need a decent understanding of how to use Terraform. [Hit the docs](https://www.terraform.io/intro/index.html) for that. Then, you should understand the [concourse architecture](http://concourse.ci/architecture.html). Once you're good import this module and pass the appropriate variables. Then, plan your run and deploy. 
+First, you need a decent understanding of how to use Terraform. [Hit the docs](https://www.terraform.io/intro/index.html) for that. Then, you should understand the [concourse architecture](http://concourse.ci/architecture.html). Once you're good import this module and pass the appropriate variables. Then, plan your run and deploy.
 
-Not much can go wrong here, but [file issues](https://github.com/7Factor/7fpub-aws-concourse/issues) as needed. Be sure to read our [issues guide](https://7factor.github.io/7fpub-ghissues/) before hand. PRs are welcome.
-
-## Architecture
-
-![architecture](https://raw.githubusercontent.com/7Factor/terraform-aws-concourse/dev/docs/concourse.png)
-
-This is a fairly minimal install that should plug into any AWS architecture. We crafted the security groups such that only the appropriate traffic sources are able to hit specific targets. For example, the only boxes able to hit the PostGres and worker instances are the web boxes. You can see this by deploying the module and inspecting the SGs, or looking at the appropriate section of the ```main.tf```.
+This module should be fairly set-and-forget--we've put a lot of man hours into improving it. Feel free to hit us up via email or fork this repo and send PRs if you can think of a way to improve it!

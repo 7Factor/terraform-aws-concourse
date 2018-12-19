@@ -38,38 +38,15 @@ resource "aws_iam_policy" "concourse_policy" {
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": "route53:*",
+      "Action": [
+        "route53:*",
+        "ec2:*",
+        "ecs:*",
+        "elasticloadbalancing:*",
+        "rds:*",
+        "kms:*"
+      ]
       "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ec2:*",
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ecs:*",
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ecr:*",
-      "Resource": "*"
-    },
-    {
-        "Effect": "Allow",
-        "Action": "elasticloadbalancing:*",
-        "Resource": "*"
-    },
-    {
-        "Effect": "Allow",
-        "Action": "s3:*",
-        "Resource": "*"
-    },
-    {
-        "Effect": "Allow",
-        "Action": "rds:*",
-        "Resource": "*"
     },
     {
         "Effect": "Allow",

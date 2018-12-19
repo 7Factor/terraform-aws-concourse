@@ -1,3 +1,8 @@
+variable internal {
+  default     = false
+  description = "Whether or not the concourse web load balancer is internal or not"
+}
+
 variable cluster_name {
   description = "Name your cluster! This will show up in tags."
 }
@@ -71,7 +76,7 @@ variable web_keys_dir {
 }
 
 variable authentication_config {
-  default     = "--no-really-i-dont-want-any-auth"
+  default     = "--main-team-allow-all-users"
   description = "Toss your authentication scheme here. See documentation. Defaults to no auth."
 }
 

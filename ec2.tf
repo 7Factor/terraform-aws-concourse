@@ -50,7 +50,7 @@ resource "aws_instance" "concourse_web" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
-      "sudo yum -y install docker",
+      "sudo amazon-linux-extras install -y docker",
       "sudo service docker start",
       "sudo usermod -aG docker ec2-user",
       "sudo docker pull ${var.conc_image}",
@@ -75,8 +75,9 @@ resource "aws_instance" "concourse_worker" {
   count      = "${var.worker_count}"
   depends_on = ["aws_elb.concourse_lb"]
 
-  ami           = "${data.aws_ami.aws_linux.id}"
-  instance_type = "${var.worker_instance_type}"
+  ami                  = "${data.aws_ami.aws_linux.id}"
+  instance_type        = "${var.worker_instance_type}"
+  iam_instance_profile = "${aws_iam_instance_profile.concourse_profile.name}"
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
   # across the configured subnets.
@@ -128,7 +129,7 @@ resource "aws_instance" "concourse_worker" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
-      "sudo yum -y install docker",
+      "sudo amazon-linux-extras install -y docker",
       "sudo service docker start",
       "sudo usermod -aG docker ec2-user",
       "sudo docker pull ${var.conc_image}",

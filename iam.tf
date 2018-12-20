@@ -45,7 +45,7 @@ resource "aws_iam_policy" "concourse_policy" {
         "elasticloadbalancing:*",
         "rds:*",
         "kms:*"
-      ]
+      ],
       "Resource": "*"
     },
     {

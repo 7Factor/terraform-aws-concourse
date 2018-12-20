@@ -39,12 +39,16 @@ resource "aws_iam_policy" "concourse_policy" {
     {
       "Effect": "Allow",
       "Action": [
-        "route53:*",
+        "acm:*",
+        "apigateway:*",
+        "cloudfront:*",
         "ec2:*",
+        "ecr:*",
         "ecs:*",
         "elasticloadbalancing:*",
+        "kms:*",
         "rds:*",
-        "kms:*"
+        "route53:*"
       ],
       "Resource": "*"
     },

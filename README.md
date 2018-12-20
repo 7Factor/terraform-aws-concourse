@@ -2,6 +2,8 @@
 
 This module will allow you to publish concourse on your own AWS infrastructure. Why another module? We needed something a little more prescriptive than the current module that's available (don't get us wrong, it's great) so we built this. It's a very straightforward deploy and will work in enterprise or startup situations. Proper networking design is left up to the reader but we do assume high availability.
 
+**It is very important that you use concourse version 4.0 or higher with this module**. The development team at concourse can sometimes introduce breaking changes to the docker images when refactoring the CLI. As with most software engineering projects sometimes we don't catch that in time and our terraform will break during the deployment step and we have to poke about in the EC2 machines to solve it. We can guarantee that this terraform works with the versions of concourse specified above.
+
 Currently we support the following features:
 
 1. Docker based deployment. The module installs docker on raw EC2 because that's the most predictable mechanism we've found so far. No binary installs here--it's all containerized.

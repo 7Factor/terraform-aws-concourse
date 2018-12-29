@@ -9,7 +9,7 @@ data "aws_region" "current" {}
 # Swapping to a tied down ubuntu version for stability.
 data "aws_ami" "aws_linux" {
   most_recent = true
-  owners = ["099720109477"]
+  owners      = ["099720109477"]
 
   filter {
     name   = "name"
@@ -17,7 +17,7 @@ data "aws_ami" "aws_linux" {
   }
 
   filter {
-    name = "architecture"
+    name   = "architecture"
     values = ["x86_64"]
   }
 

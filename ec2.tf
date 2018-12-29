@@ -50,6 +50,7 @@ resource "aws_instance" "concourse_web" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
+      "sudo unattended-upgrade -d",
       "sudo apt-get install -y docker.io",
       "sudo service docker start",
       "sudo usermod -aG docker ubuntu",
@@ -129,6 +130,7 @@ resource "aws_instance" "concourse_worker" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
+      "sudo unattended-upgrade -d",
       "sudo apt-get install -y docker.io",
       "sudo service docker start",
       "sudo usermod -aG docker ubuntu",

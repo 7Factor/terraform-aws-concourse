@@ -23,13 +23,13 @@ resource "aws_instance" "concourse_web" {
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p /etc/concourse/keys",
-      "sudo chown -R ec2-user:ec2-user /etc/concourse",
+      "sudo chown -R ubuntu:ubuntu /etc/concourse",
       "mkdir -p ~/keys",
     ]
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "ubuntu"
       host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
@@ -41,7 +41,7 @@ resource "aws_instance" "concourse_web" {
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "ubuntu"
       host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
@@ -49,10 +49,10 @@ resource "aws_instance" "concourse_web" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo yum -y update",
-      "sudo amazon-linux-extras install -y docker",
+      "sudo apt-get update",
+      "sudo apt-get install -y docker.io",
       "sudo service docker start",
-      "sudo usermod -aG docker ec2-user",
+      "sudo usermod -aG docker ubuntu",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
       "sudo find /etc/concourse/keys/ -type f -exec chmod 400 {} \\;",
@@ -61,7 +61,7 @@ resource "aws_instance" "concourse_web" {
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "ubuntu"
       host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
@@ -102,13 +102,13 @@ resource "aws_instance" "concourse_worker" {
   provisioner "remote-exec" {
     inline = [
       "sudo mkdir -p /etc/concourse/keys",
-      "sudo chown -R ec2-user:ec2-user /etc/concourse",
+      "sudo chown -R ubuntu:ubuntu /etc/concourse",
       "mkdir -p ~/keys",
     ]
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "ubuntu"
       host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
@@ -120,7 +120,7 @@ resource "aws_instance" "concourse_worker" {
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "ubuntu"
       host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }
@@ -128,10 +128,10 @@ resource "aws_instance" "concourse_worker" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo yum -y update",
-      "sudo amazon-linux-extras install -y docker",
+      "sudo apt-get update",
+      "sudo apt-get install -y docker.io",
       "sudo service docker start",
-      "sudo usermod -aG docker ec2-user",
+      "sudo usermod -aG docker ubuntu",
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
       "sudo find /etc/concourse/keys/ -type f -exec chmod 400 {} \\;",
@@ -140,7 +140,7 @@ resource "aws_instance" "concourse_worker" {
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "ubuntu"
       host        = "${self.private_ip}"
       private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
     }

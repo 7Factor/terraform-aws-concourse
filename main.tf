@@ -6,21 +6,23 @@ terraform {
 # Grab the current region to be used everywhere
 data "aws_region" "current" {}
 
+# Swapping to a tied down ubuntu version for stability.
 data "aws_ami" "aws_linux" {
   most_recent = true
+  owners = ["099720109477"]
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-*-x86_64-gp2"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-*-18.*-amd64-server-*"]
+  }
+
+  filter {
+    name = "architecture"
+    values = ["x86_64"]
   }
 
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
-  }
-
-  filter {
-    name   = "owner-alias"
-    values = ["amazon"]
   }
 }

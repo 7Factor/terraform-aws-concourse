@@ -7,7 +7,7 @@ terraform {
 data "aws_region" "current" {}
 
 # Swapping to a tied down ubuntu version for stability.
-data "aws_ami" "aws_linux" {
+data "aws_ami" "base_ami" {
   most_recent = true
   owners      = ["099720109477"]
 

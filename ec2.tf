@@ -1,7 +1,7 @@
 resource "aws_instance" "concourse_web" {
   count = "${var.web_count}"
 
-  ami           = "${data.aws_ami.aws_linux.id}"
+  ami           = "${data.aws_ami.base_ami.id}"
   instance_type = "${var.web_instance_type}"
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
@@ -54,7 +54,7 @@ resource "aws_instance" "concourse_web" {
       "sudo apt-get remove docker docker-engine docker.io",
       "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
       "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
-      "sudo add-apt-repository 'deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'",
+      "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
       "sudo apt-get update",
       "sudo apt-get install -y docker-ce",
       "sudo docker pull ${var.conc_image}",
@@ -79,7 +79,7 @@ resource "aws_instance" "concourse_worker" {
   count      = "${var.worker_count}"
   depends_on = ["aws_elb.concourse_lb"]
 
-  ami                  = "${data.aws_ami.aws_linux.id}"
+  ami                  = "${data.aws_ami.base_ami.id}"
   instance_type        = "${var.worker_instance_type}"
   iam_instance_profile = "${aws_iam_instance_profile.concourse_profile.name}"
 
@@ -137,7 +137,7 @@ resource "aws_instance" "concourse_worker" {
       "sudo apt-get remove docker docker-engine docker.io",
       "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
       "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
-      "sudo add-apt-repository 'deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable'",
+      "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
       "sudo apt-get update",
       "sudo apt-get install -y docker-ce",
       "sudo docker pull ${var.conc_image}",

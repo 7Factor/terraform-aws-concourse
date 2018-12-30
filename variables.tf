@@ -109,6 +109,10 @@ variable worker_vol_size {
   description = "We'll assign instance volumes of this size to your workers. Suggested retail size of 40GB."
 }
 
+variable worker_instance_profile {
+  description = "Name of the instance profile and corresponding policies. We split this off because it changes pretty often."
+}
+
 variable worker_launch_options {
   default     = ""
   description = "Other options to provide to docker containers on run. Passed to the concourse binary, not the container."

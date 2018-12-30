@@ -81,7 +81,7 @@ resource "aws_instance" "concourse_worker" {
 
   ami                  = "${data.aws_ami.base_ami.id}"
   instance_type        = "${var.worker_instance_type}"
-  iam_instance_profile = "${aws_iam_instance_profile.concourse_profile.name}"
+  iam_instance_profile = "${var.worker_instance_profile}"
 
   # We're doing some magic here to allow for any number of count that's evenly distributed
   # across the configured subnets.

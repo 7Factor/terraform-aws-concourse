@@ -30,7 +30,7 @@ resource "aws_instance" "concourse_web" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_key_name}.pem")}"
     }
   }
 
@@ -42,7 +42,7 @@ resource "aws_instance" "concourse_web" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_key_name}.pem")}"
     }
   }
 
@@ -66,7 +66,7 @@ resource "aws_instance" "concourse_web" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_key_name}.pem")}"
     }
   }
 }
@@ -112,7 +112,7 @@ resource "aws_instance" "concourse_worker" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_key_name}.pem")}"
     }
   }
 
@@ -124,7 +124,7 @@ resource "aws_instance" "concourse_worker" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_key_name}.pem")}"
     }
   }
 
@@ -148,7 +148,7 @@ resource "aws_instance" "concourse_worker" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_key_name}.pem")}"
     }
   }
 }

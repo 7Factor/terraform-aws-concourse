@@ -8,7 +8,7 @@ resource "aws_instance" "concourse_web" {
   # across the configured subnets.
   subnet_id = "${var.web_private_subnets[count.index % length(var.web_private_subnets)]}"
 
-  key_name = "${var.conc_ssh_key_name}"
+  key_name = "${var.conc_key_name}"
 
   vpc_security_group_ids = [
     "${aws_security_group.web_sg.id}",
@@ -16,8 +16,7 @@ resource "aws_instance" "concourse_web" {
   ]
 
   tags {
-    Name    = "Concourse Web"
-    Cluster = "${var.cluster_name}"
+    Name = "Concourse Web"
   }
 
   provisioner "remote-exec" {
@@ -31,7 +30,7 @@ resource "aws_instance" "concourse_web" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
     }
   }
 
@@ -43,7 +42,7 @@ resource "aws_instance" "concourse_web" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
     }
   }
 
@@ -60,14 +59,14 @@ resource "aws_instance" "concourse_web" {
       "sudo docker pull ${var.conc_image}",
       "sudo mv ~/keys /etc/concourse/",
       "sudo find /etc/concourse/keys/ -type f -exec chmod 400 {} \\;",
-      "sudo docker run -d --name concourse_web --restart=unless-stopped -h ${self.private_dns} -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --peer-url http://${self.private_ip}:8080 --postgres-host ${var.concdb_host} --postgres-port ${var.concdb_port} --postgres-user ${var.concdb_user} --postgres-password ${var.concdb_password} --postgres-database ${var.concdb_database} --external-url ${var.fqdn} ${var.authentication_config} ${var.cred_store_config} ${var.web_launch_options}",
+      "sudo docker run -d --name concourse_web --restart=unless-stopped -h ${self.private_dns} -v /etc/concourse/keys/:/concourse-keys -p 8080:8080 -p 2222:2222 ${var.conc_image} web --peer-url http://${self.private_ip}:8080 --postgres-host ${var.concdb_host} --postgres-port ${var.concdb_port} --postgres-user ${var.concdb_user} --postgres-password ${var.concdb_password} --postgres-database ${var.concdb_database} --external-url https://${var.conc_fqdn} ${var.authentication_config} ${var.cred_store_config} ${var.web_launch_options}",
     ]
 
     connection {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
     }
   }
 }
@@ -87,7 +86,7 @@ resource "aws_instance" "concourse_worker" {
   # across the configured subnets.
   subnet_id = "${var.worker_subnets[count.index % length(var.worker_subnets)]}"
 
-  key_name = "${var.conc_ssh_key_name}"
+  key_name = "${var.conc_key_name}"
 
   vpc_security_group_ids = [
     "${var.utility_accessible_sg}",
@@ -95,8 +94,7 @@ resource "aws_instance" "concourse_worker" {
   ]
 
   tags {
-    Name    = "Concourse Worker"
-    Cluster = "${var.cluster_name}"
+    Name = "Concourse Worker"
   }
 
   root_block_device {
@@ -114,7 +112,7 @@ resource "aws_instance" "concourse_worker" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
     }
   }
 
@@ -126,7 +124,7 @@ resource "aws_instance" "concourse_worker" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
     }
   }
 
@@ -150,7 +148,7 @@ resource "aws_instance" "concourse_worker" {
       type        = "ssh"
       user        = "ubuntu"
       host        = "${self.private_ip}"
-      private_key = "${file("${path.root}/keys/${var.conc_ssh_key_name}.pem")}"
+      private_key = "${file("${path.root}/${var.conc_key_path}/${var.conc_ssh_key_name}.pem")}"
     }
   }
 }

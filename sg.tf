@@ -36,8 +36,7 @@ resource "aws_security_group" "web_sg" {
   }
 
   tags {
-    Name    = "Concourse Web Boxes"
-    Cluster = "${var.cluster_name}"
+    Name = "Concourse Web Boxes"
   }
 }
 
@@ -93,8 +92,7 @@ resource "aws_security_group" "worker_sg" {
   }
 
   tags {
-    Name    = "Concourse Worker Boxes"
-    Cluster = "${var.cluster_name}"
+    Name = "Concourse Worker Boxes"
   }
 }
 
@@ -126,7 +124,6 @@ resource "aws_security_group" "httplb_sg" {
   }
 
   tags {
-    Name    = "Concourse Load Balancer"
-    Cluster = "${var.cluster_name}"
+    Name = "Concourse Load Balancer"
   }
 }

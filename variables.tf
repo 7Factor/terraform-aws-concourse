@@ -1,18 +1,18 @@
-variable internal {
+variable lb_internal {
   default     = false
   description = "Whether or not the concourse web load balancer is internal or not"
-}
-
-variable cluster_name {
-  description = "Name your cluster! This will show up in tags."
 }
 
 variable vpc_id {
   description = "The ID of the VPC you'll be installing concourse into. We make no assumptions about your networking stack, so you should provide this."
 }
 
-variable conc_ssh_key_name {
+variable conc_key_name {
   description = "The PEM key name for accessing and provisioning web and worker boxes."
+}
+
+variable conc_key_path {
+  description = "A folder, usually relative to root of the TF you're running, where the concourse key is stored."
 }
 
 variable conc_image {
@@ -44,8 +44,8 @@ variable concdb_database {
 }
 
 # Web variables
-variable fqdn {
-  description = "The FQDN where your cluster will live. Point this via your DNS to the ELB DNS provided in the output of this module otherwise you'll get some wonkiness."
+variable conc_fqdn {
+  description = "The FQDN where your cluster will live. Point this via your DNS to the ELB DNS provided in the output of this module otherwise you'll get some wonkiness. Note that we force HTTPS here so do not include the protocol."
 }
 
 variable web_instance_type {

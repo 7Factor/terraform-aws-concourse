@@ -10,12 +10,12 @@
 vpc_id = "VPC-ID"
 
 # Cluster name
-conc_cluster_name="cluster-name"
 conc_image="concourse/concourse:4.1.0"
 concdb_password = "SUPER-SECRET-PW"
 
 # SSH config
-conc_ssh_key_name="concourse-dev-us-east-1"
+conc_key_name="concourse-dev-us-east-1"
+conc_key_path="keys"
 utility_sg="UTILITY-SG"
 utility_accessible_sg="UTILITY-ACCESSIBLE-SG"
 
@@ -28,7 +28,7 @@ web_instance_type = "t3.micro"
 
 conc_web_cert_arn = "CERT-ARN"
 web_count = 2
-fqdn = "https://ci.7fdev.io"
+conc_fqdn = "ci.7fdev.io"
 
 # Auth
 authentication_config = "AUTHENTICATION-CONFIG"

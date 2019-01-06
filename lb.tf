@@ -7,7 +7,7 @@ resource "aws_elb" "concourse_lb" {
   ]
 
   instances = ["${aws_instance.concourse_web.*.id}"]
-  internal  = "${var.internal}"
+  internal  = "${var.lb_internal}"
 
   listener {
     instance_port      = 8080
@@ -38,7 +38,6 @@ resource "aws_elb" "concourse_lb" {
   connection_draining_timeout = 400
 
   tags {
-    Name    = "Concourse LB"
-    Cluster = "${var.cluster_name}"
+    Name = "Concourse LB"
   }
 }

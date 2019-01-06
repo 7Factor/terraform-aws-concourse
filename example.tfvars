@@ -9,7 +9,6 @@
 
 vpc_id = "VPC-ID"
 
-# Cluster name
 conc_image="concourse/concourse:4.1.0"
 concdb_password = "SUPER-SECRET-PW"
 

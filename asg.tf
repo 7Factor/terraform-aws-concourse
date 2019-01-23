@@ -48,7 +48,6 @@ resource "aws_autoscaling_group" "web_asg" {
   min_size              = "${var.web_min_count}"
   max_size              = "${var.web_max_count}"
   vpc_zone_identifier   = ["${var.web_private_subnets}"]
-  wait_for_elb_capacity = true
   load_balancers        = ["${aws_elb.concourse_lb.name}"]
 
   launch_template = {

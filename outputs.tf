@@ -9,6 +9,6 @@ output "web_sg_id" {
 }
 
 output "web_asg_id" {
-  value = "${aws_autoscaling_group.web_asg.id}"
+  value       = "${aws_autoscaling_group.web_asg.id}"
   description = "ID of the web ASG so you can attach your own scaling policies."
 }

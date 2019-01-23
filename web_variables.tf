@@ -36,7 +36,8 @@ variable web_cert_arn {
 }
 
 variable web_lb_security_policy {
-  description = "Load balancer policy string for the HTTPS ALB. Required else AWS will become unhappy."
+  default     = "ELBSecurityPolicy-FS-2018-06"
+  description = "Load balancer policy string for the HTTPS ALB. Required else AWS will become unhappy. Defaults to something sane."
 }
 
 variable web_ingress_cidr {

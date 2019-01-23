@@ -26,7 +26,7 @@ web_ingress_cidr="0.0.0.0/0"
 web_instance_type = "t3.micro"
 
 conc_web_cert_arn = "CERT-ARN"
-web_count = 2
+web_desired_count = 2
 conc_fqdn = "ci.7fdev.io"
 
 # Auth

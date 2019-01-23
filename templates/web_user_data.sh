@@ -30,7 +30,7 @@ docker pull ${conc_image}
 
 docker run -d --name concourse_web --restart=unless-stopped \
 -h $(curl -s http://169.254.169.254/latest/meta-data/hostname) \
--v /etc/concourse/keys/:/concourse-keys \
+-v /etc/concourse/keys/web:/concourse-keys \
 -p 8080:8080 -p 2222:2222 \
 ${conc_image} web \
 --peer-url http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8080 \

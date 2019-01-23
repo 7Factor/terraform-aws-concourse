@@ -26,7 +26,7 @@ echo ${tsa_host_key} >> /etc/concourse/keys/web/tsa_host_key
 find /etc/concourse/keys/web -type f -exec chmod 400 {} \\;
 
 # Pull the image
-docker pull ${var.conc_image}
+docker pull ${conc_image}
 
 docker run -d --name concourse_web --restart=unless-stopped \
 -h $(curl -s http://169.254.169.254/latest/meta-data/hostname) \

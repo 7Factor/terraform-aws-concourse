@@ -71,3 +71,77 @@ resource "aws_autoscaling_attachment" "web_asg_to_lb" {
   autoscaling_group_name = "${aws_autoscaling_group.web_asg.id}"
   elb                    = "${aws_elb.concourse_lb.id}"
 }
+
+data "template_file" "worker_initialization" {
+  template = "${file("${path.module}/templates/worker_user_data.sh")}"
+
+  vars {
+    tsa_public_key        = "${file("${var.tsa_public_key_path}")}"
+    worker_key            = "${file("${var.worker_key_path}")}"
+    tsa_host              = "${aws_elb.concourse_lb.dns_name}"
+    worker_launch_options = "${var.worker_launch_options}"
+  }
+}
+
+resource "aws_launch_template" "worker_template" {
+  name          = "conc-worker-tmpl"
+  instance_type = "${var.worker_instance_type}"
+  key_name      = "${var.conc_key_name}"
+  image_id      = "${data.aws_ami.base_ami.id}"
+
+  block_device_mappings {
+    device_name = "/dev/sda1"
+
+    ebs {
+      volume_type = "gp2"
+      volume_size = "${var.worker_vol_size}"
+    }
+  }
+
+  vpc_security_group_ids = [
+    "${var.utility_accessible_sg}",
+    "${aws_security_group.worker_sg.id}",
+  ]
+
+  user_data = "${base64encode(data.template_file.worker_initialization.rendered)}"
+
+  iam_instance_profile {
+    name = "${var.worker_instance_profile}"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "worker_asg" {
+  name = "conc-web-tmpl${aws_launch_template.worker_template.latest_version}"
+
+  health_check_type   = "EC2"
+  desired_capacity    = "${var.worker_desired_count}"
+  min_size            = "${var.worker_min_count}"
+  max_size            = "${var.worker_max_count}"
+  vpc_zone_identifier = ["${var.worker_private_subnets}"]
+
+  launch_template = {
+    id      = "${aws_launch_template.worker_template.id}"
+    version = "$$Latest"
+  }
+
+  depends_on = ["aws_launch_template.worker_template"]
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tag {
+    key                 = "Name"
+    value               = "Concourse Worker"
+    propagate_at_launch = true
+  }
+}
+
+resource "aws_autoscaling_attachment" "worker_asg_to_lb" {
+  autoscaling_group_name = "${aws_autoscaling_group.worker_asg.id}"
+  elb                    = "${aws_elb.concourse_lb.id}"
+}

@@ -1,14 +1,20 @@
 # Worker variables
-variable worker_keys_dir {
-  description = "The path to the keys you should generate for workers so they can talk to the web boxes. See documentation."
-}
-
-variable worker_count {
+variable worker_desired_count {
   default     = 2
-  description = "The number of worker boxes to spin up. Defaults to 2."
+  description = "The number of worker boxes to run. Defaults to a pair."
 }
 
-variable worker_subnets {
+variable worker_min_count {
+  default     = 1
+  description = "The minimum number of web boxes to run. Defaults to one."
+}
+
+variable worker_max_count {
+  default     = 2
+  description = "The maximum number of web boxes to run. Defaults to a pair."
+}
+
+variable worker_private_subnets {
   type        = "list"
   description = "The subnet IDs you'll be installing concourse worker boxes into. Again, we make no assumptions. This should be large enough to support your cluster."
 }
@@ -29,9 +35,4 @@ variable worker_instance_profile {
 variable worker_launch_options {
   default     = ""
   description = "Other options to provide to docker containers on run. Passed to the concourse binary, not the container."
-}
-
-variable worker_bind_ip {
-  default     = "0.0.0.0"
-  description = "Binding IP for all worker components. Passed to --bind-ip, --baggageclaim-bind-ip, and --garden-bind-ip."
 }

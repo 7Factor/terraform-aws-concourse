@@ -34,7 +34,7 @@ authentication_config = "AUTHENTICATION-CONFIG"
 cred_store_config = "CRED-STORE-CONFIG"
 
 # Worker config
-worker_subnets=["WORKER-PRIV-SUBNET-1","WORKER-PRIV-SUBNET-2"]
+worker_private_subnets=["WORKER-PRIV-SUBNET-1","WORKER-PRIV-SUBNET-2"]
 worker_instance_type = "t3.medium"
 worker_count = 2
 

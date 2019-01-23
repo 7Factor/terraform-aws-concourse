@@ -19,9 +19,10 @@ sudo usermod -aG docker ubuntu
 sudo mkdir -p /etc/concourse/keys/worker
 sudo chown -R ubuntu:ubuntu /etc/concourse
 
-# Dump keys into the correct place.
-printf "${tsa_public_key}" > /etc/concourse/keys/worker/tsa_host_key.pub
-printf "${worker_key}" > /etc/concourse/keys/worker/worker_key
+# Dump keys into the correct place. Because terraform automatically
+# adds a newline to any files read in we need to use echo -n here.
+echo -n "${tsa_public_key}" > /etc/concourse/keys/worker/tsa_host_key.pub
+echo -n "${worker_key}" > /etc/concourse/keys/worker/worker_key
 find /etc/concourse/keys/worker -type f -exec chmod 400 {} \\;
 
 # Pull the image

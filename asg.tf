@@ -49,7 +49,7 @@ resource "aws_autoscaling_group" "web_asg" {
   max_size              = "${var.web_max_count}"
   vpc_zone_identifier   = ["${var.web_private_subnets}"]
   wait_for_elb_capacity = true
-  load_balancers        = ["aws_elb.concourse_lb.name"]
+  load_balancers        = ["${aws_elb.concourse_lb.name}"]
 
   launch_template = {
     id      = "${aws_launch_template.web_template.id}"

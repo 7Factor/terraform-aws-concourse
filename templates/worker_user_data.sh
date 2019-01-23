@@ -16,7 +16,7 @@ sudo apt-get update
 sudo apt-get install -y docker-ce
 sudo usermod -aG docker ubuntu
 
-sudo mkdir -p /etc/concourse/keys/web
+sudo mkdir -p /etc/concourse/keys/worker
 sudo chown -R ubuntu:ubuntu /etc/concourse
 
 # Dump keys into the correct place.

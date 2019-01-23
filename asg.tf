@@ -116,7 +116,7 @@ resource "aws_launch_template" "worker_template" {
 }
 
 resource "aws_autoscaling_group" "worker_asg" {
-  name = "conc-web-tmpl${aws_launch_template.worker_template.latest_version}"
+  name = "conc-worker-tmpl${aws_launch_template.worker_template.latest_version}"
 
   health_check_type   = "EC2"
   desired_capacity    = "${var.worker_desired_count}"

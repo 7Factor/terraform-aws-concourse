@@ -21,7 +21,7 @@ sudo chown -R ubuntu:ubuntu /etc/concourse
 
 # Dump keys into the correct place. Because terraform automatically
 # adds a newline to any files read in we need to use echo -n here.
-echo -n "${authorized_worker_keys}" > /etc/concourse/keys/web/authorized_workers
+echo -n "${authorized_worker_keys}" > /etc/concourse/keys/web/authorized_worker_keys
 echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_key
 echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 find /etc/concourse/keys/web -type f -exec chmod 400 {} \\;

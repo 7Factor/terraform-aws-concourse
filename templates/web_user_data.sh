@@ -34,13 +34,13 @@ docker run -d --name concourse_web --restart=unless-stopped \
 -p 8080:8080 -p 2222:2222 \
 ${conc_image} web \
 --peer-url http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8080 \
---postgres-host ${var.concdb_host} \
---postgres-port ${var.concdb_port} \
---postgres-user ${var.concdb_user} \
---postgres-password ${var.concdb_password} \
---postgres-database ${var.concdb_database} \
---external-url https://${var.conc_fqdn} \
-${var.authentication_config} \
-${var.cred_store_config} \
-${var.web_launch_options}
+--postgres-host ${concdb_host} \
+--postgres-port ${concdb_port} \
+--postgres-user ${concdb_user} \
+--postgres-password ${concdb_password} \
+--postgres-database ${concdb_database} \
+--external-url https://${conc_fqdn} \
+${authentication_config} \
+${cred_store_config} \
+${web_launch_options}
 

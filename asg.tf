@@ -41,7 +41,7 @@ resource "aws_launch_template" "web_template" {
 }
 
 resource "aws_autoscaling_group" "web_asg" {
-  name = "conc-web-tmpl${aws_launch_template.web_template.latest_version}"
+  name = "concweb-asg${aws_launch_template.web_template.latest_version}"
 
   health_check_type   = "EC2"
   desired_capacity    = "${var.web_desired_count}"
@@ -116,7 +116,7 @@ resource "aws_launch_template" "worker_template" {
 }
 
 resource "aws_autoscaling_group" "worker_asg" {
-  name = "conc-worker-tmpl${aws_launch_template.worker_template.latest_version}"
+  name = "concwkr-asg${aws_launch_template.worker_template.latest_version}"
 
   health_check_type   = "EC2"
   desired_capacity    = "${var.worker_desired_count}"

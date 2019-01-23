@@ -78,6 +78,7 @@ data "template_file" "worker_initialization" {
   vars {
     tsa_public_key        = "${file("${var.tsa_public_key_path}")}"
     worker_key            = "${file("${var.worker_key_path}")}"
+    conc_image            = "${var.conc_image}"
     tsa_host              = "${aws_elb.concourse_lb.dns_name}"
     worker_launch_options = "${var.worker_launch_options}"
   }

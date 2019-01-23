@@ -20,8 +20,8 @@ sudo mkdir -p /etc/concourse/keys/worker
 sudo chown -R ubuntu:ubuntu /etc/concourse
 
 # Dump keys into the correct place.
-echo "${tsa_public_key}" > /etc/concourse/keys/worker/tsa_host_key.pub
-echo "${worker_key}" > /etc/concourse/keys/worker/worker_key
+printf "${tsa_public_key}" > /etc/concourse/keys/worker/tsa_host_key.pub
+printf "${worker_key}" > /etc/concourse/keys/worker/worker_key
 find /etc/concourse/keys/worker -type f -exec chmod 400 {} \\;
 
 # Pull the image

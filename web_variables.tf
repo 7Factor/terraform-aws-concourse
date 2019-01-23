@@ -44,7 +44,7 @@ variable web_ingress_cidr {
   description = "The CIDR block from whence web traffic may come for web boxes servicing traffic from workers. Defaults to anywhere, but override it as necessary. This is applied to the ELB."
 }
 
-variable web_authorized_key_path {
+variable web_authorized_keys_path {
   description ="The path to a file containing a list of keys that the web machine authorizes for worker access. This should be one file, similar to how id_rsa works with public keys inside."
 }
 

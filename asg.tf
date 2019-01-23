@@ -2,9 +2,9 @@ data "template_file" "web_initialization" {
   template = "${file("${path.module}/templates/web_user_data.sh")}"
 
   vars {
-    authorized_worker_keys = "${file("${var.web_authorized_keys}")}"
-    session_signing_key    = "${file("${var.web_session_signing_key}")}"
-    tsa_host_key           = "${file("${var.web_tsa_host_key}")}"
+    authorized_worker_keys = "${file("${var.web_authorized_keys_path}")}"
+    session_signing_key    = "${file("${var.web_session_signing_key_path}")}"
+    tsa_host_key           = "${file("${var.web_session_signing_key_path}")}"
     conc_image             = "${var.conc_image}"
     concdb_host            = "${var.concdb_host}"
     concdb_port            = "${var.concdb_port}"

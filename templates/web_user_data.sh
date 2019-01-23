@@ -20,9 +20,9 @@ sudo mkdir -p /etc/concourse/keys/web
 sudo chown -R ubuntu:ubuntu /etc/concourse
 
 # Dump keys into the correct place.
-echo ${authorized_worker_keys} >> /etc/concourse/keys/web/authorized_workers
-echo ${session_signing_key} >> /etc/concourse/keys/web/session_signing_key
-echo ${tsa_host_key} >> /etc/concourse/keys/web/tsa_host_key
+echo "${authorized_worker_keys}" >> /etc/concourse/keys/web/authorized_workers
+echo "${session_signing_key}" >> /etc/concourse/keys/web/session_signing_key
+echo "${tsa_host_key}" >> /etc/concourse/keys/web/tsa_host_key
 find /etc/concourse/keys/web -type f -exec chmod 400 {} \\;
 
 # Pull the image

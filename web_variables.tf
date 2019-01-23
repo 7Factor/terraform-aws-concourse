@@ -39,10 +39,21 @@ variable web_lb_security_policy {
   description = "Load balancer policy string for the HTTPS ALB. Required else AWS will become unhappy."
 }
 
-# security group variables
 variable web_ingress_cidr {
   default     = "0.0.0.0/0"
   description = "The CIDR block from whence web traffic may come for web boxes servicing traffic from workers. Defaults to anywhere, but override it as necessary. This is applied to the ELB."
+}
+
+variable web_authorized_key_path {
+  description ="The path to a file containing a list of keys that the web machine authorizes for worker access. This should be one file, similar to how id_rsa works with public keys inside."
+}
+
+variable web_session_signing_key_path {
+  description ="The path to an OpenSSH or RSA key for signing sessions."
+}
+
+variable web_tsa_host_key_path {
+  description ="The path to an OpenSSH or RSA key for hosting TSA connections."
 }
 
 variable conc_fqdn {

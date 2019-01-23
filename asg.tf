@@ -32,7 +32,7 @@ resource "aws_launch_template" "web_template" {
   user_data = "${base64encode(data.template_file.web_initialization.rendered)}"
 
   iam_instance_profile {
-    arn = "${var.web_instance_profile_arn}"
+    name = "${var.web_instance_profile_name}"
   }
 
   lifecycle {

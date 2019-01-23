@@ -2,7 +2,7 @@ variable web_instance_type {
   description = "The web instance type. Usually around an m3.large gets it done, but do what you want."
 }
 
-variable web_instance_profile_arn {
+variable web_instance_profile_name {
   description = "Name of the instance profile and corresponding policies. We split this off because it changes pretty often."
 }
 

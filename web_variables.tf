@@ -45,15 +45,15 @@ variable web_ingress_cidr {
 }
 
 variable web_authorized_keys_path {
-  description ="The path to a file containing a list of keys that the web machine authorizes for worker access. This should be one file, similar to how id_rsa works with public keys inside."
+  description = "The path to a file containing a list of keys that the web machine authorizes for worker access. This should be one file, similar to how id_rsa works with public keys inside."
 }
 
 variable web_session_signing_key_path {
-  description ="The path to an OpenSSH or RSA key for signing sessions."
+  description = "The path to an OpenSSH or RSA key for signing sessions."
 }
 
 variable web_tsa_host_key_path {
-  description ="The path to an OpenSSH or RSA key for hosting TSA connections."
+  description = "The path to an OpenSSH or RSA key for hosting TSA connections."
 }
 
 variable conc_fqdn {

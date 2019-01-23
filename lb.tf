@@ -6,8 +6,7 @@ resource "aws_elb" "concourse_lb" {
     "${aws_security_group.httplb_sg.id}",
   ]
 
-  instances = ["${aws_instance.concourse_web.*.id}"]
-  internal  = "${var.lb_internal}"
+  internal = "${var.lb_internal}"
 
   listener {
     instance_port      = 8080

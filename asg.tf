@@ -66,3 +66,8 @@ resource "aws_autoscaling_group" "web_asg" {
     propagate_at_launch = true
   }
 }
+
+resource "aws_autoscaling_attachment" "web_asg_to_lb" {
+  autoscaling_group_name = "${aws_autoscaling_group.web_asg.id}"
+  elb                    = "${aws_elb.concourse_lb.id}"
+}

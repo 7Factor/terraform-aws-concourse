@@ -4,7 +4,7 @@ data "template_file" "web_initialization" {
   vars {
     authorized_worker_keys = "${file("${var.web_authorized_keys_path}")}"
     session_signing_key    = "${file("${var.web_session_signing_key_path}")}"
-    tsa_host_key           = "${file("${var.web_session_signing_key_path}")}"
+    tsa_host_key           = "${file("${var.web_tsa_host_key_path}")}"
     conc_image             = "${var.conc_image}"
     concdb_host            = "${var.concdb_host}"
     concdb_port            = "${var.concdb_port}"

@@ -36,3 +36,11 @@ variable worker_launch_options {
   default     = ""
   description = "Other options to provide to docker containers on run. Passed to the concourse binary, not the container."
 }
+
+variable worker_key_path {
+  description = "Path to an OpenSSH or RSA key the worker uses to secure communication with."
+}
+
+variable tsa_public_key_path {
+  description = "Path to an OpenSSH or RSA public key the worker uses to talk to the TSA with."
+}

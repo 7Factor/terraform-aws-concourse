@@ -43,11 +43,12 @@ resource "aws_launch_template" "web_template" {
 resource "aws_autoscaling_group" "web_asg" {
   name = "concweb-asg${aws_launch_template.web_template.latest_version}"
 
-  health_check_type   = "EC2"
-  desired_capacity    = "${var.web_desired_count}"
-  min_size            = "${var.web_min_count}"
-  max_size            = "${var.web_max_count}"
-  vpc_zone_identifier = ["${var.web_private_subnets}"]
+  health_check_type     = "EC2"
+  desired_capacity      = "${var.web_desired_count}"
+  min_size              = "${var.web_min_count}"
+  max_size              = "${var.web_max_count}"
+  vpc_zone_identifier   = ["${var.web_private_subnets}"]
+  wait_for_elb_capacity = true
 
   launch_template = {
     id      = "${aws_launch_template.web_template.id}"

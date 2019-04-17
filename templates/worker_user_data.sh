@@ -9,7 +9,7 @@ curl \
 software-properties-common
 
 sudo mkdir -p /etc/concourse/
-sudo curl https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
+wget https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 tar -xzf concourse-${conc_version}-linux-amd64.tgz /etc/
 
 sudo mkdir -p /etc/concourse/keys/worker

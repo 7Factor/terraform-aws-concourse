@@ -9,7 +9,7 @@ curl \
 software-properties-common
 
 sudo mkdir -p /etc/concourse/
-sudo curl https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
+wget https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 tar -xzf concourse-${conc_version}-linux-amd64.tgz /etc/
 
 sudo mkdir -p /etc/concourse/keys/web
@@ -21,9 +21,6 @@ echo -n "${authorized_worker_keys}" > /etc/concourse/keys/web/authorized_worker_
 echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_key
 echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 find /etc/concourse/keys/web -type f -exec chmod 400 {} \\;
-
-curl https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
-tar -xzf concourse-${conc_version}-linux-amd64.tgz /etc/
 
 /etc/concourse/bin/concourse web \
 --peer-address http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8080 \

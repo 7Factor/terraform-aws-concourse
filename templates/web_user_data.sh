@@ -9,8 +9,8 @@ curl \
 software-properties-common
 
 sudo mkdir -p /etc/concourse/
-wget https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
-tar -xzf -C /etc/ concourse-${conc_version}-linux-amd64.tgz
+sudo wget -P /etc/ https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
+sudo tar -xzf -C /etc/ /etc/concourse-${conc_version}-linux-amd64.tgz
 
 sudo mkdir -p /etc/concourse/keys/web
 sudo chown -R ubuntu:ubuntu /etc/concourse

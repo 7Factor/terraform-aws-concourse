@@ -26,7 +26,6 @@ sudo find /etc/concourse/keys/worker -type f -exec chmod 400 {} \;
 echo /etc/concourse/bin/concourse worker \
 --bind-ip 0.0.0.0 \
 --baggageclaim-bind-ip 0.0.0.0 \
---peer-ip $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
 --tsa-host ${tsa_host}:2222 \
 --tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \
 --tsa-worker-private-key /etc/concourse/keys/worker/worker_key \

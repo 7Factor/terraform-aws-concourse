@@ -26,7 +26,7 @@ module "concourse" {
   # Common config
   cluster_name = "${var.conc_cluster_name}"
   vpc_id       = "${var.vpc_id}"
-  conc_image   = "${var.conc_image}"
+  conc_version = "${var.conc_version}"
 
   # SSH config
   conc_ssh_key_name     = "${var.conc_ssh_key_name}"

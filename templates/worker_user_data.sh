@@ -33,7 +33,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-ExecStart=sudo /etc/concourse/bin/concourse worker \
+ExecStart=/etc/concourse/bin/concourse worker \
                 --baggageclaim-bind-ip 0.0.0.0 \
                 --tsa-host ${tsa_host}:2222 \
                 --tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \

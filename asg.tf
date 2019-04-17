@@ -14,7 +14,6 @@ data "template_file" "web_initialization" {
     conc_fqdn              = "${var.conc_fqdn}"
     authentication_config  = "${var.authentication_config}"
     cred_store_config      = "${var.cred_store_config}"
-    web_launch_options     = "${var.web_launch_options}"
   }
 }
 
@@ -77,11 +76,10 @@ data "template_file" "worker_initialization" {
   template = "${file("${path.module}/templates/worker_user_data.sh")}"
 
   vars {
-    tsa_public_key        = "${file("${var.tsa_public_key_path}")}"
-    worker_key            = "${file("${var.worker_key_path}")}"
-    conc_version          = "${var.conc_version}"
-    tsa_host              = "${aws_elb.concourse_lb.dns_name}"
-    worker_launch_options = "${var.worker_launch_options}"
+    tsa_public_key = "${file("${var.tsa_public_key_path}")}"
+    worker_key     = "${file("${var.worker_key_path}")}"
+    conc_version   = "${var.conc_version}"
+    tsa_host       = "${aws_elb.concourse_lb.dns_name}"
   }
 }
 

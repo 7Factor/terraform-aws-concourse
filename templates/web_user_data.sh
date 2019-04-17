@@ -34,7 +34,7 @@ docker run -d --name concourse_web --restart=unless-stopped \
 -v /etc/concourse/keys/web:/concourse-keys \
 -p 8080:8080 -p 2222:2222 \
 ${conc_image} web \
---peer-url http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8080 \
+--peer-address http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8080 \
 --postgres-host ${concdb_host} \
 --postgres-port ${concdb_port} \
 --postgres-user ${concdb_user} \

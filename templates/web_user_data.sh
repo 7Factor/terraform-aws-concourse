@@ -22,7 +22,7 @@ echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_key
 echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 find /etc/concourse/keys/web -type f -exec chmod 400 {} \\;
 
-/etc/concourse/bin/concourse web \
+echo /etc/concourse/bin/concourse web \
 --peer-address http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8080 \
 --postgres-host ${concdb_host} \
 --postgres-port ${concdb_port} \
@@ -37,3 +37,17 @@ ${authentication_config} \
 ${cred_store_config} \
 ${web_launch_options}
 
+/etc/concourse/bin/concourse web \
+--peer-address http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8080 \
+--postgres-host ${concdb_host} \
+--postgres-port ${concdb_port} \
+--postgres-user ${concdb_user} \
+--postgres-password ${concdb_password} \
+--postgres-database ${concdb_database} \
+--external-url https://${conc_fqdn} \
+--tsa-session-signing-key /etc/concourse/keys/web/session_signing_key \
+--tsa-host-key /etc/concourse/keys/web/tsa_host_key \
+--tsa-authorized-keys /etc/concourse/keys/web/authorized_worker_keys \
+${authentication_config} \
+${cred_store_config} \
+${web_launch_options}

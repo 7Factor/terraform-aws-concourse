@@ -35,5 +35,4 @@ sudo chown -R ubuntu:ubuntu /etc/concourse
 --tsa-host-key /etc/concourse/keys/web/tsa_host_key \
 --tsa-authorized-keys /etc/concourse/keys/web/authorized_worker_keys \
 ${authentication_config} \
-${cred_store_config} \
-${web_launch_options}
+${cred_store_config}

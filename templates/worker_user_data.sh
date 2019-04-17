@@ -33,5 +33,4 @@ sudo chown -R ubuntu:ubuntu /concourse-tmp
 --tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \
 --tsa-worker-private-key /etc/concourse/keys/worker/worker_key \
 --work-dir /concourse-tmp \
---garden-dns-proxy-enable \
-${worker_launch_options}
+--garden-dns-proxy-enable

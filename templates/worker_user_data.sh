@@ -5,7 +5,6 @@ sudo unattended-upgrade -d
 # Install interesting stuff.
 sudo apt-get install -y apt-transport-https \
 ca-certificates \
-curl \
 software-properties-common
 
 sudo mkdir -p /etc/concourse/
@@ -26,7 +25,7 @@ sudo chown -R ubuntu:ubuntu /concourse-tmp
 
 sudo echo "
 [Unit]
-Description=Concourse Web Service
+Description=Concourse Worker Service
 After=network.target
 StartLimitIntervalSec=0
 
@@ -34,7 +33,6 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-User=ubuntu
 ExecStart=sudo /etc/concourse/bin/concourse worker \
                 --baggageclaim-bind-ip 0.0.0.0 \
                 --tsa-host ${tsa_host}:2222 \

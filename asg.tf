@@ -5,7 +5,7 @@ data "template_file" "web_initialization" {
     authorized_worker_keys = "${file("${var.web_authorized_keys_path}")}"
     session_signing_key    = "${file("${var.web_session_signing_key_path}")}"
     tsa_host_key           = "${file("${var.web_tsa_host_key_path}")}"
-    conc_image             = "${var.conc_image}"
+    conc_image             = "${var.conc_version}"
     concdb_host            = "${var.concdb_host}"
     concdb_port            = "${var.concdb_port}"
     concdb_user            = "${var.concdb_user}"
@@ -79,7 +79,7 @@ data "template_file" "worker_initialization" {
   vars {
     tsa_public_key        = "${file("${var.tsa_public_key_path}")}"
     worker_key            = "${file("${var.worker_key_path}")}"
-    conc_image            = "${var.conc_image}"
+    conc_image            = "${var.conc_version}"
     tsa_host              = "${aws_elb.concourse_lb.dns_name}"
     worker_launch_options = "${var.worker_launch_options}"
   }

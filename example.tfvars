@@ -9,7 +9,7 @@
 
 vpc_id = "VPC-ID"
 
-conc_image="concourse/concourse:4.1.0"
+conc_version="5.1.0"
 concdb_password = "SUPER-SECRET-PW"
 
 # SSH config

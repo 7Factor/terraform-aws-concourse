@@ -21,7 +21,7 @@ sudo chown -R ubuntu:ubuntu /concourse-tmp
 # adds a newline to any files read in we need to use echo -n here.
 echo -n "${tsa_public_key}" > /etc/concourse/keys/worker/tsa_host_key.pub
 echo -n "${worker_key}" > /etc/concourse/keys/worker/worker_key
-find /etc/concourse/keys/worker -type f -exec chmod 400 {} \\;
+sudo find /etc/concourse/keys/worker -type f -exec chmod 400 {} \;
 
 echo /etc/concourse/bin/concourse worker \
 --bind-ip 0.0.0.0 \

@@ -20,7 +20,7 @@ sudo chown -R ubuntu:ubuntu /etc/concourse
 echo -n "${authorized_worker_keys}" > /etc/concourse/keys/web/authorized_worker_keys
 echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_key
 echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
-find /etc/concourse/keys/web -type f -exec chmod 400 {} \\;
+sudo find /etc/concourse/keys/web -type f -exec chmod 400 {} \;
 
 echo /etc/concourse/bin/concourse web \
 --peer-address http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4):8080 \

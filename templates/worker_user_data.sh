@@ -24,9 +24,26 @@ sudo find /etc/concourse/keys/worker -type f -exec chmod 400 {} \;
 sudo chown -R ubuntu:ubuntu /etc/concourse
 sudo chown -R ubuntu:ubuntu /concourse-tmp
 
-sudo /etc/concourse/bin/concourse worker \
---baggageclaim-bind-ip 0.0.0.0 \
---tsa-host ${tsa_host}:2222 \
---tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \
---tsa-worker-private-key /etc/concourse/keys/worker/worker_key \
---work-dir /concourse-tmp
+sudo echo "
+[Unit]
+Description=Concourse Web Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+ExecStart=sudo /etc/concourse/bin/concourse worker \
+                --baggageclaim-bind-ip 0.0.0.0 \
+                --tsa-host ${tsa_host}:2222 \
+                --tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \
+                --tsa-worker-private-key /etc/concourse/keys/worker/worker_key \
+                --work-dir /concourse-tmp
+
+[Install]
+WantedBy=multi-user.target
+" > /etc/systemd/system/concourse-worker.service
+
+systemctl start concourse-worker

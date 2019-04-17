@@ -10,7 +10,7 @@ software-properties-common
 
 sudo mkdir -p /etc/concourse/
 wget https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
-tar -xzf concourse-${conc_version}-linux-amd64.tgz /etc/
+tar -xzf -C /etc/ concourse-${conc_version}-linux-amd64.tgz
 
 sudo mkdir -p /etc/concourse/keys/worker
 sudo mkdir -p /concourse-tmp

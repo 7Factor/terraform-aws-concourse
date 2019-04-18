@@ -34,7 +34,7 @@ Restart=always
 RestartSec=1
 User=ubuntu
 ExecStart=/etc/concourse/bin/concourse web \
-            --peer-address http://$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
+            --peer-address $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
             --postgres-host ${concdb_host} \
             --postgres-port ${concdb_port} \
             --postgres-user ${concdb_user} \

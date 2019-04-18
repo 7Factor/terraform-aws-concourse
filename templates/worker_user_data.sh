@@ -25,6 +25,13 @@ sudo chown -R ubuntu:ubuntu /etc/concourse
 sudo chown -R ubuntu:ubuntu /concourse-tmp
 
 sudo echo "
+[server]
+; configure Google DNS
+dns-server = 8.8.8.8
+dns-server = 8.8.4.4
+" > /etc/concourse/gdn-config.ini
+
+sudo echo "
 [Unit]
 Description=Concourse Worker Service
 After=network.target
@@ -37,6 +44,7 @@ RestartSec=1
 ExecStart=/etc/concourse/bin/concourse worker \
                 --bind-ip 0.0.0.0 \
                 --baggageclaim-bind-ip 0.0.0.0 \
+                --garden-config /etc/concourse/gdn-config.ini
                 --tsa-host ${tsa_host}:2222 \
                 --tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \
                 --tsa-worker-private-key /etc/concourse/keys/worker/worker_key \

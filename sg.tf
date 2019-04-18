@@ -1,10 +1,6 @@
-#---------------------------------------------------------
-# SGs for access to concourse servers. One for the web farm
-# and another for SSH access and another for DB access.
-#---------------------------------------------------------
 resource "aws_security_group" "web_sg" {
-  name        = "conc-web-sg-${data.aws_region.current.name}"
-  description = "Security group for all concourse web servers in ${data.aws_region.current.name}."
+  name        = "conc-web-sg"
+  description = "Security group for all concourse web servers."
   vpc_id      = "${var.vpc_id}"
 
   ingress {
@@ -22,8 +18,8 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
-    from_port = 8080
-    to_port   = 8080
+    from_port = 0
+    to_port   = 0
     protocol  = "tcp"
     self      = true
   }
@@ -40,31 +36,24 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-resource "aws_security_group_rule" "allow_worker_to_register" {
-  type                     = "ingress"
-  from_port                = 2222
-  to_port                  = 2222
-  protocol                 = "tcp"
-  source_security_group_id = "${aws_security_group.worker_sg.id}"
-  security_group_id        = "${aws_security_group.web_sg.id}"
+resource "aws_security_group" "allow_workers_to_web" {
+  name        = "conc-worker-to-web"
+  description = "Allows workers to register and contact web machines. Assign to web boxes."
+  vpc_id      = "${var.vpc_id}"
 
-  depends_on = ["aws_security_group.worker_sg", "aws_security_group.web_sg"]
-}
-
-resource "aws_security_group_rule" "allow_worker_to_web" {
-  type                     = "ingress"
-  from_port                = 8080
-  to_port                  = 8080
-  protocol                 = "tcp"
-  source_security_group_id = "${aws_security_group.worker_sg.id}"
-  security_group_id        = "${aws_security_group.web_sg.id}"
+  ingress {
+    from_port       = 2222
+    to_port         = 2222
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.worker_sg.id}"]
+  }
 
   depends_on = ["aws_security_group.worker_sg", "aws_security_group.web_sg"]
 }
 
 resource "aws_security_group" "worker_sg" {
-  name        = "conc-worker-sg-${data.aws_region.current.name}"
-  description = "Opens all the appropriate concourse worker ports in ${data.aws_region.current.name}"
+  name        = "conc-worker-sg"
+  description = "Opens all the appropriate concourse worker ports to web nodes"
   vpc_id      = "${var.vpc_id}"
 
   ingress {
@@ -101,8 +90,8 @@ resource "aws_security_group" "worker_sg" {
 }
 
 resource "aws_security_group" "httplb_sg" {
-  name        = "conc-lb-sg-${data.aws_region.current.name}"
-  description = "Security group for the LB in ${data.aws_region.current.name}."
+  name        = "conc-lb-sg"
+  description = "Security group for the concourse ELB"
   vpc_id      = "${var.vpc_id}"
 
   ingress {

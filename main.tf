@@ -3,9 +3,6 @@ terraform {
   required_version = ">=0.10.7"
 }
 
-# Grab the current region to be used everywhere
-data "aws_region" "current" {}
-
 # Swapping to a tied down ubuntu version for stability.
 data "aws_ami" "base_ami" {
   most_recent = true

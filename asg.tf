@@ -25,6 +25,7 @@ resource "aws_launch_template" "web_template" {
 
   vpc_security_group_ids = [
     "${aws_security_group.web_sg.id}",
+    "${aws_security_group.allow_workers_to_web.id}",
     "${var.utility_accessible_sg}",
   ]
 

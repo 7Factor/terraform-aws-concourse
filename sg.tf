@@ -48,6 +48,10 @@ resource "aws_security_group" "allow_workers_to_web" {
     security_groups = ["${aws_security_group.worker_sg.id}"]
   }
 
+  tags {
+    Name = "Workers Access Web Boxes"
+  }
+
   depends_on = ["aws_security_group.worker_sg", "aws_security_group.web_sg"]
 }
 

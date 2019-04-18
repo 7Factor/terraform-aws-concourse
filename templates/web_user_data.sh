@@ -41,7 +41,7 @@ ExecStart=/etc/concourse/bin/concourse web \
             --postgres-password ${concdb_password} \
             --postgres-database ${concdb_database} \
             --external-url https://${conc_fqdn} \
-            --tsa-session-signing-key /etc/concourse/keys/web/session_signing_key \
+            --session-signing-key /etc/concourse/keys/web/session_signing_key \
             --tsa-host-key /etc/concourse/keys/web/tsa_host_key \
             --tsa-authorized-keys /etc/concourse/keys/web/authorized_worker_keys \
             ${authentication_config} \

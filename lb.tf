@@ -1,5 +1,5 @@
 resource "aws_elb" "concourse_lb" {
-  name    = "conc-lb-${data.aws_region.current.name}"
+  name    = "conc-lb"
   subnets = ["${var.web_public_subnets}"]
 
   security_groups = [

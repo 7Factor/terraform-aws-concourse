@@ -20,7 +20,6 @@ sudo echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_
 sudo echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 sudo find /etc/concourse/keys/web -type f -exec chmod 400 {} \;
 
-sudo iptables -P FORWARD ACCEPT
 sudo chown -R ubuntu:ubuntu /etc/concourse
 
 sudo echo "

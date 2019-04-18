@@ -20,7 +20,6 @@ sudo echo -n "${tsa_public_key}" > /etc/concourse/keys/worker/tsa_host_key.pub
 sudo echo -n "${worker_key}" > /etc/concourse/keys/worker/worker_key
 sudo find /etc/concourse/keys/worker -type f -exec chmod 400 {} \;
 
-sudo iptables -P FORWARD ACCEPT
 sudo chown -R ubuntu:ubuntu /etc/concourse
 sudo chown -R ubuntu:ubuntu /concourse-tmp
 
@@ -44,7 +43,7 @@ RestartSec=1
 ExecStart=/etc/concourse/bin/concourse worker \
                 --bind-ip 0.0.0.0 \
                 --baggageclaim-bind-ip 0.0.0.0 \
-                --garden-config /etc/concourse/gdn-config.ini
+                --garden-config /etc/concourse/gdn-config.ini \
                 --tsa-host ${tsa_host}:2222 \
                 --tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \
                 --tsa-worker-private-key /etc/concourse/keys/worker/worker_key \

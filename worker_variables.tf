@@ -39,3 +39,8 @@ variable worker_key_path {
 variable tsa_public_key_path {
   description = "Path to an OpenSSH or RSA public key the worker uses to talk to the TSA with."
 }
+
+variable baggageclaim_driver {
+  default     = "detect"
+  description = "Storage driver to use for Baggage Claim."
+}

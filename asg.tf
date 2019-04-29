@@ -78,10 +78,11 @@ data "template_file" "worker_initialization" {
   template = "${file("${path.module}/templates/worker_user_data.sh")}"
 
   vars {
-    tsa_public_key = "${file("${var.tsa_public_key_path}")}"
-    worker_key     = "${file("${var.worker_key_path}")}"
-    conc_version   = "${var.conc_version}"
-    tsa_host       = "${aws_elb.concourse_lb.dns_name}"
+    tsa_public_key      = "${file("${var.tsa_public_key_path}")}"
+    worker_key          = "${file("${var.worker_key_path}")}"
+    conc_version        = "${var.conc_version}"
+    tsa_host            = "${aws_elb.concourse_lb.dns_name}"
+    baggageclaim_driver = "${var.baggageclaim_driver}"
   }
 }
 

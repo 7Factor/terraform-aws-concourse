@@ -45,7 +45,7 @@ ExecStart=/etc/concourse/bin/concourse worker \
                 --baggageclaim-bind-ip 0.0.0.0 \
                 --baggageclaim-driver overlay \
                 --garden-config /etc/concourse/gdn-config.ini \
-                --baggageclaim-driver=${baggageclaim_driver}
+                --baggageclaim-driver ${baggageclaim_driver} \
                 --tsa-host ${tsa_host}:2222 \
                 --tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \
                 --tsa-worker-private-key /etc/concourse/keys/worker/worker_key \

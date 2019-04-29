@@ -2,18 +2,19 @@ data "template_file" "web_initialization" {
   template = "${file("${path.module}/templates/web_user_data.sh")}"
 
   vars {
-    authorized_worker_keys = "${file("${var.web_authorized_keys_path}")}"
-    session_signing_key    = "${file("${var.web_session_signing_key_path}")}"
-    tsa_host_key           = "${file("${var.web_tsa_host_key_path}")}"
-    conc_version           = "${var.conc_version}"
-    concdb_host            = "${var.concdb_host}"
-    concdb_port            = "${var.concdb_port}"
-    concdb_user            = "${var.concdb_user}"
-    concdb_password        = "${var.concdb_password}"
-    concdb_database        = "${var.concdb_database}"
-    conc_fqdn              = "${var.conc_fqdn}"
-    authentication_config  = "${var.authentication_config}"
-    cred_store_config      = "${var.cred_store_config}"
+    authorized_worker_keys       = "${file("${var.web_authorized_keys_path}")}"
+    session_signing_key          = "${file("${var.web_session_signing_key_path}")}"
+    tsa_host_key                 = "${file("${var.web_tsa_host_key_path}")}"
+    conc_version                 = "${var.conc_version}"
+    concdb_host                  = "${var.concdb_host}"
+    concdb_port                  = "${var.concdb_port}"
+    concdb_user                  = "${var.concdb_user}"
+    concdb_password              = "${var.concdb_password}"
+    concdb_database              = "${var.concdb_database}"
+    conc_fqdn                    = "${var.conc_fqdn}"
+    authentication_config        = "${var.authentication_config}"
+    cred_store_config            = "${var.cred_store_config}"
+    container_placement_strategy = "${var.container_placement_strategy}"
   }
 }
 

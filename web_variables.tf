@@ -61,6 +61,11 @@ variable conc_fqdn {
   description = "The FQDN where your cluster will live. Point this via your DNS to the ELB DNS provided in the output of this module otherwise you'll get some wonkiness. Note that we force HTTPS here so do not include the protocol."
 }
 
+variable container_placement_strategy {
+  default     = "volume-locality"
+  description = "Set the container placement strategy. Defaults to the concourse default but can be set to one of [volume-locality|random|fewest-build-containers]. See the concourse docs for more info."
+}
+
 variable authentication_config {
   default     = "--main-team-allow-all-users"
   description = "Toss your authentication scheme here. See documentation. Defaults to no auth."

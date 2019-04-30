@@ -3,7 +3,7 @@ sudo apt-get update
 sudo unattended-upgrade -d
 
 sudo mkdir -p /etc/concourse/
-sudo curl -o /etc/concourse.tgz https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
+sudo curl -oL /etc/concourse.tgz https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 sudo tar -xzf /etc/concourse.tgz --directory=/etc/
 
 sudo mkdir -p /etc/concourse/keys/worker
@@ -29,7 +29,6 @@ sudo echo "
 [Unit]
 Description=Concourse Worker Service
 After=network.target
-StartLimitInterval=0
 
 [Service]
 Type=simple

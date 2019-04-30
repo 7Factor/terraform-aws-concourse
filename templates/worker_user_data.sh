@@ -3,8 +3,8 @@ sudo apt-get update
 sudo unattended-upgrade -d
 
 sudo mkdir -p /etc/concourse/
-sudo wget -P /etc/ https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
-sudo tar -xzf /etc/concourse-${conc_version}-linux-amd64.tgz --directory=/etc/
+sudo curl -o /etc/concourse.tgz https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
+sudo tar -xzf /etc/concourse.tgz --directory=/etc/
 
 sudo mkdir -p /etc/concourse/keys/worker
 sudo mkdir -p /concourse-tmp

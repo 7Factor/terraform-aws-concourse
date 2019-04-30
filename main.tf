@@ -6,20 +6,14 @@ terraform {
 # Swapping to a tied down ubuntu version for stability.
 data "aws_ami" "base_ami" {
   most_recent = true
-  owners      = ["099720109477"]
+
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-*-18.*-amd64-server-*"]
-  }
-
-  filter {
-    name   = "architecture"
-    values = ["x86_64"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    values = ["amzn2-ami-hvm*"]
   }
 }

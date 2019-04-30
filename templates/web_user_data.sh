@@ -2,11 +2,6 @@
 sudo apt-get update
 sudo unattended-upgrade -d
 
-# Install interesting stuff.
-sudo apt-get install -y apt-transport-https \
-ca-certificates \
-software-properties-common
-
 sudo mkdir -p /etc/concourse/
 sudo wget -P /etc/ https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 sudo tar -xzf /etc/concourse-${conc_version}-linux-amd64.tgz --directory=/etc/

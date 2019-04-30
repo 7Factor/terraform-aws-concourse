@@ -15,7 +15,7 @@ sudo echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_
 sudo echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 sudo find /etc/concourse/keys/web -type f -exec chmod 400 {} \;
 
-sudo chown -R ec2-user:ec2-user /etc/concourse
+sudo chown -R root:root /etc/concourse
 
 sudo echo "
 [Unit]
@@ -26,7 +26,6 @@ After=network.target
 Type=simple
 Restart=always
 RestartSec=1
-User=ec2-user
 ExecStart=/etc/concourse/bin/concourse web \
             --peer-address $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
             --postgres-host ${concdb_host} \

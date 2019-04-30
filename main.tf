@@ -3,23 +3,19 @@ terraform {
   required_version = ">=0.10.7"
 }
 
+# Swapping to a tied down ubuntu version for stability.
 data "aws_ami" "base_ami" {
   most_recent = true
-  owners      = ["591542846629"]
+  owners      = ["099720109477"]
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-ecs-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-*-18.*-amd64-server-*"]
   }
 
   filter {
     name   = "architecture"
     values = ["x86_64"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
   }
 
   filter {

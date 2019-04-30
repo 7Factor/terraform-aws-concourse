@@ -29,7 +29,7 @@ sudo echo "
 [Unit]
 Description=Concourse Worker Service
 After=network.target
-StartLimitIntervalSec=0
+StartLimitInterval=0
 
 [Service]
 Type=simple

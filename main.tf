@@ -5,11 +5,11 @@ terraform {
 
 data "aws_ami" "base_ami" {
   most_recent = true
-  owners      = ["099720109477"]
+  owners      = ["137112412989"]
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-*"]
+    values = "amzn2-ami-*"
   }
 
   filter {

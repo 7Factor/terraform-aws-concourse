@@ -3,7 +3,7 @@ sudo apt-get update
 sudo unattended-upgrade -d
 
 sudo mkdir -p /etc/concourse/
-sudo wget -P /etc/ https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
+sudo curl -o /etc/ https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 sudo tar -xzf /etc/concourse-${conc_version}-linux-amd64.tgz --directory=/etc/
 
 sudo mkdir -p /etc/concourse/keys/web
@@ -15,7 +15,7 @@ sudo echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_
 sudo echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 sudo find /etc/concourse/keys/web -type f -exec chmod 400 {} \;
 
-sudo chown -R ubuntu:ubuntu /etc/concourse
+sudo chown -R ec2-user:ec2-user /etc/concourse
 
 sudo echo "
 [Unit]
@@ -27,7 +27,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-User=ubuntu
+User=ec2-user
 ExecStart=/etc/concourse/bin/concourse web \
             --peer-address $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
             --postgres-host ${concdb_host} \

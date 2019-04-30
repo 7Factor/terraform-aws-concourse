@@ -15,8 +15,8 @@ sudo echo -n "${tsa_public_key}" > /etc/concourse/keys/worker/tsa_host_key.pub
 sudo echo -n "${worker_key}" > /etc/concourse/keys/worker/worker_key
 sudo find /etc/concourse/keys/worker -type f -exec chmod 400 {} \;
 
-sudo chown -R ubuntu:ubuntu /etc/concourse
-sudo chown -R ubuntu:ubuntu /concourse-tmp
+sudo chown -R root:root /etc/concourse
+sudo chown -R root:root /concourse-tmp
 
 sudo echo "
 [server]

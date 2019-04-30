@@ -38,7 +38,6 @@ RestartSec=1
 ExecStart=/etc/concourse/bin/concourse worker \
                 --bind-ip 0.0.0.0 \
                 --baggageclaim-bind-ip 0.0.0.0 \
-                --baggageclaim-driver overlay \
                 --garden-config /etc/concourse/gdn-config.ini \
                 --baggageclaim-driver ${baggageclaim_driver} \
                 --tsa-host ${tsa_host}:2222 \

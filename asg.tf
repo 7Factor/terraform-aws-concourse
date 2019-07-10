@@ -1,7 +1,7 @@
 data "template_file" "web_initialization" {
   template = "${file("${path.module}/templates/web_user_data.sh")}"
 
-  vars {
+  vars = {
     authorized_worker_keys       = "${file("${var.web_authorized_keys_path}")}"
     session_signing_key          = "${file("${var.web_session_signing_key_path}")}"
     tsa_host_key                 = "${file("${var.web_tsa_host_key_path}")}"
@@ -48,10 +48,10 @@ resource "aws_autoscaling_group" "web_asg" {
   desired_capacity    = "${var.web_desired_count}"
   min_size            = "${var.web_min_count}"
   max_size            = "${var.web_max_count}"
-  vpc_zone_identifier = ["${var.web_private_subnets}"]
+  vpc_zone_identifier = flatten(["${var.web_private_subnets}"])
   load_balancers      = ["${aws_elb.concourse_lb.name}"]
 
-  launch_template = {
+  launch_template {
     id      = "${aws_launch_template.web_template.id}"
     version = "$$Latest"
   }
@@ -77,7 +77,7 @@ resource "aws_autoscaling_attachment" "web_asg_to_lb" {
 data "template_file" "worker_initialization" {
   template = "${file("${path.module}/templates/worker_user_data.sh")}"
 
-  vars {
+  vars = {
     tsa_public_key      = "${file("${var.tsa_public_key_path}")}"
     worker_key          = "${file("${var.worker_key_path}")}"
     conc_version        = "${var.conc_version}"
@@ -124,9 +124,9 @@ resource "aws_autoscaling_group" "worker_asg" {
   desired_capacity    = "${var.worker_desired_count}"
   min_size            = "${var.worker_min_count}"
   max_size            = "${var.worker_max_count}"
-  vpc_zone_identifier = ["${var.worker_private_subnets}"]
+  vpc_zone_identifier = flatten(["${var.worker_private_subnets}"])
 
-  launch_template = {
+  launch_template {
     id      = "${aws_launch_template.worker_template.id}"
     version = "$$Latest"
   }

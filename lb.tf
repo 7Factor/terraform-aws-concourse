@@ -1,6 +1,6 @@
 resource "aws_elb" "concourse_lb" {
   name    = "conc-lb"
-  subnets = ["${var.web_public_subnets}"]
+  subnets = flatten(["${var.web_public_subnets}"])
 
   security_groups = [
     "${aws_security_group.httplb_sg.id}",
@@ -36,7 +36,7 @@ resource "aws_elb" "concourse_lb" {
   connection_draining         = true
   connection_draining_timeout = 400
 
-  tags {
+  tags = {
     Name = "Concourse LB"
   }
 }

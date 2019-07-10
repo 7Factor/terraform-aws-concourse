@@ -31,7 +31,7 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "Concourse Web Boxes"
   }
 }
@@ -48,7 +48,7 @@ resource "aws_security_group" "allow_workers_to_web" {
     security_groups = ["${aws_security_group.worker_sg.id}"]
   }
 
-  tags {
+  tags = {
     Name = "Workers Access Web Boxes"
   }
 
@@ -88,7 +88,7 @@ resource "aws_security_group" "worker_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "Concourse Worker Boxes"
   }
 }
@@ -120,7 +120,7 @@ resource "aws_security_group" "httplb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "Concourse Load Balancer"
   }
 }

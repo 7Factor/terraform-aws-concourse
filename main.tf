@@ -1,6 +1,5 @@
-# Required terraform version
 terraform {
-  required_version = ">=0.10.7"
+  required_version = ">=0.12.3"
 }
 
 # Swapping to a tied down ubuntu version for stability.

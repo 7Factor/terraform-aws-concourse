@@ -1,19 +1,19 @@
 resource "aws_elb" "concourse_lb" {
   name    = "conc-lb"
-  subnets = ["${var.web_public_subnets}"]
+  subnets = flatten([var.web_public_subnets])
 
   security_groups = [
-    "${aws_security_group.httplb_sg.id}",
+    aws_security_group.httplb_sg.id,
   ]
 
-  internal = "${var.lb_internal}"
+  internal = var.lb_internal
 
   listener {
     instance_port      = 8080
     instance_protocol  = "http"
     lb_port            = 443
     lb_protocol        = "https"
-    ssl_certificate_id = "${var.web_cert_arn}"
+    ssl_certificate_id = var.web_cert_arn
   }
 
   # For external workers
@@ -36,7 +36,7 @@ resource "aws_elb" "concourse_lb" {
   connection_draining         = true
   connection_draining_timeout = 400
 
-  tags {
+  tags = {
     Name = "Concourse LB"
   }
 }

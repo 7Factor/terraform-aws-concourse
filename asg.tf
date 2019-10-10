@@ -53,7 +53,7 @@ resource "aws_autoscaling_group" "web_asg" {
 
   launch_template {
     id      = aws_launch_template.web_template.id
-    version = "$$Latest"
+    version = "$Latest"
   }
 
   depends_on = ["aws_launch_template.web_template"]
@@ -128,7 +128,7 @@ resource "aws_autoscaling_group" "worker_asg" {
 
   launch_template {
     id      = aws_launch_template.worker_template.id
-    version = "$$Latest"
+    version = "$Latest"
   }
 
   depends_on = ["aws_launch_template.worker_template"]

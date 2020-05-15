@@ -15,7 +15,7 @@ variable worker_max_count {
 }
 
 variable worker_private_subnets {
-  type        = "list"
+  type        = list(string)
   description = "The subnet IDs you'll be installing concourse worker boxes into. Again, we make no assumptions. This should be large enough to support your cluster."
 }
 

@@ -56,7 +56,7 @@ resource "aws_autoscaling_group" "web_asg" {
     version = "$Latest"
   }
 
-  depends_on = ["aws_launch_template.web_template"]
+  depends_on = [aws_launch_template.web_template]
 
   lifecycle {
     create_before_destroy = true
@@ -131,7 +131,7 @@ resource "aws_autoscaling_group" "worker_asg" {
     version = "$Latest"
   }
 
-  depends_on = ["aws_launch_template.worker_template"]
+  depends_on = [aws_launch_template.worker_template]
 
   lifecycle {
     create_before_destroy = true

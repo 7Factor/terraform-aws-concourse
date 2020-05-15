@@ -22,12 +22,12 @@ variable web_max_count {
 }
 
 variable web_public_subnets {
-  type        = "list"
+  type        = list(string)
   description = "The IDs of public subnets corresponding to private subnets inside which concourse will be installed. Passed to the load balancer."
 }
 
 variable web_private_subnets {
-  type        = "list"
+  type        = list(string)
   description = "The subnet IDs the concourse machines will actually be installed into."
 }
 

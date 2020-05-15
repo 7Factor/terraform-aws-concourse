@@ -52,7 +52,7 @@ resource "aws_security_group" "allow_workers_to_web" {
     Name = "Workers Access Web Boxes"
   }
 
-  depends_on = ["aws_security_group.worker_sg", "aws_security_group.web_sg"]
+  depends_on = [aws_security_group.worker_sg, aws_security_group.web_sg]
 }
 
 resource "aws_security_group" "worker_sg" {

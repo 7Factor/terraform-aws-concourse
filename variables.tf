@@ -20,6 +20,11 @@ variable conc_version {
   description = "The image name for concourse. Defaults to latest, but you should lock this down."
 }
 
+variable base_ami_name_filter {
+  default     = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  description = "Name filter for the base ami for Concourse machines. Defaults to Ubuntu 20.04 LTS. View the AWS docs for more info."
+}
+
 variable concdb_host {
   description = "Concourse database host name. Required in the new 4.1 build."
 }

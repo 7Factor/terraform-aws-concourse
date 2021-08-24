@@ -39,7 +39,8 @@ ExecStart=/etc/concourse/bin/concourse web \
             --tsa-host-key /etc/concourse/keys/web/tsa_host_key \
             --tsa-authorized-keys /etc/concourse/keys/web/authorized_worker_keys \
             ${authentication_config} \
-            ${cred_store_config}
+            ${cred_store_config} \
+            ${feature_flags}
 
 [Install]
 WantedBy=multi-user.target

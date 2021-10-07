@@ -76,7 +76,7 @@ variable "cred_store_config" {
   description = "Pass options for your target cred store here. Passed to the concourse web binary, defaults to nothing."
 }
 
-variable "feature_flags" {
+variable "web_feature_flags" {
   default     = ""
   description = "Pass feature flag options here. Defaults to nothing."
 }

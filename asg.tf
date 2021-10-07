@@ -14,7 +14,7 @@ data "template_file" "web_initialization" {
     conc_fqdn                    = var.conc_fqdn
     authentication_config        = var.authentication_config
     cred_store_config            = var.cred_store_config
-    feature_flags                = var.feature_flags
+    feature_flags                = var.web_feature_flags
     container_placement_strategy = var.container_placement_strategy
   }
 }

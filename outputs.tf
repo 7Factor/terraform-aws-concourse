@@ -8,9 +8,14 @@ output "web_sg" {
   description = "ID of the security group for web boxes. Consume this by other modules as necessary--specifically locking down DB access."
 }
 
-output "web_asg" {
-  value       = aws_autoscaling_group.web_asg.id
-  description = "ID of the web ASG so you can attach your own scaling policies."
+output "web_asg_name" {
+  value       = aws_autoscaling_group.web_asg.name
+  description = "Name of the web ASG so you can attach your own scaling policies."
+}
+
+output "worker_asg_name" {
+  value       = aws_autoscaling_group.worker_asg.id
+  description = "Name of the worker ASG so you can attach your own scaling policies."
 }
 
 output "utility_accessible_sg" {

@@ -23,6 +23,8 @@ Description=Concourse Web Service
 After=network.target
 
 [Service]
+Environment=CONCOURSE_OIDC_USER_NAME_KEY=email
+
 Type=simple
 Restart=always
 RestartSec=1

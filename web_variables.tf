@@ -67,16 +67,19 @@ variable "container_placement_strategy" {
 }
 
 variable "authentication_config" {
-  default     = "CONCOURSE_ADD_LOCAL_USER=test:test,guest:guest CONCOURSE_MAIN_TEAM_LOCAL_USER=test"
-  description = "Toss your authentication scheme here as space separated environment variables. See documentation. Defaults to no auth."
+  type        = list(string)
+  default     = ["CONCOURSE_ADD_LOCAL_USER=test:test,guest:guest", "CONCOURSE_MAIN_TEAM_LOCAL_USER=test"]
+  description = "Toss your authentication scheme here as space separated environment variables. See documentation. Defaults to local users with test/test and guest/guest as credentials."
 }
 
 variable "cred_store_config" {
-  default     = ""
-  description = "Pass options for your target cred store here as space separated environment variables. Passed to the concourse web binary, defaults to nothing."
+  type        = list(string)
+  default     = []
+  description = "Pass options for your target cred store here as a list of key value environment variables. Defaults to nothing."
 }
 
 variable "web_feature_flags" {
-  default     = ""
-  description = "Pass feature flag options here as space separated environment variables. Defaults to nothing."
+  type        = list(string)
+  default     = []
+  description = "Pass feature flag options here as a list of key value environment variables. Defaults to nothing."
 }

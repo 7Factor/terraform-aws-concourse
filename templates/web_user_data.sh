@@ -34,9 +34,18 @@ Environment=\"CONCOURSE_CONTAINER_PLACEMENT_STRATEGY=${container_placement_strat
 Environment=\"CONCOURSE_SESSION_SIGNING_KEY=/etc/concourse/keys/web/session_signing_key\"
 Environment=\"CONCOURSE_TSA_HOST_KEY=/etc/concourse/keys/web/tsa_host_key\"
 Environment=\"CONCOURSE_TSA_AUTHORIZED_KEYS=/etc/concourse/keys/web/authorized_worker_keys\"
-Environment=\"${authentication_config}\"
-Environment=\"${cred_store_config}\"
-Environment=\"${feature_flags}\"
+
+%{ for item in authentication_config ~}
+Environment=\"${item}\"
+%{ endfor ~}
+
+%{ for item in cred_store_config ~}
+Environment=\"${item}\"
+%{ endfor ~}
+
+%{ for item in feature_flags ~}
+Environment=\"${item}\"
+%{ endfor ~}
 
 Type=simple
 Restart=always

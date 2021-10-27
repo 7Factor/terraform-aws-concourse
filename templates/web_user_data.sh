@@ -27,17 +27,17 @@ Type=simple
 Restart=always
 RestartSec=1
 ExecStart=/etc/concourse/bin/concourse web \
---peer-address $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
---postgres-host ${concdb_host} \
---postgres-port ${concdb_port} \
---postgres-user ${concdb_user} \
---postgres-password ${concdb_password} \
---postgres-database ${concdb_database} \
---external-url https://${conc_fqdn} \
+--peer-address=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
+--postgres-host=${concdb_host} \
+--postgres-port=${concdb_port} \
+--postgres-user=${concdb_user} \
+--postgres-password=${concdb_password} \
+--postgres-database=${concdb_database} \
+--external-url=https://${conc_fqdn} \
 --container-placement-strategy=${container_placement_strategy} \
---session-signing-key /etc/concourse/keys/web/session_signing_key \
---tsa-host-key /etc/concourse/keys/web/tsa_host_key \
---tsa-authorized-keys /etc/concourse/keys/web/authorized_worker_keys \
+--session-signing-key=/etc/concourse/keys/web/session_signing_key \
+--tsa-host-key=/etc/concourse/keys/web/tsa_host_key \
+--tsa-authorized-keys=/etc/concourse/keys/web/authorized_worker_keys \
 ${authentication_config} \
 ${cred_store_config} \
 ${feature_flags}

@@ -11,10 +11,6 @@ variable "conc_key_name" {
   description = "The PEM key name for accessing and provisioning web and worker boxes."
 }
 
-variable "conc_key_path" {
-  description = "A folder, usually relative to root of the TF you're running, where the concourse key is stored."
-}
-
 variable "conc_version" {
   default     = "5.1.0"
   description = "The image name for concourse. Defaults to latest, but you should lock this down."

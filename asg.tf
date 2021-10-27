@@ -15,6 +15,14 @@ locals {
     "cred_store_config"            = var.cred_store_config
     "feature_flags"                = var.web_feature_flags
   }
+
+  worker_interpolation_vars = {
+    "tsa_public_key"      = file(var.tsa_public_key_path)
+    "worker_key"          = file(var.worker_key_path)
+    "conc_version"        = var.conc_version
+    "tsa_host"            = aws_elb.concourse_lb.dns_name
+    "baggageclaim_driver" = var.baggageclaim_driver
+  }
 }
 
 resource "aws_launch_template" "web_template" {
@@ -74,18 +82,6 @@ resource "aws_autoscaling_attachment" "web_asg_to_lb" {
   elb                    = aws_elb.concourse_lb.id
 }
 
-data "template_file" "worker_initialization" {
-  template = file("${path.module}/templates/worker_user_data.sh")
-
-  vars = {
-    tsa_public_key      = file(var.tsa_public_key_path)
-    worker_key          = file(var.worker_key_path)
-    conc_version        = var.conc_version
-    tsa_host            = aws_elb.concourse_lb.dns_name
-    baggageclaim_driver = var.baggageclaim_driver
-  }
-}
-
 resource "aws_launch_template" "worker_template" {
   name          = "conc-worker-tmpl"
   instance_type = var.worker_instance_type
@@ -106,7 +102,7 @@ resource "aws_launch_template" "worker_template" {
     aws_security_group.worker_sg.id,
   ]
 
-  user_data = base64encode(data.template_file.worker_initialization.rendered)
+  user_data = base64encode(templatefile("${path.module}/templates/worker_user_data.sh", local.worker_interpolation_vars))
 
   iam_instance_profile {
     name = var.worker_instance_profile

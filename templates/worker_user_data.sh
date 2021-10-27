@@ -31,18 +31,19 @@ Description=Concourse Worker Service
 After=network.target
 
 [Service]
+Environment=\"CONCOURSE_BIND_IP=0.0.0.0\"
+Environment=\"CONCOURSE_BAGGAGECLAIM_BIND_IP=0.0.0.0\"
+Environment=\"CONCOURSE_GARDEN_CONFIG=/etc/concourse/gdn-config.ini\"
+Environment=\"CONCOURSE_BAGGAGECLAIM_DRIVER=${baggageclaim_driver}\"
+Environment=\"CONCOURSE_TSA_HOST=${tsa_host}:2222\"
+Environment=\"CONCOURSE_TSA_PUBLIC_KEY=/etc/concourse/keys/worker/tsa_host_key.pub\"
+Environment=\"CONCOURSE_TSA_WORKER_PRIVATE_KEY=/etc/concourse/keys/worker/worker_key\"
+Environment=\"CONCOURSE_WORK_DIR=/concourse-tmp\"
+
 Type=simple
 Restart=always
 RestartSec=1
-ExecStart=/etc/concourse/bin/concourse worker \
-                --bind-ip 0.0.0.0 \
-                --baggageclaim-bind-ip 0.0.0.0 \
-                --garden-config /etc/concourse/gdn-config.ini \
-                --baggageclaim-driver ${baggageclaim_driver} \
-                --tsa-host ${tsa_host}:2222 \
-                --tsa-public-key /etc/concourse/keys/worker/tsa_host_key.pub \
-                --tsa-worker-private-key /etc/concourse/keys/worker/worker_key \
-                --work-dir /concourse-tmp
+ExecStart=/etc/concourse/bin/concourse worker
 
 [Install]
 WantedBy=multi-user.target

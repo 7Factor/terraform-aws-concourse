@@ -12,10 +12,10 @@ data "template_file" "web_initialization" {
     concdb_password              = var.concdb_password
     concdb_database              = var.concdb_database
     conc_fqdn                    = var.conc_fqdn
+    container_placement_strategy = var.container_placement_strategy
     authentication_config        = var.authentication_config
     cred_store_config            = var.cred_store_config
     feature_flags                = var.web_feature_flags
-    container_placement_strategy = var.container_placement_strategy
   }
 }
 
@@ -61,7 +61,7 @@ resource "aws_autoscaling_group" "web_asg" {
 
   lifecycle {
     create_before_destroy = true
-    ignore_changes = [desired_capacity]
+    ignore_changes        = [desired_capacity]
   }
 
   tag {
@@ -137,7 +137,7 @@ resource "aws_autoscaling_group" "worker_asg" {
 
   lifecycle {
     create_before_destroy = true
-    ignore_changes = [desired_capacity]
+    ignore_changes        = [desired_capacity]
   }
 
   tag {

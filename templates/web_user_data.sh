@@ -23,26 +23,25 @@ Description=Concourse Web Service
 After=network.target
 
 [Service]
-Environment=CONCOURSE_OIDC_USER_NAME_KEY=email
+Environment=\"CONCOURSE_PEER_ADDRESS=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)\"
+Environment=\"CONCOURSE_POSTGRES_HOST=${concdb_host}\"
+Environment=\"CONCOURSE_POSTGRES_PORT=${concdb_port}\"
+Environment=\"CONCOURSE_POSTGRES_USER=${concdb_user}\"
+Environment=\"CONCOURSE_POSTGRES_PASSWORD=${concdb_password}\"
+Environment=\"CONCOURSE_POSTGRES_DATABASE=${concdb_database}\"
+Environment=\"CONCOURSE_EXTERNAL_URL=https://${conc_fqdn}\"
+Environment=\"CONCOURSE_CONTAINER_PLACEMENT_STRATEGY=${container_placement_strategy}\"
+Environment=\"CONCOURSE_SESSION_SIGNING_KEY=/etc/concourse/keys/web/session_signing_key\"
+Environment=\"CONCOURSE_TSA_HOST_KEY=/etc/concourse/keys/web/tsa_host_key\"
+Environment=\"CONCOURSE_TSA_AUTHORIZED_KEYS=/etc/concourse/keys/web/authorized_worker_keys\"
+Environment=\"${authentication_config}\"
+Environment=\"${cred_store_config}\"
+Environment=\"${feature_flags}\"
 
 Type=simple
 Restart=always
 RestartSec=1
-ExecStart=/etc/concourse/bin/concourse web \
---peer-address=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) \
---postgres-host=${concdb_host} \
---postgres-port=${concdb_port} \
---postgres-user=${concdb_user} \
---postgres-password=${concdb_password} \
---postgres-database=${concdb_database} \
---external-url=https://${conc_fqdn} \
---container-placement-strategy=${container_placement_strategy} \
---session-signing-key=/etc/concourse/keys/web/session_signing_key \
---tsa-host-key=/etc/concourse/keys/web/tsa_host_key \
---tsa-authorized-keys=/etc/concourse/keys/web/authorized_worker_keys \
-${authentication_config} \
-${cred_store_config} \
-${feature_flags}
+ExecStart=/etc/concourse/bin/concourse web
 
 [Install]
 WantedBy=multi-user.target

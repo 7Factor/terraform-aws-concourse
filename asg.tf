@@ -2,9 +2,9 @@ data "template_file" "web_initialization" {
   template = file("${path.module}/templates/web_user_data.sh")
 
   vars = {
-    authorized_worker_keys       = file("${var.web_authorized_keys_path}")
-    session_signing_key          = file("${var.web_session_signing_key_path}")
-    tsa_host_key                 = file("${var.web_tsa_host_key_path}")
+    authorized_worker_keys       = file(var.web_authorized_keys_path)
+    session_signing_key          = file(var.web_session_signing_key_path)
+    tsa_host_key                 = file(var.web_tsa_host_key_path)
     conc_version                 = var.conc_version
     concdb_host                  = var.concdb_host
     concdb_port                  = var.concdb_port
@@ -61,6 +61,7 @@ resource "aws_autoscaling_group" "web_asg" {
 
   lifecycle {
     create_before_destroy = true
+    ignore_changes = [desired_capacity]
   }
 
   tag {
@@ -79,8 +80,8 @@ data "template_file" "worker_initialization" {
   template = file("${path.module}/templates/worker_user_data.sh")
 
   vars = {
-    tsa_public_key      = file("${var.tsa_public_key_path}")
-    worker_key          = file("${var.worker_key_path}")
+    tsa_public_key      = file(var.tsa_public_key_path)
+    worker_key          = file(var.worker_key_path)
     conc_version        = var.conc_version
     tsa_host            = aws_elb.concourse_lb.dns_name
     baggageclaim_driver = var.baggageclaim_driver
@@ -136,6 +137,7 @@ resource "aws_autoscaling_group" "worker_asg" {
 
   lifecycle {
     create_before_destroy = true
+    ignore_changes = [desired_capacity]
   }
 
   tag {

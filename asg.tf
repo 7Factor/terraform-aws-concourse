@@ -75,6 +75,12 @@ resource "aws_autoscaling_group" "web_asg" {
     value               = "Concourse Web"
     propagate_at_launch = true
   }
+
+  tag {
+    key                 = "Patch Group"
+    value               = local.web_patch_group_name
+    propagate_at_launch = true
+  }
 }
 
 resource "aws_autoscaling_attachment" "web_asg_to_lb" {
@@ -137,6 +143,12 @@ resource "aws_autoscaling_group" "worker_asg" {
   tag {
     key                 = "Name"
     value               = "Concourse Worker"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Patch Group"
+    value               = local.worker_patch_group_name
     propagate_at_launch = true
   }
 }

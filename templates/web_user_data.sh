@@ -56,4 +56,5 @@ ExecStart=/etc/concourse/bin/concourse web
 WantedBy=multi-user.target
 " > /etc/systemd/system/concourse-web.service
 
+systemctl enable concourse-web
 systemctl start concourse-web

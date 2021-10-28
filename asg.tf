@@ -96,7 +96,7 @@ resource "aws_launch_template" "worker_template" {
   image_id      = data.aws_ami.base_ami.id
 
   block_device_mappings {
-    device_name = "/dev/sda1"
+    device_name = "/dev/xvda"
 
     ebs {
       volume_type = "gp2"

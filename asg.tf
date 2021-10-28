@@ -40,7 +40,7 @@ resource "aws_launch_template" "web_template" {
   user_data = base64encode(templatefile("${path.module}/templates/web_user_data.sh", local.web_interpolation_vars))
 
   iam_instance_profile {
-    name = var.web_instance_profile_name
+    name = aws_iam_instance_profile.concourse_profile.name
   }
 
   lifecycle {
@@ -105,7 +105,7 @@ resource "aws_launch_template" "worker_template" {
   user_data = base64encode(templatefile("${path.module}/templates/worker_user_data.sh", local.worker_interpolation_vars))
 
   iam_instance_profile {
-    name = var.worker_instance_profile
+    name = aws_iam_instance_profile.concourse_profile.name
   }
 
   lifecycle {

@@ -48,8 +48,8 @@ resource "aws_ssm_maintenance_window_target" "web_targets" {
 
 resource "aws_ssm_maintenance_window_task" "patch_web_boxes" {
   name            = "patch-concourse-web"
-  max_concurrency = "2"
-  max_errors      = "0"
+  max_concurrency = 10
+  max_errors      = 1
   task_arn        = "AWS-RunPatchBaseline"
   task_type       = "RUN_COMMAND"
   window_id       = aws_ssm_maintenance_window.web_window.id
@@ -57,6 +57,22 @@ resource "aws_ssm_maintenance_window_task" "patch_web_boxes" {
   targets {
     key    = "WindowTargetIds"
     values = [aws_ssm_maintenance_window_target.web_targets.id]
+  }
+
+  task_invocation_parameters {
+    run_command_parameters {
+      timeout_seconds = 600
+
+      parameter {
+        name   = "Operation"
+        values = ["Install"]
+      }
+
+      parameter {
+        name   = "Snapshot Id"
+        values = ["{{WINDOW_EXECUTION_ID}}"]
+      }
+    }
   }
 }
 
@@ -83,8 +99,8 @@ resource "aws_ssm_maintenance_window_target" "worker_targets" {
 
 resource "aws_ssm_maintenance_window_task" "patch_worker_boxes" {
   name            = "patch-concourse-workers"
-  max_concurrency = "2"
-  max_errors      = "0"
+  max_concurrency = 10
+  max_errors      = 1
   task_arn        = "AWS-RunPatchBaseline"
   task_type       = "RUN_COMMAND"
   window_id       = aws_ssm_maintenance_window.worker_window.id
@@ -93,4 +109,21 @@ resource "aws_ssm_maintenance_window_task" "patch_worker_boxes" {
     key    = "WindowTargetIds"
     values = [aws_ssm_maintenance_window_target.worker_targets.id]
   }
+
+  task_invocation_parameters {
+    run_command_parameters {
+      timeout_seconds = 600
+
+      parameter {
+        name   = "Operation"
+        values = ["Install"]
+      }
+
+      parameter {
+        name   = "Snapshot Id"
+        values = ["{{WINDOW_EXECUTION_ID}}"]
+      }
+    }
+  }
+
 }

@@ -52,3 +52,8 @@ variable "schedule_timezone" {
   default     = "America/New_York"
   description = "The timezone inside of which to run the patch windows."
 }
+
+variable "custom_policy_arns" {
+  type        = list(string)
+  description = "Pass in a list of policy ARNs to assign to the concourse IAM role."
+}

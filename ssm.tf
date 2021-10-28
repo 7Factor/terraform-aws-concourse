@@ -34,7 +34,7 @@ resource "aws_ssm_maintenance_window_task" "patch_worker_boxes" {
 data "aws_ssm_patch_baseline" "ubuntu_patch_baseline" {
   owner            = "AWS"
   name_prefix      = "AWS-"
-  operating_system = "Ubuntu"
+  operating_system = "UBUNTU"
 }
 
 resource "aws_ssm_patch_group" "web_patch_group" {

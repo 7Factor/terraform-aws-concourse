@@ -49,4 +49,5 @@ ExecStart=/etc/concourse/bin/concourse worker
 WantedBy=multi-user.target
 " > /etc/systemd/system/concourse-worker.service
 
+systemctl enable concourse-worker
 systemctl start concourse-worker

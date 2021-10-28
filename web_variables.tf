@@ -83,3 +83,7 @@ variable "web_feature_flags" {
   default     = []
   description = "Pass feature flag options here as a list of key value environment variables. Defaults to nothing."
 }
+
+variable "web_patch_crontab" {
+  description = "The frequency to patch web machines."
+}

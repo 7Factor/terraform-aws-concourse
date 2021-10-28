@@ -44,3 +44,7 @@ variable "baggageclaim_driver" {
   default     = "detect"
   description = "Storage driver to use for Baggage Claim."
 }
+
+variable "worker_patch_crontab" {
+  description = "The frequency to patch worker machines."
+}

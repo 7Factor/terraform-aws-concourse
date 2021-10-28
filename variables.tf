@@ -47,3 +47,8 @@ variable "concdb_database" {
 variable "utility_accessible_sg" {
   description = "Pass in the ID of your access security group here."
 }
+
+variable "schedule_timezone" {
+  default     = "America/New_York"
+  description = "The timezone inside of which to run the patch windows."
+}

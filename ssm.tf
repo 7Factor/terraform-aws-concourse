@@ -47,10 +47,11 @@ resource "aws_ssm_maintenance_window_target" "web_targets" {
 }
 
 resource "aws_ssm_maintenance_window_task" "patch_web_boxes" {
+  name = "Patch Concourse Web"
   max_concurrency = "2"
   max_errors      = "0"
   task_arn        = "AWS-RunPatchBaseline"
-  task_type       = "AUTOMATION"
+  task_type       = "RUN_COMMAND"
   window_id       = aws_ssm_maintenance_window.web_window.id
 
   targets {
@@ -81,10 +82,11 @@ resource "aws_ssm_maintenance_window_target" "worker_targets" {
 }
 
 resource "aws_ssm_maintenance_window_task" "patch_worker_boxes" {
+  name = "Patch Concourse Workers"
   max_concurrency = "2"
   max_errors      = "0"
   task_arn        = "AWS-RunPatchBaseline"
-  task_type       = "AUTOMATION"
+  task_type       = "RUN_COMMAND"
   window_id       = aws_ssm_maintenance_window.worker_window.id
 
   targets {

@@ -125,8 +125,13 @@ resource "aws_ssm_maintenance_window_task" "patch_worker_boxes" {
       }
 
       parameter {
-        name   = "Snapshot Id"
+        name   = "SnapshotId"
         values = ["{{WINDOW_EXECUTION_ID}}"]
+      }
+
+      parameter {
+        name   = "RebootOption"
+        values = ["RebootIfNeeded"]
       }
     }
   }

@@ -45,6 +45,6 @@ variable "baggageclaim_driver" {
   description = "Storage driver to use for Baggage Claim."
 }
 
-variable "worker_patch_crontab" {
-  description = "The frequency to patch worker machines."
+variable "worker_patch_schedule" {
+  description = "The frequency to patch worker machines. Use AWS cron syntax."
 }

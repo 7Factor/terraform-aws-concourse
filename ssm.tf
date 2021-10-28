@@ -1,6 +1,6 @@
 resource "aws_ssm_maintenance_window" "web_window" {
   name              = "concourse-web-patch-window"
-  schedule          = "cron(${var.web_patch_crontab})"
+  schedule          = var.web_patch_schedule
   schedule_timezone = var.schedule_timezone
   duration          = 1
   cutoff            = 0
@@ -8,7 +8,7 @@ resource "aws_ssm_maintenance_window" "web_window" {
 
 resource "aws_ssm_maintenance_window" "worker_window" {
   name              = "concourse-worker-patch-window"
-  schedule          = "cron(${var.worker_patch_crontab})"
+  schedule          = var.worker_patch_schedule
   schedule_timezone = var.schedule_timezone
   duration          = 1
   cutoff            = 0

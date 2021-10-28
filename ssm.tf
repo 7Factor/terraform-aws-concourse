@@ -72,6 +72,16 @@ resource "aws_ssm_maintenance_window_task" "patch_web_boxes" {
         name   = "Snapshot Id"
         values = ["{{WINDOW_EXECUTION_ID}}"]
       }
+
+      parameter {
+        name = "Reboot Option"
+        values = ["RebootIfNeeded"]
+      }
+
+      parameter {
+        name = "Comment"
+        values = ["Hello world"]
+      }
     }
   }
 }

@@ -1,12 +1,7 @@
 #!/bin/bash
-sudo apt-get update
-sudo unattended-upgrade -d
-
-sudo mkdir -p /etc/concourse/
+sudo mkdir -p /etc/concourse/ /etc/concourse/keys/web
 sudo curl -o /etc/concourse.tgz -L https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 sudo tar -xzf /etc/concourse.tgz --directory=/etc/
-
-sudo mkdir -p /etc/concourse/keys/web
 
 # Dump keys into the correct place. Because terraform automatically
 # adds a newline to any files read in we need to use echo -n here.
@@ -14,8 +9,6 @@ sudo echo -n "${authorized_worker_keys}" > /etc/concourse/keys/web/authorized_wo
 sudo echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_key
 sudo echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 sudo find /etc/concourse/keys/web -type f -exec chmod 400 {} \;
-
-sudo chown -R root:root /etc/concourse
 
 sudo echo "
 [Unit]

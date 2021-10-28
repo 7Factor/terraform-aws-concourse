@@ -36,11 +36,16 @@ variable "tsa_public_key_path" {
   description = "Path to an OpenSSH or RSA public key the worker uses to talk to the TSA with."
 }
 
-variable "baggageclaim_driver" {
-  default     = "detect"
-  description = "Storage driver to use for Baggage Claim."
+variable "worker_container_storage_driver" {
+  default     = "overlay"
+  description = "Storage driver to use for the container runtime. Defaults to overlay."
 }
 
 variable "worker_patch_schedule" {
   description = "The frequency to patch worker machines. Use AWS cron syntax."
+}
+
+variable "worker_dns_servers" {
+  default     = ["8.8.8.8", "8.8.4.4"]
+  description = "Optional DNS servers. Defaults to google."
 }

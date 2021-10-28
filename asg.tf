@@ -17,11 +17,12 @@ locals {
   }
 
   worker_interpolation_vars = {
-    "tsa_public_key"      = file(var.tsa_public_key_path)
-    "worker_key"          = file(var.worker_key_path)
-    "conc_version"        = var.conc_version
-    "tsa_host"            = aws_elb.concourse_lb.dns_name
-    "baggageclaim_driver" = var.baggageclaim_driver
+    "tsa_public_key" = file(var.tsa_public_key_path)
+    "worker_key"     = file(var.worker_key_path)
+    "conc_version"   = var.conc_version
+    "tsa_host"       = aws_elb.concourse_lb.dns_name
+    "storage_driver" = var.worker_container_storage_driver
+    "dns_servers"    = var.worker_dns_servers
   }
 }
 

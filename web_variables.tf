@@ -2,10 +2,6 @@ variable "web_instance_type" {
   description = "The web instance type. Usually around an m3.large gets it done, but do what you want."
 }
 
-variable "web_instance_profile_name" {
-  description = "Name of the instance profile and corresponding policies. We split this off because it changes pretty often."
-}
-
 variable "web_desired_count" {
   default     = 2
   description = "The number of web boxes to run. Defaults to a pair."

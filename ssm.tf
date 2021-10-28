@@ -47,7 +47,7 @@ resource "aws_ssm_maintenance_window_target" "web_targets" {
 }
 
 resource "aws_ssm_maintenance_window_task" "patch_web_boxes" {
-  name            = "Patch Concourse Web"
+  name            = "patch-concourse-web"
   max_concurrency = "2"
   max_errors      = "0"
   task_arn        = "AWS-RunPatchBaseline"
@@ -82,7 +82,7 @@ resource "aws_ssm_maintenance_window_target" "worker_targets" {
 }
 
 resource "aws_ssm_maintenance_window_task" "patch_worker_boxes" {
-  name            = "Patch Concourse Workers"
+  name            = "patch-concourse-workers"
   max_concurrency = "2"
   max_errors      = "0"
   task_arn        = "AWS-RunPatchBaseline"

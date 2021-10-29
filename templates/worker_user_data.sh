@@ -49,7 +49,7 @@ Environment=\"CONCOURSE_TSA_WORKER_PRIVATE_KEY=/etc/concourse/keys/worker/worker
 
 KillMode=none
 ExecStart=/bin/true
-ExecStop=/etc/concourse/bin/concourse retireworker --name $(hostname)
+ExecStop=/etc/concourse/bin/concourse retire-worker --name $(hostname)
 RemainAfterExit=yes
 Type=oneshot
 

@@ -39,7 +39,7 @@ systemctl start concourse-worker
 sudo echo "
 [Unit]
 Description=Deregister worker on shutdown
-Before=shutdown.target reboot.target halt.target
+Before=shutdown.target halt.target
 Requires=network-online.target network.target
 
 [Service]

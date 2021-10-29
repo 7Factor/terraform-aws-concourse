@@ -35,3 +35,27 @@ WantedBy=multi-user.target
 
 systemctl enable concourse-worker
 systemctl start concourse-worker
+
+sudo echo "
+[Unit]
+Description=Deregister worker on shutdown
+Before=shutdown.target reboot.target halt.target
+Requires=network-online.target network.target
+
+[Service]
+Environment=\"CONCOURSE_TSA_HOST=${tsa_host}:2222\"
+Environment=\"CONCOURSE_TSA_PUBLIC_KEY=/etc/concourse/keys/worker/tsa_host_key.pub\"
+Environment=\"CONCOURSE_TSA_WORKER_PRIVATE_KEY=/etc/concourse/keys/worker/worker_key\"
+
+KillMode=none
+ExecStart=/bin/true
+ExecStop=/etc/concourse/bin/concourse retireworker --name $(hostname)
+RemainAfterExit=yes
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
+" > /etc/systemd/system/concourse-deregister-worker.service
+
+systemctl enable concourse-deregister-worker
+systemctl start concourse-deregister-worker

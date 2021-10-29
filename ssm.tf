@@ -2,7 +2,7 @@
 data "aws_ssm_patch_baseline" "ubuntu_patch_baseline" {
   owner            = "AWS"
   name_prefix      = "AWS-"
-  operating_system = "UBUNTU"
+  operating_system = "CENTOS"
 }
 
 # I'm doing this in locals because according to terraform's documentation

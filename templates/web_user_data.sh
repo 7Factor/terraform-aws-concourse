@@ -10,6 +10,9 @@ sudo echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_
 sudo echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 sudo find /etc/concourse/keys/web -type f -exec chmod 400 {} \;
 
+sudo echo "${concourse_base_resource_type_defaults}" > /etc/concourse/base_resource_type_defaults.yml
+sudo chmod 644 /etc/concourse/base_resource_type_defaults.yml
+
 sudo echo "
 [Unit]
 Description=Concourse Web Service
@@ -27,6 +30,7 @@ Environment=\"CONCOURSE_CONTAINER_PLACEMENT_STRATEGY=${container_placement_strat
 Environment=\"CONCOURSE_SESSION_SIGNING_KEY=/etc/concourse/keys/web/session_signing_key\"
 Environment=\"CONCOURSE_TSA_HOST_KEY=/etc/concourse/keys/web/tsa_host_key\"
 Environment=\"CONCOURSE_TSA_AUTHORIZED_KEYS=/etc/concourse/keys/web/authorized_worker_keys\"
+Environment=\"CONCOURSE_BASE_RESOURCE_TYPE_DEFAULTS=/etc/concourse/base_resource_type_defaults.yml\"
 
 %{ for item in authentication_config ~}
 Environment=\"${item}\"

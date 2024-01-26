@@ -83,3 +83,9 @@ variable "web_feature_flags" {
 variable "web_patch_schedule" {
   description = "The frequency to patch web machines. Use AWS cron syntax."
 }
+
+variable "concourse_base_resource_type_defaults" {
+  type        = object({})
+  default     = {}
+  description = "Pass default base resource type options here. Defaults to nothing."
+}

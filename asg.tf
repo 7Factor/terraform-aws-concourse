@@ -14,6 +14,7 @@ locals {
     "authentication_config"        = var.authentication_config
     "cred_store_config"            = var.cred_store_config
     "feature_flags"                = var.web_feature_flags
+    "concourse_base_resource_type_defaults"  = yamlencode(var.concourse_base_resource_type_defaults)
   }
 
   worker_interpolation_vars = {

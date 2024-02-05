@@ -41,18 +41,6 @@ variable "web_ingress_cidr" {
   description = "The CIDR block from whence web traffic may come for web boxes servicing traffic from workers. Defaults to anywhere, but override it as necessary. This is applied to the ELB."
 }
 
-variable "web_authorized_keys_path" {
-  description = "The path to a file containing a list of keys that the web machine authorizes for worker access. This should be one file, similar to how id_rsa works with public keys inside."
-}
-
-variable "web_session_signing_key_path" {
-  description = "The path to an OpenSSH or RSA key for signing sessions."
-}
-
-variable "web_tsa_host_key_path" {
-  description = "The path to an OpenSSH or RSA key for hosting TSA connections."
-}
-
 variable "conc_fqdn" {
   description = "The FQDN where your cluster will live. Point this via your DNS to the ELB DNS provided in the output of this module otherwise you'll get some wonkiness. Note that we force HTTPS here so do not include the protocol."
 }

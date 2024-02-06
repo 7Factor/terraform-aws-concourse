@@ -1,8 +1,8 @@
 locals {
   web_interpolation_vars = {
-    "authorized_worker_keys"       = jsondecode(aws_secretsmanager_secret_version.web_keys.secret_string).authorized_worker_keys
-    "session_signing_key"          = jsondecode(aws_secretsmanager_secret_version.web_keys.secret_string).session_signing_key
-    "tsa_host_key"                 = jsondecode(aws_secretsmanager_secret_version.web_keys.secret_string).tsa_host_key
+    "authorized_worker_keys"       = tls_private_key.worker_key.public_key_pem
+    "session_signing_key"          = tls_private_key.session_signing_key.private_key_pem
+    "tsa_host_key"                 = tls_private_key.tsa_host_key.private_key_pem
     "conc_version"                 = var.conc_version
     "concdb_host"                  = var.concdb_host
     "concdb_port"                  = var.concdb_port
@@ -18,8 +18,8 @@ locals {
   }
 
   worker_interpolation_vars = {
-    "tsa_public_key" = jsondecode(aws_secretsmanager_secret_version.worker_keys.secret_string).tsa_public_key
-    "worker_key"     = jsondecode(aws_secretsmanager_secret_version.worker_keys.secret_string).worker_key
+    "tsa_public_key" = tls_private_key.tsa_host_key.public_key_pem
+    "worker_key"     = tls_private_key.worker_key.private_key_pem
     "conc_version"   = var.conc_version
     "tsa_host"       = aws_elb.concourse_lb.dns_name
     "storage_driver" = var.worker_container_storage_driver

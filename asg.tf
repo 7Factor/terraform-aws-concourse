@@ -1,6 +1,6 @@
 locals {
   web_interpolation_vars = {
-    "authorized_worker_keys"       = tls_private_key.worker_key.public_key_pem
+    "authorized_worker_keys"       = tls_private_key.worker_key.public_key_openssh
     "session_signing_key"          = tls_private_key.session_signing_key.private_key_pem
     "tsa_host_key"                 = tls_private_key.tsa_host_key.private_key_pem
     "conc_version"                 = var.conc_version
@@ -18,7 +18,7 @@ locals {
   }
 
   worker_interpolation_vars = {
-    "tsa_public_key" = tls_private_key.tsa_host_key.public_key_pem
+    "tsa_public_key" = tls_private_key.tsa_host_key.public_key_openssh
     "worker_key"     = tls_private_key.worker_key.private_key_pem
     "conc_version"   = var.conc_version
     "tsa_host"       = aws_elb.concourse_lb.dns_name

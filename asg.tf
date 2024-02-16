@@ -24,6 +24,7 @@ locals {
     "tsa_host"       = aws_elb.concourse_lb.dns_name
     "storage_driver" = var.worker_container_storage_driver
     "dns_servers"    = var.worker_dns_servers
+    "feature_flags"  = var.worker_feature_flags
   }
 }
 

@@ -24,6 +24,10 @@ Environment=\"CONCOURSE_TSA_WORKER_PRIVATE_KEY=/etc/concourse/keys/worker/worker
 Environment=\"CONCOURSE_WORK_DIR=/opt/concourse-workdir\"
 Environment=\"CONCOURSE_GARDEN_DNS_SERVER=${join(",", dns_servers)}\"
 
+%{ for item in feature_flags ~}
+Environment=\"${item}\"
+%{ endfor ~}
+
 Type=simple
 Restart=always
 RestartSec=1
@@ -46,10 +50,6 @@ Requires=network-online.target network.target
 Environment=\"CONCOURSE_TSA_HOST=${tsa_host}:2222\"
 Environment=\"CONCOURSE_TSA_PUBLIC_KEY=/etc/concourse/keys/worker/tsa_host_key.pub\"
 Environment=\"CONCOURSE_TSA_WORKER_PRIVATE_KEY=/etc/concourse/keys/worker/worker_key\"
-
-%{ for item in feature_flags ~}
-Environment=\"${item}\"
-%{ endfor ~}
 
 KillMode=none
 ExecStart=/bin/true

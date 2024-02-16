@@ -22,7 +22,8 @@ Environment=\"CONCOURSE_TSA_HOST=${tsa_host}:2222\"
 Environment=\"CONCOURSE_TSA_PUBLIC_KEY=/etc/concourse/keys/worker/tsa_host_key.pub\"
 Environment=\"CONCOURSE_TSA_WORKER_PRIVATE_KEY=/etc/concourse/keys/worker/worker_key\"
 Environment=\"CONCOURSE_WORK_DIR=/opt/concourse-workdir\"
-Environment=\"CONCOURSE_GARDEN_DNS_SERVER=${join(",", dns_servers)}\"
+Environment=\"CONCOURSE_RUNTIME=containerd\"
+Environment=\"CONCOURSE_CONTAINERD_DNS_SERVER=${join(",", dns_servers)}\"
 
 Type=simple
 Restart=always

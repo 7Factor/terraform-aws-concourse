@@ -16,19 +16,16 @@ locals {
     "feature_flags"                         = var.web_feature_flags
     "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
     "ssm_cloudwatch_config"                 = aws_ssm_parameter.cw_agent.name
-    "prometheus_enabled"                    = var.prometheus_enabled
-    "prometheus_bind_port"                  = var.prometheus_bind_port
   }
 
   worker_interpolation_vars = {
-    "tsa_public_key"     = tls_private_key.tsa_host_key.public_key_openssh
-    "worker_key"         = tls_private_key.worker_key.private_key_pem
-    "conc_version"       = var.conc_version
-    "tsa_host"           = aws_elb.concourse_lb.dns_name
-    "storage_driver"     = var.worker_container_storage_driver
-    "dns_servers"        = var.worker_dns_servers
-    "feature_flags"      = var.worker_feature_flags
-    "prometheus_enabled" = var.prometheus_enabled
+    "tsa_public_key" = tls_private_key.tsa_host_key.public_key_openssh
+    "worker_key"     = tls_private_key.worker_key.private_key_pem
+    "conc_version"   = var.conc_version
+    "tsa_host"       = aws_elb.concourse_lb.dns_name
+    "storage_driver" = var.worker_container_storage_driver
+    "dns_servers"    = var.worker_dns_servers
+    "feature_flags"  = var.worker_feature_flags
   }
 }
 

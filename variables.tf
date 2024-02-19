@@ -57,13 +57,3 @@ variable "custom_policy_arns" {
   type        = list(string)
   description = "Pass in a list of policy ARNs to assign to the concourse IAM role."
 }
-
-variable "prometheus_enabled" {
-  default     = false
-  description = "Whether or not to enable prometheus monitoring for concourse."
-}
-
-variable "prometheus_bind_port" {
-  default     = 9100
-  description = "The port to bind prometheus to."
-}

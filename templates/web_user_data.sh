@@ -53,8 +53,6 @@ Environment=\"CONCOURSE_SESSION_SIGNING_KEY=/etc/concourse/keys/web/session_sign
 Environment=\"CONCOURSE_TSA_HOST_KEY=/etc/concourse/keys/web/tsa_host_key\"
 Environment=\"CONCOURSE_TSA_AUTHORIZED_KEYS=/etc/concourse/keys/web/authorized_worker_keys\"
 Environment=\"CONCOURSE_BASE_RESOURCE_TYPE_DEFAULTS=/etc/concourse/base_resource_type_defaults.yml\"
-%{ if prometheus_enabled }Environment=\"CONCOURSE_PROMETHEUS_BIND_IP=0.0.0.0\"%{ endif }
-%{ if prometheus_enabled }Environment=\"CONCOURSE_PROMETHEUS_BIND_PORT=${prometheus_bind_port}\"%{ endif }
 
 %{ for item in authentication_config ~}
 Environment=\"${item}\"
@@ -79,30 +77,5 @@ WantedBy=multi-user.target
 
 systemctl enable concourse-web
 systemctl start concourse-web
-
-echo "Configuring Prometheus"
-
-sudo mkdir -p /etc/node_exporter/bin
-sudo curl -o /etc/node_exporter.tgz -L https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
-sudo tar -xzf /etc/node_exporter.tgz --directory=/etc/node_exporter/bin --strip=1 */node_exporter
-sudo chmod +x /etc/node_exporter/bin/node_exporter
-sudo chown root:root /etc/node_exporter/bin/node_exporter
-
-sudo echo "
-[Unit]
-Description=Node exporter for Prometheus to scrape
-Requires=network-online.target
-After=network-online.target
-
-[Service]
-Type=simple
-Restart=always
-ExecStart=/etc/node_exporter/bin/node_exporter
-
-[Install]
-WantedBy=multi-user.target
-" > /etc/systemd/system/node_exporter.service
-
-%{if prometheus_enabled } systemctl enable node_exporter.service --now %{ endif }
 
 echo 'Initialization complete'

@@ -64,28 +64,3 @@ WantedBy=multi-user.target
 
 systemctl enable concourse-deregister-worker
 systemctl start concourse-deregister-worker
-
-echo "Configuring Prometheus"
-
-sudo mkdir -p /etc/node_exporter/bin
-sudo curl -o /etc/node_exporter.tgz -L https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
-sudo tar -xzf /etc/node_exporter.tgz --directory=/etc/node_exporter/bin --strip=1 */node_exporter
-sudo chmod +x /etc/node_exporter/bin/node_exporter
-sudo chown root:root /etc/node_exporter/bin/node_exporter
-
-sudo echo "
-[Unit]
-Description=Node exporter for Prometheus to scrape
-Requires=network-online.target
-After=network-online.target
-
-[Service]
-Type=simple
-Restart=always
-ExecStart=/etc/node_exporter/bin/node_exporter
-
-[Install]
-WantedBy=multi-user.target
-" > /etc/systemd/system/node_exporter.service
-
-%{if prometheus_enabled } systemctl enable node_exporter.service --now %{ endif }

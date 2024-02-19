@@ -53,6 +53,8 @@ Environment=\"CONCOURSE_SESSION_SIGNING_KEY=/etc/concourse/keys/web/session_sign
 Environment=\"CONCOURSE_TSA_HOST_KEY=/etc/concourse/keys/web/tsa_host_key\"
 Environment=\"CONCOURSE_TSA_AUTHORIZED_KEYS=/etc/concourse/keys/web/authorized_worker_keys\"
 Environment=\"CONCOURSE_BASE_RESOURCE_TYPE_DEFAULTS=/etc/concourse/base_resource_type_defaults.yml\"
+%{ if prometheus_enabled }Environment=\"CONCOURSE_PROMETHEUS_BIND_IP=0.0.0.0\"%{ endif }
+%{ if prometheus_enabled }Environment=\"CONCOURSE_PROMETHEUS_BIND_PORT=${prometheus_bind_port}\"%{ endif }
 
 %{ for item in authentication_config ~}
 Environment=\"${item}\"

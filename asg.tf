@@ -16,6 +16,8 @@ locals {
     "feature_flags"                         = var.web_feature_flags
     "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
     "cloudwatch_config"                     = file("${path.module}/config/cw_agent_config.json")
+    "prometheus_enabled"                    = var.prometheus_enabled
+    "prometheus_bind_port"                  = var.prometheus_bind_port
   }
 
   worker_interpolation_vars = {

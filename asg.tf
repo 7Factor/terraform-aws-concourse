@@ -15,7 +15,7 @@ locals {
     "cred_store_config"                     = var.cred_store_config
     "feature_flags"                         = var.web_feature_flags
     "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
-    "ssm_cloudwatch_config"                 = aws_ssm_parameter.cw_agent.name
+    "cloudwatch_config"                     = file("${path.module}/config/cw_agent_config.json")
   }
 
   worker_interpolation_vars = {

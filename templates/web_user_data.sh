@@ -4,20 +4,20 @@ set -e
 # Output all logs
 exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console) 2>&1
 
-# Make sure we have the latest packages
 sudo yum update -y
 sudo yum upgrade -y
 
 echo 'Configuring CloudWatch agent'
 
-# Install CloudWatch agent
+sudo mkdir -p /etc/cloudwatch
+echo -n "${cloudwatch_config}" > /etc/cloudwatch/cloudwatch_config.json
+
 sudo yum install -y amazon-cloudwatch-agent
 
-# Use CloudWatch config from SSM
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
   -a fetch-config \
   -m ec2 \
-  -c ssm:${ssm_cloudwatch_config} -s
+  -c file:/etc/cloudwatch/cloudwatch_config.json -s
 
 echo 'Configuring Concourse'
 

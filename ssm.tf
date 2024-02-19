@@ -137,3 +137,10 @@ resource "aws_ssm_maintenance_window_task" "patch_worker_boxes" {
   }
 
 }
+
+resource "aws_ssm_parameter" "cw_agent" {
+  description = "CloudWatch agent config"
+  name        = "/cloudwatch-agent/config"
+  type        = "String"
+  value       = file("${path.module}/config/cw_agent_config.json")
+}

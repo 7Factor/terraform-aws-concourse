@@ -1,4 +1,26 @@
 #!/bin/bash
+set -e
+
+# Output all logs
+exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console) 2>&1
+
+# Make sure we have the latest packages
+sudo yum update -y
+sudo yum upgrade -y
+
+echo 'Configuring CloudWatch agent'
+
+# Install CloudWatch agent
+sudo yum install -y amazon-cloudwatch-agent
+
+# Use CloudWatch config from SSM
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config \
+  -m ec2 \
+  -c ssm:${ssm_cloudwatch_config} -s
+
+echo 'Configuring Concourse'
+
 sudo mkdir -p /etc/concourse/ /etc/concourse/keys/web
 sudo curl -o /etc/concourse.tgz -L https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 sudo tar -xzf /etc/concourse.tgz --directory=/etc/
@@ -55,3 +77,5 @@ WantedBy=multi-user.target
 
 systemctl enable concourse-web
 systemctl start concourse-web
+
+echo 'Initialization complete'

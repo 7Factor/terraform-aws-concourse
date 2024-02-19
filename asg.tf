@@ -1,20 +1,21 @@
 locals {
   web_interpolation_vars = {
-    "authorized_worker_keys"       = tls_private_key.worker_key.public_key_openssh
-    "session_signing_key"          = tls_private_key.session_signing_key.private_key_pem
-    "tsa_host_key"                 = tls_private_key.tsa_host_key.private_key_pem
-    "conc_version"                 = var.conc_version
-    "concdb_host"                  = var.concdb_host
-    "concdb_port"                  = var.concdb_port
-    "concdb_user"                  = var.concdb_user
-    "concdb_password"              = var.concdb_password
-    "concdb_database"              = var.concdb_database
-    "conc_fqdn"                    = var.conc_fqdn
-    "container_placement_strategy" = var.container_placement_strategy
-    "authentication_config"        = var.authentication_config
-    "cred_store_config"            = var.cred_store_config
-    "feature_flags"                = var.web_feature_flags
-    "concourse_base_resource_type_defaults"  = yamlencode(var.concourse_base_resource_type_defaults)
+    "authorized_worker_keys"                = tls_private_key.worker_key.public_key_openssh
+    "session_signing_key"                   = tls_private_key.session_signing_key.private_key_pem
+    "tsa_host_key"                          = tls_private_key.tsa_host_key.private_key_pem
+    "conc_version"                          = var.conc_version
+    "concdb_host"                           = var.concdb_host
+    "concdb_port"                           = var.concdb_port
+    "concdb_user"                           = var.concdb_user
+    "concdb_password"                       = var.concdb_password
+    "concdb_database"                       = var.concdb_database
+    "conc_fqdn"                             = var.conc_fqdn
+    "container_placement_strategy"          = var.container_placement_strategy
+    "authentication_config"                 = var.authentication_config
+    "cred_store_config"                     = var.cred_store_config
+    "feature_flags"                         = var.web_feature_flags
+    "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
+    "ssm_cloudwatch_config"                 = aws_ssm_parameter.cw_agent.name
   }
 
   worker_interpolation_vars = {

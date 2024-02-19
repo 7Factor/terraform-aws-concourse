@@ -38,3 +38,29 @@ resource "aws_iam_role_policy_attachment" "add_ssm_for_patching" {
   role       = aws_iam_role.concourse_role.name
   policy_arn = data.aws_iam_policy.aws_ssm_default.arn
 }
+
+data "aws_iam_policy" "cloudwatch_agent_policy" {
+  name = "CloudWatchAgentServerPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_policies" {
+  role       = aws_iam_role.concourse_role.name
+  policy_arn = data.aws_iam_policy.cloudwatch_agent_policy.arn
+}
+
+resource "aws_iam_role_policy" "ssm_get_parameters" {
+  name = "ConcourseCI-SSM-GetParameters"
+  role = aws_iam_role.concourse_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ssm:GetParameter"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
+}

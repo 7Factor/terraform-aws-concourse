@@ -14,5 +14,20 @@
       }
     },
     "aggregation_dimensions": [["InstanceId", "InstanceType"], ["InstanceId"]]
+  },
+  "logs": {
+    "metrics_collected": {
+      "prometheus": {
+        "log_group_name": "${prometheus_log_group_name}",
+        "prometheus_config_path": "/etc/prometheus/config.yml",
+        "emf_processor": {
+          "metric_declaration_dedup": true,
+          "metric_namespace": "Concourse-Prometheus",
+          "metric_unit": {
+            "concourse_builds_finished": "Count"
+          }
+        }
+      }
+    }
   }
 }

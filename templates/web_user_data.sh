@@ -9,6 +9,9 @@ sudo yum upgrade -y
 
 echo 'Configuring CloudWatch agent'
 
+sudo mkdir -p /etc/prometheus
+echo -n "${prometheus_config}" > /etc/prometheus/config.yml
+
 sudo mkdir -p /etc/cloudwatch
 echo -n "${cloudwatch_config}" > /etc/cloudwatch/cloudwatch_config.json
 

@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 locals {
   web_interpolation_vars = {
     "authorized_worker_keys"                = tls_private_key.worker_key.public_key_openssh
@@ -17,6 +19,8 @@ locals {
     "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
     "cloudwatch_config"                     = templatefile("${path.module}/config/cw_agent_config.json", {
       "prometheus_log_group_name" = aws_cloudwatch_log_group.concourse.name
+      "cloudwatch_namespace"      = var.cloudwatch_namespace
+      "region"                    = data.aws_region.current.name
     })
     "prometheus_enabled"                    = var.prometheus_enabled
     "prometheus_bind_port"                  = var.prometheus_bind_port

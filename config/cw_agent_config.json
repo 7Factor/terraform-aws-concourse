@@ -1,16 +1,25 @@
 {
   "agent": {
-    "metrics_collection_interval": 10
+    "region": "${region}",
+    "metrics_collection_interval": 60
   },
   "metrics": {
+    "namespace": "${cloudwatch_namespace}",
+    "append_dimensions": {
+      "InstanceId": "$${aws:InstanceId}",
+      "AutoScalingGroupName": "$${aws:AutoScalingGroupName}"
+    },
+    "aggregation_dimensions": [["InstanceId"], ["AutoScalingGroupName"]],
     "metrics_collected": {
-      "prometheus": {
-        "log_group_name": "${prometheus_log_group_name}",
-        "prometheus_config_path": "/etc/prometheus/config.yml",
-        "emf_processor": {
-          "metric_declaration_dedup": true,
-          "metric_namespace": "Concourse-Prometheus"
-        }
+      "disk": {
+        "resources": ["/"],
+        "measurement": ["disk_used_percent"]
+      },
+      "swap": {
+        "measurement": ["swap_used_percent"]
+      },
+      "mem": {
+        "measurement": ["mem_used_percent"]
       }
     }
   },

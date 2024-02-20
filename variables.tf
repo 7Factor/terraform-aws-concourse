@@ -67,3 +67,8 @@ variable "prometheus_bind_port" {
   default     = 9100
   description = "The port to bind prometheus to."
 }
+
+variable "cloudwatch_namespace" {
+  default     = "Concourse"
+  description = "The namespace to use for CloudWatch metrics."
+}

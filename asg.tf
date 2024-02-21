@@ -30,6 +30,7 @@ locals {
   }
 
   web_user_data = <<EOF
+#!/bin/bash
 sudo aws s3 cp s3://${var.user_data_bucket_name}/web_user_data.sh /tmp
 sudo chmod +x /tmp/web_user_data.sh
 /tmp/web_user_data.sh
@@ -46,6 +47,7 @@ EOF
   }
 
   worker_user_data = <<EOF
+#!/bin/bash
 sudo aws s3 cp s3://${var.user_data_bucket_name}/worker_user_data.sh /tmp
 sudo chmod +x /tmp/worker_user_data.sh
 /tmp/worker_user_data.sh

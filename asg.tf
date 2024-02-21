@@ -30,19 +30,9 @@ locals {
   }
 
   web_user_data = <<EOF
-#-------------------------------------------#
-#-----> COPY THE CONFIG FILES FROM S3 <-----#
-#-------------------------------------------#
-
-sudo aws s3 cp s3://${var.user_data_bucket_name}/web_user_data.sh ./
-sudo chmod +x web_user_data.sh
-
-#-------------------------------------------#
-#---------> RUN THE CONFIG FILES  <---------#
-#-------------------------------------------#
-
-./web_user_data.sh
-
+sudo aws s3 cp s3://${var.user_data_bucket_name}/web_user_data.sh /tmp
+sudo chmod +x /tmp/web_user_data.sh
+/tmp/web_user_data.sh
 EOF
 
   worker_interpolation_vars = {
@@ -56,19 +46,9 @@ EOF
   }
 
   worker_user_data = <<EOF
-#-------------------------------------------#
-#-----> COPY THE CONFIG FILES FROM S3 <-----#
-#-------------------------------------------#
-
-sudo aws s3 cp s3://${var.user_data_bucket_name}/worker_user_data.sh ./
-sudo chmod +x worker_user_data.sh
-
-#-------------------------------------------#
-#---------> RUN THE CONFIG FILES  <---------#
-#-------------------------------------------#
-
-./worker_user_data.sh
-
+sudo aws s3 cp s3://${var.user_data_bucket_name}/worker_user_data.sh /tmp
+sudo chmod +x /tmp/worker_user_data.sh
+/tmp/worker_user_data.sh
 EOF
 }
 

@@ -2,7 +2,17 @@ resource "aws_s3_bucket" "user_data" {
   bucket = var.user_data_bucket_name
 }
 
+resource "aws_s3_bucket_ownership_controls" "user_data_ownership" {
+  bucket = aws_s3_bucket.user_data.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_acl" "user_data_acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.user_data_ownership]
+
   bucket = aws_s3_bucket.user_data.id
   acl    = "private"
 }

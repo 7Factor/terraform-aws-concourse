@@ -29,30 +29,7 @@ locals {
     })
   }
 
-  worker_interpolation_vars = {
-    "tsa_public_key" = tls_private_key.tsa_host_key.public_key_openssh
-    "worker_key"     = tls_private_key.worker_key.private_key_pem
-    "conc_version"   = var.conc_version
-    "tsa_host"       = aws_elb.concourse_lb.dns_name
-    "storage_driver" = var.worker_container_storage_driver
-    "dns_servers"    = var.worker_dns_servers
-    "feature_flags"  = var.worker_feature_flags
-  }
-}
-
-resource "aws_launch_template" "web_template" {
-  name          = "conc-web-tmpl"
-  instance_type = var.web_instance_type
-  key_name      = var.conc_key_name
-  image_id      = data.aws_ami.base_ami.id
-
-  vpc_security_group_ids = [
-    aws_security_group.web_sg.id,
-    aws_security_group.allow_workers_to_web.id,
-    var.utility_accessible_sg,
-  ]
-
-  user_data = <<EOF
+  web_user_data = <<EOF
 #-------------------------------------------#
 #-----> COPY THE CONFIG FILES FROM S3 <-----#
 #-------------------------------------------#
@@ -67,6 +44,47 @@ sudo chmod +x web_user_data.sh
 ./web_user_data.sh
 
 EOF
+
+  worker_interpolation_vars = {
+    "tsa_public_key" = tls_private_key.tsa_host_key.public_key_openssh
+    "worker_key"     = tls_private_key.worker_key.private_key_pem
+    "conc_version"   = var.conc_version
+    "tsa_host"       = aws_elb.concourse_lb.dns_name
+    "storage_driver" = var.worker_container_storage_driver
+    "dns_servers"    = var.worker_dns_servers
+    "feature_flags"  = var.worker_feature_flags
+  }
+
+  worker_user_data = <<EOF
+#-------------------------------------------#
+#-----> COPY THE CONFIG FILES FROM S3 <-----#
+#-------------------------------------------#
+
+sudo aws s3 cp s3://${var.user_data_bucket_name}/worker_user_data.sh ./
+sudo chmod +x worker_user_data.sh
+
+#-------------------------------------------#
+#---------> RUN THE CONFIG FILES  <---------#
+#-------------------------------------------#
+
+./worker_user_data.sh
+
+EOF
+}
+
+resource "aws_launch_template" "web_template" {
+  name          = "conc-web-tmpl"
+  instance_type = var.web_instance_type
+  key_name      = var.conc_key_name
+  image_id      = data.aws_ami.base_ami.id
+
+  vpc_security_group_ids = [
+    aws_security_group.web_sg.id,
+    aws_security_group.allow_workers_to_web.id,
+    var.utility_accessible_sg,
+  ]
+
+  user_data = base64encode(local.web_user_data)
 
   iam_instance_profile {
     name = aws_iam_instance_profile.concourse_profile.name
@@ -137,21 +155,7 @@ resource "aws_launch_template" "worker_template" {
     aws_security_group.worker_sg.id,
   ]
 
-  user_data = <<EOF
-#-------------------------------------------#
-#-----> COPY THE CONFIG FILES FROM S3 <-----#
-#-------------------------------------------#
-
-sudo aws s3 cp s3://${var.user_data_bucket_name}/worker_user_data.sh ./
-sudo chmod +x worker_user_data.sh
-
-#-------------------------------------------#
-#---------> RUN THE CONFIG FILES  <---------#
-#-------------------------------------------#
-
-./worker_user_data.sh
-
-EOF
+  user_data = base64encode(local.worker_user_data)
 
   iam_instance_profile {
     name = aws_iam_instance_profile.concourse_profile.name

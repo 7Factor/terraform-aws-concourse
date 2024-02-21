@@ -52,7 +52,21 @@ resource "aws_launch_template" "web_template" {
     var.utility_accessible_sg,
   ]
 
-  user_data = base64encode(templatefile("${path.module}/templates/web_user_data.sh", local.web_interpolation_vars))
+  user_data = <<EOF
+#-------------------------------------------#
+#-----> COPY THE CONFIG FILES FROM S3 <-----#
+#-------------------------------------------#
+
+sudo aws s3 cp s3://${var.user_data_bucket_name}/web_user_data.sh ./
+sudo chmod +x web_user_data.sh
+
+#-------------------------------------------#
+#---------> RUN THE CONFIG FILES  <---------#
+#-------------------------------------------#
+
+./web_user_data.sh
+
+EOF
 
   iam_instance_profile {
     name = aws_iam_instance_profile.concourse_profile.name
@@ -123,7 +137,21 @@ resource "aws_launch_template" "worker_template" {
     aws_security_group.worker_sg.id,
   ]
 
-  user_data = base64encode(templatefile("${path.module}/templates/worker_user_data.sh", local.worker_interpolation_vars))
+  user_data = <<EOF
+#-------------------------------------------#
+#-----> COPY THE CONFIG FILES FROM S3 <-----#
+#-------------------------------------------#
+
+sudo aws s3 cp s3://${var.user_data_bucket_name}/worker_user_data.sh ./
+sudo chmod +x worker_user_data.sh
+
+#-------------------------------------------#
+#---------> RUN THE CONFIG FILES  <---------#
+#-------------------------------------------#
+
+./worker_user_data.sh
+
+EOF
 
   iam_instance_profile {
     name = aws_iam_instance_profile.concourse_profile.name

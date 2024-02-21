@@ -72,3 +72,8 @@ variable "cloudwatch_namespace" {
   default     = "Concourse"
   description = "The namespace to use for CloudWatch metrics."
 }
+
+variable "user_data_bucket_name" {
+  default     = "concourse-user-data"
+  description = "The name of the S3 bucket to store user data (init scripts) in."
+}

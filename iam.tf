@@ -48,15 +48,16 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_policies" {
   policy_arn = data.aws_iam_policy.cloudwatch_agent_policy.arn
 }
 
-resource "aws_iam_role_policy" "ssm_get_parameters" {
-  name = "ConcourseCI-SSM-GetParameters"
+resource "aws_iam_role_policy" "s3_get_user_data" {
+  name = "ConcourseCI-S3-Retrieve-UserData"
   role = aws_iam_role.concourse_role.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Action = [
-          "ssm:GetParameter"
+          "s3:ListBucket",
+          "s3:GetObject"
         ]
         Effect   = "Allow"
         Resource = "*"

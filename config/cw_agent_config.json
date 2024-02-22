@@ -112,7 +112,11 @@
             "go_info": "Count",
             "promhttp_metric_handler_requests_total": "Count",
             "go_gc_duration_seconds": "Seconds",
-            "go_memstats_gc_cpu_fraction": "Percent"
+            "go_memstats_gc_cpu_fraction": "Percent",
+            "go_gc_duration_seconds_count": "Count",
+            "go_gc_duration_seconds_sum": "Count",
+            "concourse_workers_unknown_containers": "Count",
+            "concourse_workers_unknown_volumes": "Count"
           },
           "metric_declaration": [
             {
@@ -199,7 +203,11 @@
                 "^go_info$",
                 "^promhttp_metric_handler_requests_total$",
                 "^go_gc_duration_seconds$",
-                "^go_memstats_gc_cpu_fraction$"
+                "^go_memstats_gc_cpu_fraction$",
+                "^go_gc_duration_seconds_count$",
+                "^go_gc_duration_seconds_sum$",
+                "^concourse_workers_unknown_containers$",
+                "^concourse_workers_unknown_volumes$"
               ],
               "dimensions": [
                 ["host"],
@@ -275,13 +283,17 @@
                 ["host", "type"],
                 ["host", "platform", "teamId", "workerTags"],
                 ["host", "platform", "teamId", "workerTags"],
-                ["host", "platform", "worker", "tags", "team"],
-                ["host", "platform", "worker", "tags", "team"],
-                ["host", "platform", "worker", "tags", "team"],
+                ["host", "worker", "platform", "team", "tags"],
+                ["host", "worker", "platform", "team", "tags"],
+                ["host", "worker", "platform", "team", "tags"],
                 ["host", "state"],
                 ["host", "version"],
                 ["host", "code"],
                 ["host", "quantile"],
+                ["host"],
+                ["host"],
+                ["host"],
+                ["host"],
                 ["host"]
               ]
             }

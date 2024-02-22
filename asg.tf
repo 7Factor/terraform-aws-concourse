@@ -55,8 +55,6 @@ EOF
 }
 
 resource "aws_launch_template" "web_template" {
-  depends_on = [aws_s3_object.web_user_data]
-
   name          = "conc-web-tmpl"
   instance_type = var.web_instance_type
   key_name      = var.conc_key_name
@@ -120,8 +118,6 @@ resource "aws_autoscaling_attachment" "web_asg_to_lb" {
 }
 
 resource "aws_launch_template" "worker_template" {
-  depends_on = [aws_s3_object.worker_user_data]
-
   name          = "conc-worker-tmpl"
   instance_type = var.worker_instance_type
   key_name      = var.conc_key_name

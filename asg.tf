@@ -1,7 +1,7 @@
 data "aws_region" "current" {}
 
 locals {
-  shared_metrics_fragment = templatefile("${path.module}/config/cw_agent_config_shared_metrics_fragement.json", {
+  shared_metrics_fragment = templatefile("${path.module}/config/cw_agent_config_shared_metrics_fragment.json", {
     "cloudwatch_namespace" = var.cloudwatch_namespace_ec2_metrics
   })
   web_interpolation_vars = {

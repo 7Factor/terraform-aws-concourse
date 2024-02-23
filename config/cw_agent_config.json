@@ -128,7 +128,7 @@
             "concourse_gc_gc_resource_config_check_session_collector_duration": "Milliseconds",
             "concourse_gc_gc_artifact_collector_duration": "Milliseconds",
             "concourse_gc_gc_container_collector_duration": "Milliseconds",
-            "concourse_gc_gc_volume_collector_duration": "Milliseconds",
+            "concourse_gc_gc_volume_collector_duration": "Milliseconds"
           },
           "metric_declaration": [
             {
@@ -169,7 +169,7 @@
                 "^go_memstats_mallocs_total$",
                 "^process_cpu_seconds_total$"
               ]
-            },`
+            },
             {
               "source_labels": ["job"],
               "label_matcher": "concourse",

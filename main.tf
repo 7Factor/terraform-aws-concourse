@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">=1.2"
+  required_version = ">=0.12.3"
 }
 
 data "aws_ami" "base_ami" {

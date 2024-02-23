@@ -7,7 +7,7 @@ exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console)
 sudo yum update -y
 sudo yum upgrade -y
 
-%{ if prometheus_enabled || metrics_enabled }
+%{ if metrics_enabled }
 
 echo 'Configuring CloudWatch agent'
 

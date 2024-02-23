@@ -30,7 +30,7 @@
         "prometheus_config_path": "/etc/prometheus/config.yml",
         "emf_processor": {
           "metric_declaration_dedup": true,
-          "metric_namespace": "Concourse-Prometheus",
+          "metric_namespace": "${prometheus_namespace}",
           "metric_unit": {
             "concourse_builds_aborted_total": "Count",
             "concourse_builds_check_aborted_total": "Count",

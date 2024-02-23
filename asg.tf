@@ -19,7 +19,8 @@ locals {
     "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
     "cloudwatch_config"                     = templatefile("${path.module}/config/cw_agent_config.json", {
       "prometheus_log_group_name" = aws_cloudwatch_log_group.concourse.name
-      "cloudwatch_namespace"      = var.cloudwatch_namespace
+      "cloudwatch_namespace"      = var.cloudwatch_namespace_ec2_metrics
+      "prometheus_namespace"      = var.cloudwatch_namespace_prometheus_metrics
       "region"                    = data.aws_region.current.name
     })
     "prometheus_enabled"                    = var.prometheus_enabled

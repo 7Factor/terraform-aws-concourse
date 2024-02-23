@@ -68,9 +68,14 @@ variable "prometheus_bind_port" {
   description = "The port to bind prometheus to."
 }
 
-variable "cloudwatch_namespace" {
+variable "cloudwatch_namespace_ec2_metrics" {
   default     = "Concourse"
-  description = "The namespace to use for CloudWatch metrics."
+  description = "The CloudWatch metrics namespace to use for standard ec2 metrics."
+}
+
+variable "cloudwatch_namespace_prometheus_metrics" {
+  default     = "Concourse-Prometheus"
+  description = "The CloudWatch metrics namespace to use for Prometheus generated metrics."
 }
 
 variable "user_data_bucket_name" {

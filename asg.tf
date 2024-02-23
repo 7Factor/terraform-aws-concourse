@@ -1,6 +1,9 @@
 data "aws_region" "current" {}
 
 locals {
+  shared_metrics_fragment = templatefile("${path.module}/config/cw_agent_config_shared_metrics_fragement.json", {
+    "cloudwatch_namespace" = var.cloudwatch_namespace_ec2_metrics
+  })
   web_interpolation_vars = {
     "authorized_worker_keys"                = tls_private_key.worker_key.public_key_openssh
     "session_signing_key"                   = tls_private_key.session_signing_key.private_key_pem
@@ -17,11 +20,11 @@ locals {
     "cred_store_config"                     = var.cred_store_config
     "feature_flags"                         = var.web_feature_flags
     "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
-    "cloudwatch_config"                     = templatefile("${path.module}/config/cw_agent_config.json", {
-      "prometheus_log_group_name" = aws_cloudwatch_log_group.concourse.name
-      "cloudwatch_namespace"      = var.cloudwatch_namespace_ec2_metrics
-      "prometheus_namespace"      = var.cloudwatch_namespace_prometheus_metrics
+    "cloudwatch_config"                     = templatefile("${path.module}/config/cw_agent_config_web.json", {
       "region"                    = data.aws_region.current.name
+      "metrics_fragment"          = local.shared_metrics_fragment
+      "prometheus_namespace"      = var.cloudwatch_namespace_prometheus_metrics
+      "prometheus_log_group_name" = aws_cloudwatch_log_group.concourse.name
     })
     "prometheus_enabled"                    = var.prometheus_enabled
     "prometheus_bind_port"                  = var.prometheus_bind_port

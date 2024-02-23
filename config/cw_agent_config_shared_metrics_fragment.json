@@ -1,0 +1,20 @@
+{
+  "namespace": "${cloudwatch_namespace}",
+  "append_dimensions": {
+    "InstanceId": "$${aws:InstanceId}",
+    "AutoScalingGroupName": "$${aws:AutoScalingGroupName}"
+  },
+  "aggregation_dimensions": [["InstanceId"], ["AutoScalingGroupName"]],
+  "metrics_collected": {
+    "disk": {
+      "resources": ["/"],
+      "measurement": ["disk_used_percent"]
+    },
+    "swap": {
+      "measurement": ["swap_used_percent"]
+    },
+    "mem": {
+      "measurement": ["mem_used_percent"]
+    }
+  }
+}

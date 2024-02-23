@@ -336,6 +336,7 @@
                 "^concourse_workers_volumes$"
               ]
             },
+
             {
               "source_labels": ["job"],
               "label_matcher": "concourse",

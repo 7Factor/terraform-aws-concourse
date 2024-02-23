@@ -1,4 +1,26 @@
 #!/bin/bash
+set -e
+
+# Output all logs
+exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console) 2>&1
+
+sudo yum update -y
+sudo yum upgrade -y
+
+echo 'Configuring CloudWatch agent'
+
+sudo mkdir -p /etc/cloudwatch
+echo -n '${cloudwatch_config}' > /etc/cloudwatch/cloudwatch_config.json
+
+sudo yum install -y amazon-cloudwatch-agent
+
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config \
+  -m ec2 \
+  -c file:/etc/cloudwatch/cloudwatch_config.json -s
+
+echo 'Configuring Concourse'
+
 sudo mkdir -p /etc/concourse/ /etc/concourse/keys/worker /opt/concourse-workdir /etc/concourse
 sudo curl -o /etc/concourse.tgz -L https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 sudo tar -xzf /etc/concourse.tgz --directory=/etc/
@@ -64,3 +86,5 @@ WantedBy=multi-user.target
 
 systemctl enable concourse-deregister-worker
 systemctl start concourse-deregister-worker
+
+echo 'Initialization complete'

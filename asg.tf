@@ -98,6 +98,7 @@ resource "aws_autoscaling_group" "web_asg" {
   lifecycle {
     create_before_destroy = true
     ignore_changes        = [desired_capacity]
+    replace_triggered_by  = [aws_s3_object.web_user_data]
   }
 
   tag {
@@ -168,6 +169,7 @@ resource "aws_autoscaling_group" "worker_asg" {
   lifecycle {
     create_before_destroy = true
     ignore_changes        = [desired_capacity]
+    replace_triggered_by  = [aws_s3_object.worker_user_data]
   }
 
   tag {

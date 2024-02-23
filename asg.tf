@@ -26,6 +26,7 @@ locals {
       "prometheus_namespace"      = var.cloudwatch_namespace_prometheus_metrics
       "prometheus_log_group_name" = aws_cloudwatch_log_group.concourse.name
     })
+    "metrics_enabled"                       = var.metrics_enabled
     "prometheus_enabled"                    = var.prometheus_enabled
     "prometheus_bind_port"                  = var.prometheus_bind_port
     "prometheus_config"                     = templatefile("${path.module}/config/prometheus_config.yml", {
@@ -41,17 +42,18 @@ sudo chmod +x /tmp/web_user_data.sh
 EOF
 
   worker_interpolation_vars = {
-    "tsa_public_key"   = tls_private_key.tsa_host_key.public_key_openssh
-    "worker_key"       = tls_private_key.worker_key.private_key_pem
-    "conc_version"     = var.conc_version
-    "tsa_host"         = aws_elb.concourse_lb.dns_name
-    "storage_driver"   = var.worker_container_storage_driver
-    "dns_servers"      = var.worker_dns_servers
-    "feature_flags"    = var.worker_feature_flags
+    "tsa_public_key"    = tls_private_key.tsa_host_key.public_key_openssh
+    "worker_key"        = tls_private_key.worker_key.private_key_pem
+    "conc_version"      = var.conc_version
+    "tsa_host"          = aws_elb.concourse_lb.dns_name
+    "storage_driver"    = var.worker_container_storage_driver
+    "dns_servers"       = var.worker_dns_servers
+    "feature_flags"     = var.worker_feature_flags
     "cloudwatch_config" = templatefile("${path.module}/config/cw_agent_config_worker.json", {
       "region"           = data.aws_region.current.name
       "metrics_fragment" = local.shared_metrics_fragment
     })
+    "metrics_enabled"   = var.metrics_enabled
   }
 
   worker_user_data = <<EOF

@@ -58,6 +58,11 @@ variable "custom_policy_arns" {
   description = "Pass in a list of policy ARNs to assign to the concourse IAM role."
 }
 
+variable "metrics_enabled" {
+  default     = false
+  description = "Whether or not to enable CloudWatch EC2 metrics for concourse. Note that enabling prometheus will also enable these metrics."
+}
+
 variable "prometheus_enabled" {
   default     = false
   description = "Whether or not to enable prometheus monitoring for concourse."

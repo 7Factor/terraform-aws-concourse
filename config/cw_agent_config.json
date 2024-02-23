@@ -103,8 +103,8 @@
             "concourse_lidar_check_queue_size": "Count",
             "concourse_lidar_checks_finished_total": "Count",
             "concourse_locks_held": "Count",
-            "concourse_tasks_wait_duration": "Seconds",
-            "concourse_tasks_waiting": "Count",
+            "concourse_steps_wait_duration": "Seconds",
+            "concourse_steps_waiting": "Count",
             "concourse_workers_containers": "Count",
             "concourse_workers_tasks": "Count",
             "concourse_workers_volumes": "Count",
@@ -122,6 +122,7 @@
             {
               "source_labels": ["job"],
               "label_matcher": "concourse",
+              "dimensions": [[], ["host"]],
               "metric_selectors": [
                 "^concourse_builds_aborted_total$",
                 "^concourse_builds_check_aborted_total$",
@@ -186,115 +187,129 @@
                 "^process_virtual_memory_bytes$",
                 "^process_virtual_memory_max_bytes$",
                 "^promhttp_metric_handler_requests_in_flight$",
-                "^concourse_builds_latest_completed_build_status$",
-                "^concourse_concurrent_requests$",
-                "^concourse_concurrent_requests_limit_hit_total$",
-                "^concourse_db_connections$",
-                "^concourse_http_responses_duration_seconds$",
                 "^concourse_lidar_check_queue_size$",
-                "^concourse_lidar_checks_finished_total$",
-                "^concourse_locks_held$",
-                "^concourse_tasks_wait_duration$",
-                "^concourse_tasks_waiting$",
-                "^concourse_workers_containers$",
-                "^concourse_workers_tasks$",
-                "^concourse_workers_volumes$",
-                "^concourse_workers_registered$",
-                "^go_info$",
-                "^promhttp_metric_handler_requests_total$",
-                "^go_gc_duration_seconds$",
                 "^go_memstats_gc_cpu_fraction$",
                 "^go_gc_duration_seconds_count$",
                 "^go_gc_duration_seconds_sum$",
                 "^concourse_workers_unknown_containers$",
                 "^concourse_workers_unknown_volumes$"
-              ],
-              "dimensions": [
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["teamName", "pipelineName", "jobName"],
-                ["host", "action"],
-                ["host", "action"],
-                ["host", "dbname"],
-                ["host", "method", "route", "status"],
-                ["host"],
-                ["host", "status"],
-                ["host", "type"],
-                ["host", "platform", "teamId", "workerTags"],
-                ["host", "platform", "teamId", "workerTags"],
-                ["host", "worker", "platform", "team", "tags"],
-                ["host", "worker", "platform", "team", "tags"],
-                ["host", "worker", "platform", "team", "tags"],
-                ["host", "state"],
-                ["host", "version"],
-                ["host", "code"],
-                ["host", "quantile"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"],
-                ["host"]
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host"], ["action"], ["host", "action"]],
+              "metric_selectors": [
+                "^concourse_concurrent_requests$",
+                "^concourse_concurrent_requests_limit_hit_total$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host"], ["dbname"], ["host", "dbname"]],
+              "metric_selectors": [
+                "^concourse_db_connections$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host"], ["status"], ["host", "status"]],
+              "metric_selectors": [
+                "^concourse_lidar_checks_finished_total$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host"], ["type"], ["host", "type"]],
+              "metric_selectors": [
+                "^concourse_locks_held$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host"], ["state"], ["host", "state"]],
+              "metric_selectors": [
+                "^concourse_workers_registered$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["version"], ["host", "version"]],
+              "metric_selectors": [
+                "^go_info$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host"], ["code"], ["host", "code"]],
+              "metric_selectors": [
+                "^promhttp_metric_handler_requests_total$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host"], ["quantile"], ["host", "quantile"]],
+              "metric_selectors": [
+                "^go_gc_duration_seconds$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["worker"], ["platform"], ["worker", "platform"]],
+              "metric_selectors": [
+                "^concourse_workers_tasks$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["worker"], ["platform"], ["team"], ["tags"], ["worker", "platform"],
+                ["worker", "platform", "team"], ["worker", "platform", "team", "tags"]],
+              "metric_selectors": [
+                "^concourse_workers_containers$",
+                "^concourse_workers_volumes$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host", "platform", "teamId", "teamName", "type", "workerTags"]],
+              "metric_selectors": [
+                "^concourse_steps_wait_duration$",
+                "^concourse_steps_waiting$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["route"], ["method", "route"], ["route", "status"], ["method", "route", "status"]],
+              "metric_selectors": [
+                "^concourse_http_responses_duration_seconds$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["teamName"], ["teamName", "pipelineName"], ["teamName", "pipelineName", "jobName"]],
+              "metric_selectors": [
+                "^concourse_builds_latest_completed_build_status$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["team"], ["team", "pipeline"], ["team", "status"], ["team", "pipeline", "status"],
+                ["team", "pipeline", "exported_job"], ["team", "pipeline", "exported_job", "status"]],
+              "metric_selectors": [
+                "^concourse_builds_finished$"
               ]
             }
           ]

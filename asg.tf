@@ -22,8 +22,20 @@ locals {
     "s3_bucket_name"                        = var.user_data_bucket_name
   }
 
+  web_user_data_combined = <<EOF
+${aws_s3_object.web_user_data.content}
+${aws_s3_object.cw_agent_init.content}
+${aws_s3_object.cw_agent_metrics_init.content}
+${aws_s3_object.cw_agent_prometheus_init.content}
+  EOF
+  web_user_data_md5 = md5(local.web_user_data_combined)
+
   web_user_data = <<EOF
 #!/bin/bash
+
+# md5 hash of user data s3 files to trigger updates
+# ${local.web_user_data_md5}
+
 sudo aws s3 cp s3://${var.user_data_bucket_name}/web_user_data.sh /tmp
 sudo chmod +x /tmp/web_user_data.sh
 /tmp/web_user_data.sh
@@ -40,8 +52,19 @@ EOF
     "s3_bucket_name"    = var.user_data_bucket_name
   }
 
+  worker_user_data_combined = <<EOF
+${aws_s3_object.worker_user_data.content}
+${aws_s3_object.cw_agent_init.content}
+${aws_s3_object.cw_agent_metrics_init.content}
+  EOF
+  worker_user_data_md5 = md5(local.worker_user_data_combined)
+
   worker_user_data = <<EOF
 #!/bin/bash
+
+# md5 hash of user data s3 files to trigger updates
+# ${local.worker_user_data_md5}
+
 sudo aws s3 cp s3://${var.user_data_bucket_name}/worker_user_data.sh /tmp
 sudo chmod +x /tmp/worker_user_data.sh
 /tmp/worker_user_data.sh
@@ -75,12 +98,6 @@ resource "aws_launch_template" "web_template" {
 
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by  = [
-      aws_s3_object.web_user_data,
-      aws_s3_object.cw_agent_init,
-      aws_s3_object.cw_agent_metrics_init,
-      aws_s3_object.cw_agent_prometheus_init
-    ]
   }
 }
 
@@ -158,11 +175,6 @@ resource "aws_launch_template" "worker_template" {
 
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by  = [
-      aws_s3_object.worker_user_data,
-      aws_s3_object.cw_agent_init,
-      aws_s3_object.cw_agent_metrics_init
-    ]
   }
 }
 

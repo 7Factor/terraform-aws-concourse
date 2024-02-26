@@ -2,6 +2,5 @@
   "agent": {
     "region": "${region}",
     "metrics_collection_interval": 10
-
   }
 }

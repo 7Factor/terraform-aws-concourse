@@ -1,7 +1,13 @@
 {
   "metrics": {
     "namespace": "${cloudwatch_namespace}",
-    "aggregation_dimensions": [["InstanceId"], ["Hostname"]],
+    "aggregation_dimensions": [
+      ["AutoScalingGroupName"],
+      ["Hostname"],
+      ["host"],
+      ["AutoScalingGroupName", "Hostname"],
+      ["AutoScalingGroupName", "host"]
+    ],
     "metrics_collected": {
       "disk": {
         "resources": ["/"],

@@ -8,7 +8,7 @@ data "aws_ami" "base_ami" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-ebs"]
+    values = [var.base_ami_name_filter]
   }
 
   filter {

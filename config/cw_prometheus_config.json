@@ -1,8 +1,4 @@
 {
-  "agent": {
-    "region": "${region}",
-    "metrics_collection_interval": 10
-  },
   "logs": {
     "metrics_collected": {
       "prometheus": {
@@ -392,6 +388,5 @@
         }
       }
     }
-  },
-  "metrics": ${metrics_fragment}
+  }
 }

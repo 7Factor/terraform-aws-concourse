@@ -7,24 +7,17 @@ exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console)
 sudo yum update -y
 sudo yum upgrade -y
 
-%{ if prometheus_enabled || metrics_enabled }
+sudo aws s3 cp s3://${var.user_data_bucket_name}/cw_agent_init.sh /tmp
+sudo chmod +x /tmp/cw_agent_init.sh
+/tmp/cw_agent_init.sh
 
-echo 'Configuring CloudWatch agent'
+sudo aws s3 cp s3://${var.user_data_bucket_name}/cw_agent_metrics_init.sh /tmp
+sudo chmod +x /tmp/cw_agent_metrics_init.sh
+/tmp/cw_agent_metrics_init.sh
 
-sudo mkdir -p /etc/prometheus
-echo -n '${prometheus_config}' > /etc/prometheus/config.yml
-
-sudo mkdir -p /etc/cloudwatch
-echo -n '${cloudwatch_config}' > /etc/cloudwatch/cloudwatch_config.json
-
-sudo yum install -y amazon-cloudwatch-agent
-
-/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
-  -a fetch-config \
-  -m ec2 \
-  -c file:/etc/cloudwatch/cloudwatch_config.json -s
-
-%{ endif }
+sudo aws s3 cp s3://${var.user_data_bucket_name}/cw_agent_prometheus_init.sh /tmp
+sudo chmod +x /tmp/cw_agent_prometheus_init.sh
+/tmp/cw_agent_prometheus_init.sh
 
 echo 'Configuring Concourse'
 

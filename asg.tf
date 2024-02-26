@@ -1,9 +1,6 @@
 data "aws_region" "current" {}
 
 locals {
-  shared_metrics_fragment = templatefile("${path.module}/config/cw_agent_config_shared_metrics_fragment.json", {
-    "cloudwatch_namespace" = var.cloudwatch_namespace_ec2_metrics
-  })
   web_interpolation_vars = {
     "authorized_worker_keys"                = tls_private_key.worker_key.public_key_openssh
     "session_signing_key"                   = tls_private_key.session_signing_key.private_key_pem
@@ -20,18 +17,8 @@ locals {
     "cred_store_config"                     = var.cred_store_config
     "feature_flags"                         = var.web_feature_flags
     "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
-    "cloudwatch_config"                     = templatefile("${path.module}/config/cw_agent_config_web.json", {
-      "region"                    = data.aws_region.current.name
-      "metrics_fragment"          = local.shared_metrics_fragment
-      "prometheus_namespace"      = var.cloudwatch_namespace_prometheus_metrics
-      "prometheus_log_group_name" = aws_cloudwatch_log_group.concourse.name
-    })
-    "metrics_enabled"                       = var.metrics_enabled
     "prometheus_enabled"                    = var.prometheus_enabled
     "prometheus_bind_port"                  = var.prometheus_bind_port
-    "prometheus_config"                     = templatefile("${path.module}/config/prometheus_config.yml", {
-      "prometheus_bind_port" = var.prometheus_bind_port
-    })
   }
 
   web_user_data = <<EOF
@@ -49,11 +36,6 @@ EOF
     "storage_driver"    = var.worker_container_storage_driver
     "dns_servers"       = var.worker_dns_servers
     "feature_flags"     = var.worker_feature_flags
-    "cloudwatch_config" = templatefile("${path.module}/config/cw_agent_config_worker.json", {
-      "region"           = data.aws_region.current.name
-      "metrics_fragment" = local.shared_metrics_fragment
-    })
-    "metrics_enabled"   = var.metrics_enabled
   }
 
   worker_user_data = <<EOF
@@ -65,7 +47,12 @@ EOF
 }
 
 resource "aws_launch_template" "web_template" {
-  depends_on = [aws_s3_object.web_user_data]
+  depends_on = [
+    aws_s3_object.web_user_data,
+    aws_s3_object.cw_agent_init,
+    aws_s3_object.cw_agent_metrics_init,
+    aws_s3_object.cw_agent_prometheus_init
+  ]
 
   name          = "conc-web-tmpl"
   instance_type = var.web_instance_type
@@ -86,7 +73,12 @@ resource "aws_launch_template" "web_template" {
 
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by  = [aws_s3_object.web_user_data]
+    replace_triggered_by  = [
+      aws_s3_object.web_user_data,
+      aws_s3_object.cw_agent_init,
+      aws_s3_object.cw_agent_metrics_init,
+      aws_s3_object.cw_agent_prometheus_init
+    ]
   }
 }
 
@@ -131,7 +123,11 @@ resource "aws_autoscaling_attachment" "web_asg_to_lb" {
 }
 
 resource "aws_launch_template" "worker_template" {
-  depends_on = [aws_s3_object.worker_user_data]
+  depends_on = [
+    aws_s3_object.worker_user_data,
+    aws_s3_object.cw_agent_init,
+    aws_s3_object.cw_agent_metrics_init
+  ]
 
   name          = "conc-worker-tmpl"
   instance_type = var.worker_instance_type
@@ -160,7 +156,11 @@ resource "aws_launch_template" "worker_template" {
 
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by  = [aws_s3_object.worker_user_data]
+    replace_triggered_by  = [
+      aws_s3_object.worker_user_data,
+      aws_s3_object.cw_agent_init,
+      aws_s3_object.cw_agent_metrics_init
+    ]
   }
 }
 

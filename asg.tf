@@ -19,6 +19,7 @@ locals {
     "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
     "prometheus_enabled"                    = var.prometheus_enabled
     "prometheus_bind_port"                  = var.prometheus_bind_port
+    "s3_bucket_name"                        = var.user_data_bucket_name
   }
 
   web_user_data = <<EOF
@@ -36,6 +37,7 @@ EOF
     "storage_driver"    = var.worker_container_storage_driver
     "dns_servers"       = var.worker_dns_servers
     "feature_flags"     = var.worker_feature_flags
+    "s3_bucket_name"    = var.user_data_bucket_name
   }
 
   worker_user_data = <<EOF

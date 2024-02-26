@@ -7,11 +7,11 @@ exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console)
 sudo yum update -y
 sudo yum upgrade -y
 
-sudo aws s3 cp s3://${var.user_data_bucket_name}/cw_agent_init.sh /tmp
+sudo aws s3 cp s3://${s3_bucket_name}/cw_agent_init.sh /tmp
 sudo chmod +x /tmp/cw_agent_init.sh
 /tmp/cw_agent_init.sh
 
-sudo aws s3 cp s3://${var.user_data_bucket_name}/cw_agent_metrics_init.sh /tmp
+sudo aws s3 cp s3://${s3_bucket_name}/cw_agent_metrics_init.sh /tmp
 sudo chmod +x /tmp/cw_agent_metrics_init.sh
 /tmp/cw_agent_metrics_init.sh
 

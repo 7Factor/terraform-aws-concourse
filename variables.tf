@@ -73,6 +73,16 @@ variable "prometheus_bind_port" {
   description = "The port to bind prometheus to."
 }
 
+variable "prometheus_log_group_name" {
+  default     = "concourse-prometheus"
+  description = "The name of the CloudWatch log group to send prometheus logs to."
+}
+
+variable "prometheus_log_stream_name" {
+  default     = "concourse-prometheus-{instance_id}"
+  description = "The name of the CloudWatch log stream to send prometheus logs to."
+}
+
 variable "cloudwatch_namespace_ec2_metrics" {
   default     = "Concourse"
   description = "The CloudWatch metrics namespace to use for standard ec2 metrics."

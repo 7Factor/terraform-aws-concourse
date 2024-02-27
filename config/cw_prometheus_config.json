@@ -3,7 +3,6 @@
     "metrics_collected": {
       "prometheus": {
         "log_group_name": "${prometheus_log_group_name}",
-        "log_stream_name": "${prometheus_log_stream_name}",
         "prometheus_config_path": "/etc/prometheus/config.yml",
         "emf_processor": {
           "metric_declaration_dedup": true,

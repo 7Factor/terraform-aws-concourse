@@ -31,7 +31,6 @@ resource "aws_s3_object" "cw_agent_init" {
     })
     cw_prometheus_config = templatefile("${path.module}/config/cw_prometheus_config.json", {
       prometheus_log_group_name  = aws_cloudwatch_log_group.concourse.name
-      prometheus_log_stream_name = var.prometheus_log_stream_name
       prometheus_namespace       = var.cloudwatch_namespace_prometheus_metrics
     })
     prometheus_config = templatefile("${path.module}/config/prometheus_config.yml", {

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 
 # Output all logs

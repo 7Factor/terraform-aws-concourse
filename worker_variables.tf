@@ -49,3 +49,9 @@ variable "worker_dns_servers" {
   default     = ["8.8.8.8", "8.8.4.4"]
   description = "Optional DNS servers. Defaults to google."
 }
+
+variable "worker_feature_flags" {
+  type        = list(string)
+  default     = []
+  description = "Pass feature flag options here as a list of key value environment variables. Defaults to nothing."
+}

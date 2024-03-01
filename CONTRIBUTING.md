@@ -1,18 +1,26 @@
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change. 
+email, or any other method with the owners of this repository before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
 ## Pull Request Process
 
-1. Ensure any install or build dependencies are removed before the end of the layer when doing a 
+1. Ensure any install or build dependencies are removed before the end of the layer when doing a
    build. There should be ignore files in place to ensure you need not worry about this.
-2. Update the README.md with details of changes to the interface, this includes new environment 
+2. Update the README.md with details of changes to the interface, this includes new environment
    variables, exposed ports, useful file locations and container parameters.
-3. Increase the version numbers in any examples files and the README.md to the new version that this
-   Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
+3. Apply one of the following labels to the PR to indicate what type of release it should create. We use
+   [Semantic Versioning](https://semver.org/) as is standard for terraform modules.
+    * https://github.com/7Factor/terraform-aws-ses/labels/release%3Amajor -
+      A release for a major version will be created after merging the PR.
+    * https://github.com/7Factor/terraform-aws-ses/labels/release%3Aminor -
+      A release for a minor version will be created after merging the PR.
+    * https://github.com/7Factor/terraform-aws-ses/labels/release%3Apatch -
+      A release for a patch version will be created after merging the PR.
+    * https://github.com/7Factor/terraform-aws-ses/labels/no%20release -
+      No release will be created after merging the PR.
 4. PR's require at least one approving review from a maintainer. If approved, a maintainer will merge your PR.
 
 ## Code of Conduct
@@ -40,7 +48,7 @@ include:
 Examples of unacceptable behavior by participants include:
 
 * The use of sexualized language or imagery and unwelcome sexual attention or
-advances
+  advances
 * Trolling, insulting/derogatory comments, and personal or political attacks
 * Public or private harassment
 * Publishing others' private information, such as a physical or electronic

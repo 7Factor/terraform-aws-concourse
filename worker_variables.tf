@@ -28,14 +28,6 @@ variable "worker_vol_size" {
   description = "We'll assign instance volumes of this size to your workers. Suggested retail size of 40GB."
 }
 
-variable "worker_key_path" {
-  description = "Path to an OpenSSH or RSA key the worker uses to secure communication with."
-}
-
-variable "tsa_public_key_path" {
-  description = "Path to an OpenSSH or RSA public key the worker uses to talk to the TSA with."
-}
-
 variable "worker_container_storage_driver" {
   default     = "overlay"
   description = "Storage driver to use for the container runtime. Defaults to overlay."

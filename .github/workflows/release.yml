@@ -17,3 +17,4 @@ jobs:
           bump_version_scheme: norelease
           tag_prefix: v
           release_name: "Release <RELEASE_VERSION>"
+          max_commits: 777

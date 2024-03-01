@@ -27,8 +27,8 @@ ${aws_s3_object.web_user_data.content}
 ${aws_s3_object.cw_agent_init.content}
 ${aws_s3_object.cw_agent_metrics_init.content}
 ${aws_s3_object.cw_agent_prometheus_init.content}
-  EOF
-  web_user_data_md5 = md5(local.web_user_data_combined)
+EOF
+  web_user_data_md5      = md5(local.web_user_data_combined)
 
   web_user_data = <<EOF
 #!/bin/bash
@@ -42,22 +42,22 @@ sudo chmod +x /tmp/web_user_data.sh
 EOF
 
   worker_interpolation_vars = {
-    "tsa_public_key"    = tls_private_key.tsa_host_key.public_key_openssh
-    "worker_key"        = tls_private_key.worker_key.private_key_pem
-    "conc_version"      = var.conc_version
-    "tsa_host"          = aws_elb.concourse_lb.dns_name
-    "storage_driver"    = var.worker_container_storage_driver
-    "dns_servers"       = var.worker_dns_servers
-    "feature_flags"     = var.worker_feature_flags
-    "s3_bucket_name"    = var.user_data_bucket_name
+    "tsa_public_key" = tls_private_key.tsa_host_key.public_key_openssh
+    "worker_key"     = tls_private_key.worker_key.private_key_pem
+    "conc_version"   = var.conc_version
+    "tsa_host"       = aws_elb.concourse_lb.dns_name
+    "storage_driver" = var.worker_container_storage_driver
+    "dns_servers"    = var.worker_dns_servers
+    "feature_flags"  = var.worker_feature_flags
+    "s3_bucket_name" = var.user_data_bucket_name
   }
 
   worker_user_data_combined = <<EOF
 ${aws_s3_object.worker_user_data.content}
 ${aws_s3_object.cw_agent_init.content}
 ${aws_s3_object.cw_agent_metrics_init.content}
-  EOF
-  worker_user_data_md5 = md5(local.worker_user_data_combined)
+EOF
+  worker_user_data_md5      = md5(local.worker_user_data_combined)
 
   worker_user_data = <<EOF
 #!/bin/bash

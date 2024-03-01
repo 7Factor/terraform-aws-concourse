@@ -18,20 +18,20 @@ resource "aws_s3_bucket_acl" "user_data_acl" {
 }
 
 resource "aws_s3_object" "cw_agent_init" {
-  bucket  = aws_s3_bucket.user_data.id
-  key     = "cw_agent_init.sh"
+  bucket = aws_s3_bucket.user_data.id
+  key    = "cw_agent_init.sh"
   content = templatefile("${path.module}/templates/cw_agent_init.sh", {
     metrics_enabled    = var.metrics_enabled
     prometheus_enabled = var.prometheus_enabled
-    cw_agent_config    = templatefile("${path.module}/config/cw_agent_config.json", {
+    cw_agent_config = templatefile("${path.module}/config/cw_agent_config.json", {
       region = data.aws_region.current.name
     })
-    cw_metrics_config  = templatefile("${path.module}/config/cw_metrics_config.json", {
+    cw_metrics_config = templatefile("${path.module}/config/cw_metrics_config.json", {
       cloudwatch_namespace = var.cloudwatch_namespace_ec2_metrics
     })
     cw_prometheus_config = templatefile("${path.module}/config/cw_prometheus_config.json", {
-      prometheus_log_group_name  = aws_cloudwatch_log_group.concourse.name
-      prometheus_namespace       = var.cloudwatch_namespace_prometheus_metrics
+      prometheus_log_group_name = aws_cloudwatch_log_group.concourse.name
+      prometheus_namespace      = var.cloudwatch_namespace_prometheus_metrics
     })
     prometheus_config = templatefile("${path.module}/config/prometheus_config.yml", {
       prometheus_bind_port = var.prometheus_bind_port
@@ -40,16 +40,16 @@ resource "aws_s3_object" "cw_agent_init" {
 }
 
 resource "aws_s3_object" "cw_agent_metrics_init" {
-  bucket  = aws_s3_bucket.user_data.id
-  key     = "cw_agent_metrics_init.sh"
+  bucket = aws_s3_bucket.user_data.id
+  key    = "cw_agent_metrics_init.sh"
   content = templatefile("${path.module}/templates/cw_agent_metrics_init.sh", {
-    metrics_enabled    = var.metrics_enabled
+    metrics_enabled = var.metrics_enabled
   })
 }
 
 resource "aws_s3_object" "cw_agent_prometheus_init" {
-  bucket  = aws_s3_bucket.user_data.id
-  key     = "cw_agent_prometheus_init.sh"
+  bucket = aws_s3_bucket.user_data.id
+  key    = "cw_agent_prometheus_init.sh"
   content = templatefile("${path.module}/templates/cw_agent_prometheus_init.sh", {
     prometheus_enabled = var.prometheus_enabled
   })

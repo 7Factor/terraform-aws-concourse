@@ -36,7 +36,7 @@ via email or fork this repo and send PRs if you can think of a way to improve it
 ```hcl-terraform
 module "concourse" {
   source  = "7Factor/concourse/aws"
-  version = "~> 1"
+  version = "~> 2"
 
   # Common config
   cluster_name = "${var.conc_cluster_name}"

@@ -3,11 +3,6 @@ output "lb_dns" {
   description = "The DNS value of your LB hosting the concourse cluster. Point your FQDN to it."
 }
 
-output "lb_zone_id" {
-  value       = aws_elb.concourse_lb.zone_id
-  description = "The zone ID of your LB hosting the concourse cluster."
-}
-
 output "web_sg" {
   value       = aws_security_group.web_sg.id
   description = "ID of the security group for web boxes. Consume this by other modules as necessary--specifically locking down DB access."

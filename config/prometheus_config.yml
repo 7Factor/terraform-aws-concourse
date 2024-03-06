@@ -1,0 +1,9 @@
+global:
+  scrape_interval: '5s'
+  evaluation_interval: '5s'
+
+scrape_configs:
+  - job_name: 'concourse'
+    static_configs:
+      - targets:
+          - 'localhost:${prometheus_bind_port}'

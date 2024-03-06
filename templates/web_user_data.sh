@@ -1,4 +1,26 @@
 #!/bin/bash
+set -e
+
+# Output all logs
+exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console) 2>&1
+
+sudo yum update -y
+sudo yum upgrade -y
+
+sudo aws s3 cp s3://${s3_bucket_name}/cw_agent_init.sh /tmp
+sudo chmod +x /tmp/cw_agent_init.sh
+/tmp/cw_agent_init.sh
+
+sudo aws s3 cp s3://${s3_bucket_name}/cw_agent_metrics_init.sh /tmp
+sudo chmod +x /tmp/cw_agent_metrics_init.sh
+/tmp/cw_agent_metrics_init.sh
+
+sudo aws s3 cp s3://${s3_bucket_name}/cw_agent_prometheus_init.sh /tmp
+sudo chmod +x /tmp/cw_agent_prometheus_init.sh
+/tmp/cw_agent_prometheus_init.sh
+
+echo 'Configuring Concourse'
+
 sudo mkdir -p /etc/concourse/ /etc/concourse/keys/web
 sudo curl -o /etc/concourse.tgz -L https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 sudo tar -xzf /etc/concourse.tgz --directory=/etc/
@@ -31,6 +53,8 @@ Environment=\"CONCOURSE_SESSION_SIGNING_KEY=/etc/concourse/keys/web/session_sign
 Environment=\"CONCOURSE_TSA_HOST_KEY=/etc/concourse/keys/web/tsa_host_key\"
 Environment=\"CONCOURSE_TSA_AUTHORIZED_KEYS=/etc/concourse/keys/web/authorized_worker_keys\"
 Environment=\"CONCOURSE_BASE_RESOURCE_TYPE_DEFAULTS=/etc/concourse/base_resource_type_defaults.yml\"
+%{ if prometheus_enabled }Environment=\"CONCOURSE_PROMETHEUS_BIND_IP=0.0.0.0\"%{ endif }
+%{ if prometheus_enabled }Environment=\"CONCOURSE_PROMETHEUS_BIND_PORT=${prometheus_bind_port}\"%{ endif }
 
 %{ for item in authentication_config ~}
 Environment=\"${item}\"
@@ -55,3 +79,5 @@ WantedBy=multi-user.target
 
 systemctl enable concourse-web
 systemctl start concourse-web
+
+echo 'Initialization complete'

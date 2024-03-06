@@ -57,3 +57,38 @@ variable "custom_policy_arns" {
   type        = list(string)
   description = "Pass in a list of policy ARNs to assign to the concourse IAM role."
 }
+
+variable "metrics_enabled" {
+  default     = false
+  description = "Whether or not to enable CloudWatch EC2 metrics for concourse. Note that enabling prometheus will also enable these metrics."
+}
+
+variable "prometheus_enabled" {
+  default     = false
+  description = "Whether or not to enable prometheus monitoring for concourse."
+}
+
+variable "prometheus_bind_port" {
+  default     = 9100
+  description = "The port to bind prometheus to."
+}
+
+variable "prometheus_log_group_name" {
+  default     = "concourse-prometheus"
+  description = "The name of the CloudWatch log group to send prometheus logs to."
+}
+
+variable "cloudwatch_namespace_ec2_metrics" {
+  default     = "Concourse"
+  description = "The CloudWatch metrics namespace to use for standard ec2 metrics."
+}
+
+variable "cloudwatch_namespace_prometheus_metrics" {
+  default     = "Concourse-Prometheus"
+  description = "The CloudWatch metrics namespace to use for Prometheus generated metrics."
+}
+
+variable "user_data_bucket_name" {
+  default     = "concourse-user-data"
+  description = "The name of the S3 bucket to store user data (init scripts) in."
+}

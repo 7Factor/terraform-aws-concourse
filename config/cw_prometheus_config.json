@@ -1,0 +1,392 @@
+{
+  "logs": {
+    "metrics_collected": {
+      "prometheus": {
+        "log_group_name": "${prometheus_log_group_name}",
+        "prometheus_config_path": "/etc/prometheus/config.yml",
+        "emf_processor": {
+          "metric_declaration_dedup": true,
+          "metric_namespace": "${prometheus_namespace}",
+          "metric_unit": {
+            "concourse_builds_aborted_total": "Count",
+            "concourse_builds_check_aborted_total": "Count",
+            "concourse_builds_check_errored_total": "Count",
+            "concourse_builds_check_failed_total": "Count",
+            "concourse_builds_check_finished_total": "Count",
+            "concourse_builds_check_started_total": "Count",
+            "concourse_builds_check_succeeded_total": "Count",
+            "concourse_builds_errored_total": "Count",
+            "concourse_builds_failed_total": "Count",
+            "concourse_builds_finished_total": "Count",
+            "concourse_builds_started_total": "Count",
+            "concourse_builds_succeeded_total": "Count",
+            "concourse_caches_get_step_cache_hits": "Count",
+            "concourse_caches_streamed_resource_caches": "Count",
+            "concourse_db_queries_total": "Count",
+            "concourse_gc_created_containers_to_be_garbage_collected": "Count",
+            "concourse_gc_created_volumes_to_be_garbage_collected": "Count",
+            "concourse_gc_creating_containers_to_be_garbage_collected": "Count",
+            "concourse_gc_destroying_containers_to_be_garbage_collected": "Count",
+            "concourse_gc_destroying_volumes_to_be_garbage_collected": "Count",
+            "concourse_gc_failed_containers_to_be_garbage_collected": "Count",
+            "concourse_gc_failed_volumes_to_be_garbage_collected": "Count",
+            "concourse_jobs_scheduled_total": "Count",
+            "concourse_lidar_checks_enqueued_total": "Count",
+            "concourse_lidar_checks_started_total": "Count",
+            "concourse_volumes_orphaned_volumes_to_be_deleted": "Count",
+            "concourse_volumes_volumes_streamed": "Count",
+            "go_memstats_alloc_bytes_total": "Bytes",
+            "go_memstats_frees_total": "Count",
+            "go_memstats_lookups_total": "Count",
+            "go_memstats_mallocs_total": "Count",
+            "process_cpu_seconds_total": "Seconds",
+            "concourse_builds_check_running": "Count",
+            "concourse_builds_running": "Count",
+            "concourse_jobs_scheduling": "Count",
+            "go_goroutines": "Count",
+            "go_memstats_alloc_bytes": "Bytes",
+            "go_memstats_buck_hash_sys_bytes": "Bytes",
+            "go_memstats_gc_sys_bytes": "Bytes",
+            "go_memstats_heap_alloc_bytes": "Bytes",
+            "go_memstats_heap_idle_bytes": "Bytes",
+            "go_memstats_heap_inuse_bytes": "Bytes",
+            "go_memstats_heap_objects": "Count",
+            "go_memstats_heap_released_bytes": "Bytes",
+            "go_memstats_heap_sys_bytes": "Bytes",
+            "go_memstats_last_gc_time_seconds": "Seconds",
+            "go_memstats_mcache_inuse_bytes": "Bytes",
+            "go_memstats_mcache_sys_bytes": "Bytes",
+            "go_memstats_mspan_inuse_bytes": "Bytes",
+            "go_memstats_mspan_sys_bytes": "Bytes",
+            "go_memstats_next_gc_bytes": "Bytes",
+            "go_memstats_other_sys_bytes": "Bytes",
+            "go_memstats_stack_inuse_bytes": "Bytes",
+            "go_memstats_stack_sys_bytes": "Bytes",
+            "go_memstats_sys_bytes": "Bytes",
+            "go_threads": "Count",
+            "process_max_fds": "Count",
+            "process_open_fds": "Count",
+            "process_resident_memory_bytes": "Bytes",
+            "process_start_time_seconds": "Seconds",
+            "process_virtual_memory_bytes": "Bytes",
+            "process_virtual_memory_max_bytes": "Bytes",
+            "promhttp_metric_handler_requests_in_flight": "Count",
+            "concourse_builds_latest_completed_build_status": "Count",
+            "concourse_concurrent_requests": "Count",
+            "concourse_concurrent_requests_limit_hit_total": "Count",
+            "concourse_db_connections": "Count",
+            "concourse_http_responses_duration_seconds": "Seconds",
+            "concourse_lidar_checks_finished_total": "Count",
+            "concourse_locks_held": "Count",
+            "concourse_steps_wait_duration": "Seconds",
+            "concourse_steps_waiting": "Count",
+            "concourse_workers_containers": "Count",
+            "concourse_workers_tasks": "Count",
+            "concourse_workers_volumes": "Count",
+            "concourse_workers_registered": "Count",
+            "go_info": "Count",
+            "promhttp_metric_handler_requests_total": "Count",
+            "go_gc_duration_seconds": "Seconds",
+            "go_memstats_gc_cpu_fraction": "Percent",
+            "go_gc_duration_seconds_count": "Count",
+            "go_gc_duration_seconds_sum": "Count",
+            "concourse_workers_unknown_containers": "Count",
+            "concourse_workers_unknown_volumes": "Count",
+            "concourse_error_logs": "Count",
+            "concourse_builds_duration_seconds": "Seconds",
+            "concourse_jobs_schedulingDuration": "Milliseconds",
+            "concourse_gc_gc_build_collector_duration": "Milliseconds",
+            "concourse_gc_gc_worker_collector_duration": "Milliseconds",
+            "concourse_gc_gc_resource_cache_use_collector_duration": "Milliseconds",
+            "concourse_gc_gc_resource_config_collector_duration": "Milliseconds",
+            "concourse_gc_gc_resource_cache_collector_duration": "Milliseconds",
+            "concourse_gc_gc_task_cache_collector_duration": "Milliseconds",
+            "concourse_gc_gc_resource_config_check_session_collector_duration": "Milliseconds",
+            "concourse_gc_gc_artifact_collector_duration": "Milliseconds",
+            "concourse_gc_gc_container_collector_duration": "Milliseconds",
+            "concourse_gc_gc_volume_collector_duration": "Milliseconds"
+          },
+          "metric_declaration": [
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"]],
+              "metric_selectors": [
+                "^concourse_builds_aborted_total$",
+                "^concourse_builds_check_aborted_total$",
+                "^concourse_builds_check_errored_total$",
+                "^concourse_builds_check_failed_total$",
+                "^concourse_builds_check_finished_total$",
+                "^concourse_builds_check_started_total$",
+                "^concourse_builds_check_succeeded_total$",
+                "^concourse_builds_errored_total$",
+                "^concourse_builds_failed_total$",
+                "^concourse_builds_finished_total$",
+                "^concourse_builds_started_total$",
+                "^concourse_builds_succeeded_total$",
+                "^concourse_caches_get_step_cache_hits$",
+                "^concourse_caches_streamed_resource_caches$",
+                "^concourse_db_queries_total$",
+                "^concourse_gc_created_containers_to_be_garbage_collected$",
+                "^concourse_gc_created_volumes_to_be_garbage_collected$",
+                "^concourse_gc_creating_containers_to_be_garbage_collected$",
+                "^concourse_gc_destroying_containers_to_be_garbage_collected$",
+                "^concourse_gc_destroying_volumes_to_be_garbage_collected$",
+                "^concourse_gc_failed_containers_to_be_garbage_collected$",
+                "^concourse_gc_failed_volumes_to_be_garbage_collected$",
+                "^concourse_jobs_scheduled_total$",
+                "^concourse_lidar_checks_enqueued_total$",
+                "^concourse_lidar_checks_started_total$",
+                "^concourse_volumes_orphaned_volumes_to_be_deleted$",
+                "^concourse_volumes_volumes_streamed$",
+                "^go_memstats_alloc_bytes_total$",
+                "^go_memstats_frees_total$",
+                "^go_memstats_lookups_total$",
+                "^go_memstats_mallocs_total$",
+                "^process_cpu_seconds_total$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"]],
+              "metric_selectors": [
+                "^concourse_builds_check_running$",
+                "^concourse_builds_running$",
+                "^concourse_jobs_scheduling$",
+                "^go_goroutines$",
+                "^go_memstats_alloc_bytes$",
+                "^go_memstats_buck_hash_sys_bytes$",
+                "^go_memstats_gc_sys_bytes$",
+                "^go_memstats_heap_alloc_bytes$",
+                "^go_memstats_heap_idle_bytes$",
+                "^go_memstats_heap_inuse_bytes$",
+                "^go_memstats_heap_objects$",
+                "^go_memstats_heap_released_bytes$",
+                "^go_memstats_heap_sys_bytes$",
+                "^go_memstats_last_gc_time_seconds$",
+                "^go_memstats_mcache_inuse_bytes$",
+                "^go_memstats_mcache_sys_bytes$",
+                "^go_memstats_mspan_inuse_bytes$",
+                "^go_memstats_mspan_sys_bytes$",
+                "^go_memstats_next_gc_bytes$",
+                "^go_memstats_other_sys_bytes$",
+                "^go_memstats_stack_inuse_bytes$",
+                "^go_memstats_stack_sys_bytes$",
+                "^go_memstats_sys_bytes$",
+                "^go_threads$",
+                "^process_max_fds$",
+                "^process_open_fds$",
+                "^process_resident_memory_bytes$",
+                "^process_start_time_seconds$",
+                "^process_virtual_memory_bytes$",
+                "^process_virtual_memory_max_bytes$",
+                "^promhttp_metric_handler_requests_in_flight$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"]],
+              "metric_selectors": [
+                "^go_gc_duration_seconds_count$",
+                "^go_gc_duration_seconds_sum$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"]],
+              "metric_selectors": [
+                "^concourse_gc_gc_build_collector_duration$",
+                "^concourse_gc_gc_worker_collector_duration$",
+                "^concourse_gc_gc_resource_cache_use_collector_duration$",
+                "^concourse_gc_gc_resource_config_collector_duration$",
+                "^concourse_gc_gc_resource_cache_collector_duration$",
+                "^concourse_gc_gc_task_cache_collector_duration$",
+                "^concourse_gc_gc_resource_config_check_session_collector_duration$",
+                "^concourse_gc_gc_artifact_collector_duration$",
+                "^concourse_gc_gc_container_collector_duration$",
+                "^concourse_gc_gc_volume_collector_duration$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"]],
+              "metric_selectors": [
+                "^go_memstats_gc_cpu_fraction$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"], ["worker"], ["host", "worker"]],
+              "metric_selectors": [
+                "^concourse_workers_unknown_containers$",
+                "^concourse_workers_unknown_volumes$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"], ["action"], ["host", "action"]],
+              "metric_selectors": [
+                "^concourse_concurrent_requests$",
+                "^concourse_concurrent_requests_limit_hit_total$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"], ["dbname"], ["host", "dbname"]],
+              "metric_selectors": [
+                "^concourse_db_connections$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"], ["status"], ["host", "status"]],
+              "metric_selectors": [
+                "^concourse_lidar_checks_finished_total$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"], ["type"], ["host", "type"]],
+              "metric_selectors": [
+                "^concourse_locks_held$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"], ["state"], ["host", "state"]],
+              "metric_selectors": [
+                "^concourse_workers_registered$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["version"], ["host", "version"]],
+              "metric_selectors": [
+                "^go_info$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["host"], ["code"], ["host", "code"]],
+              "metric_selectors": [
+                "^promhttp_metric_handler_requests_total$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["quantile"], ["host", "quantile"]],
+              "metric_selectors": [
+                "^go_gc_duration_seconds$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["worker"], ["platform"], ["worker", "platform"]],
+              "metric_selectors": [
+                "^concourse_workers_tasks$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["worker"], ["platform"], ["team"], ["tags"], ["worker", "platform"],
+                ["worker", "team"], ["platform", "team"], ["platform", "tags"], ["worker", "tags"],
+                ["platform", "team", "tags"], ["worker", "platform", "team"], ["worker", "platform", "tags"],
+                ["worker", "platform", "team", "tags"]],
+              "metric_selectors": [
+                "^concourse_workers_containers$",
+                "^concourse_workers_volumes$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["platform"], ["teamId"], ["teamName"], ["type"], ["workerTags"],
+                ["platform", "teamId"], ["platform", "teamName"], ["platform", "type"], ["platform", "workerTags"],
+                ["teamId", "teamName"], ["teamId", "type"], ["teamId", "workerTags"], ["teamName", "type"],
+                ["teamName", "workerTags"], ["type", "workerTags"], ["platform", "teamId", "teamName"],
+                ["platform", "teamId", "type"], ["platform", "teamId", "workerTags"], ["platform", "teamName", "type"],
+                ["platform", "teamName", "workerTags"], ["platform", "type", "workerTags"],
+                ["teamId", "teamName", "type"], ["teamId", "teamName", "workerTags"], ["teamId", "type", "workerTags"],
+                ["teamName", "type", "workerTags"], ["platform", "teamId", "teamName", "type"],
+                ["platform", "teamId", "teamName", "workerTags"], ["platform", "teamId", "type", "workerTags"],
+                ["platform", "teamName", "type", "workerTags"], ["teamId", "teamName", "type", "workerTags"],
+                ["platform", "teamId", "teamName", "type", "workerTags"]],
+              "metric_selectors": [
+                "^concourse_steps_wait_duration$",
+                "^concourse_steps_waiting$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["route"], ["method", "route"], ["route", "status"], ["method", "route", "status"]],
+              "metric_selectors": [
+                "^concourse_http_responses_duration_seconds$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["teamName"], ["teamName", "pipelineName"], ["teamName", "jobName"],
+                ["teamName", "pipelineName", "jobName"]],
+              "metric_selectors": [
+                "^concourse_builds_latest_completed_build_status$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["team"], ["team", "pipeline"], ["team", "status"], ["team", "exported_job"],
+                ["team", "pipeline", "status"], ["team", "pipeline", "exported_job"],
+                ["team", "exported_job", "status"], ["team", "pipeline", "exported_job", "status"]],
+              "metric_selectors": [
+                "^concourse_builds_finished$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["team"], ["team", "pipeline"], ["team", "exported_job"],
+                ["team", "pipeline", "exported_job"]],
+              "metric_selectors": [
+                "^concourse_builds_duration_seconds$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [["host"], ["message"], ["host", "message"]],
+              "metric_selectors": [
+                "^concourse_error_logs$"
+              ]
+            },
+            {
+              "source_labels": ["job"],
+              "label_matcher": "concourse",
+              "dimensions": [[], ["pipeline"], ["exported_job"], ["job_id"], ["pipeline", "exported_job"],
+                ["pipeline", "job_id"], ["pipeline", "exported_job", "job_id"]],
+              "metric_selectors": [
+                "^concourse_jobs_schedulingDuration$"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

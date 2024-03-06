@@ -1,21 +1,45 @@
+data "aws_region" "current" {}
+
 locals {
   web_interpolation_vars = {
-    "authorized_worker_keys"       = tls_private_key.worker_key.public_key_openssh
-    "session_signing_key"          = tls_private_key.session_signing_key.private_key_pem
-    "tsa_host_key"                 = tls_private_key.tsa_host_key.private_key_pem
-    "conc_version"                 = var.conc_version
-    "concdb_host"                  = var.concdb_host
-    "concdb_port"                  = var.concdb_port
-    "concdb_user"                  = var.concdb_user
-    "concdb_password"              = var.concdb_password
-    "concdb_database"              = var.concdb_database
-    "conc_fqdn"                    = var.conc_fqdn
-    "container_placement_strategy" = var.container_placement_strategy
-    "authentication_config"        = var.authentication_config
-    "cred_store_config"            = var.cred_store_config
-    "feature_flags"                = var.web_feature_flags
-    "concourse_base_resource_type_defaults"  = yamlencode(var.concourse_base_resource_type_defaults)
+    "authorized_worker_keys"                = tls_private_key.worker_key.public_key_openssh
+    "session_signing_key"                   = tls_private_key.session_signing_key.private_key_pem
+    "tsa_host_key"                          = tls_private_key.tsa_host_key.private_key_pem
+    "conc_version"                          = var.conc_version
+    "concdb_host"                           = var.concdb_host
+    "concdb_port"                           = var.concdb_port
+    "concdb_user"                           = var.concdb_user
+    "concdb_password"                       = var.concdb_password
+    "concdb_database"                       = var.concdb_database
+    "conc_fqdn"                             = var.conc_fqdn
+    "container_placement_strategy"          = var.container_placement_strategy
+    "authentication_config"                 = var.authentication_config
+    "cred_store_config"                     = var.cred_store_config
+    "feature_flags"                         = var.web_feature_flags
+    "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
+    "prometheus_enabled"                    = var.prometheus_enabled
+    "prometheus_bind_port"                  = var.prometheus_bind_port
+    "s3_bucket_name"                        = var.user_data_bucket_name
   }
+
+  web_user_data_combined = <<EOF
+${aws_s3_object.web_user_data.content}
+${aws_s3_object.cw_agent_init.content}
+${aws_s3_object.cw_agent_metrics_init.content}
+${aws_s3_object.cw_agent_prometheus_init.content}
+EOF
+  web_user_data_md5      = md5(local.web_user_data_combined)
+
+  web_user_data = <<EOF
+#!/bin/bash
+
+# md5 hash of user data s3 files to trigger updates
+# ${local.web_user_data_md5}
+
+sudo aws s3 cp s3://${var.user_data_bucket_name}/web_user_data.sh /tmp
+sudo chmod +x /tmp/web_user_data.sh
+/tmp/web_user_data.sh
+EOF
 
   worker_interpolation_vars = {
     "tsa_public_key" = tls_private_key.tsa_host_key.public_key_openssh
@@ -25,10 +49,36 @@ locals {
     "storage_driver" = var.worker_container_storage_driver
     "dns_servers"    = var.worker_dns_servers
     "feature_flags"  = var.worker_feature_flags
+    "s3_bucket_name" = var.user_data_bucket_name
   }
+
+  worker_user_data_combined = <<EOF
+${aws_s3_object.worker_user_data.content}
+${aws_s3_object.cw_agent_init.content}
+${aws_s3_object.cw_agent_metrics_init.content}
+EOF
+  worker_user_data_md5      = md5(local.worker_user_data_combined)
+
+  worker_user_data = <<EOF
+#!/bin/bash
+
+# md5 hash of user data s3 files to trigger updates
+# ${local.worker_user_data_md5}
+
+sudo aws s3 cp s3://${var.user_data_bucket_name}/worker_user_data.sh /tmp
+sudo chmod +x /tmp/worker_user_data.sh
+/tmp/worker_user_data.sh
+EOF
 }
 
 resource "aws_launch_template" "web_template" {
+  depends_on = [
+    aws_s3_object.web_user_data,
+    aws_s3_object.cw_agent_init,
+    aws_s3_object.cw_agent_metrics_init,
+    aws_s3_object.cw_agent_prometheus_init
+  ]
+
   name          = "conc-web-tmpl"
   instance_type = var.web_instance_type
   key_name      = var.conc_key_name
@@ -40,7 +90,7 @@ resource "aws_launch_template" "web_template" {
     var.utility_accessible_sg,
   ]
 
-  user_data = base64encode(templatefile("${path.module}/templates/web_user_data.sh", local.web_interpolation_vars))
+  user_data = base64encode(local.web_user_data)
 
   iam_instance_profile {
     name = aws_iam_instance_profile.concourse_profile.name
@@ -92,6 +142,12 @@ resource "aws_autoscaling_attachment" "web_asg_to_lb" {
 }
 
 resource "aws_launch_template" "worker_template" {
+  depends_on = [
+    aws_s3_object.worker_user_data,
+    aws_s3_object.cw_agent_init,
+    aws_s3_object.cw_agent_metrics_init
+  ]
+
   name          = "conc-worker-tmpl"
   instance_type = var.worker_instance_type
   key_name      = var.conc_key_name
@@ -111,7 +167,7 @@ resource "aws_launch_template" "worker_template" {
     aws_security_group.worker_sg.id,
   ]
 
-  user_data = base64encode(templatefile("${path.module}/templates/worker_user_data.sh", local.worker_interpolation_vars))
+  user_data = base64encode(local.worker_user_data)
 
   iam_instance_profile {
     name = aws_iam_instance_profile.concourse_profile.name

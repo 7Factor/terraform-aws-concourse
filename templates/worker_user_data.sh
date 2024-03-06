@@ -1,4 +1,22 @@
 #!/bin/bash
+set -e
+
+# Output all logs
+exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console) 2>&1
+
+sudo yum update -y
+sudo yum upgrade -y
+
+sudo aws s3 cp s3://${s3_bucket_name}/cw_agent_init.sh /tmp
+sudo chmod +x /tmp/cw_agent_init.sh
+/tmp/cw_agent_init.sh
+
+sudo aws s3 cp s3://${s3_bucket_name}/cw_agent_metrics_init.sh /tmp
+sudo chmod +x /tmp/cw_agent_metrics_init.sh
+/tmp/cw_agent_metrics_init.sh
+
+echo 'Configuring Concourse'
+
 sudo mkdir -p /etc/concourse/ /etc/concourse/keys/worker /opt/concourse-workdir /etc/concourse
 sudo curl -o /etc/concourse.tgz -L https://github.com/concourse/concourse/releases/download/v${conc_version}/concourse-${conc_version}-linux-amd64.tgz
 sudo tar -xzf /etc/concourse.tgz --directory=/etc/
@@ -64,3 +82,5 @@ WantedBy=multi-user.target
 
 systemctl enable concourse-deregister-worker
 systemctl start concourse-deregister-worker
+
+echo 'Initialization complete'

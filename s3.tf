@@ -1,5 +1,5 @@
 locals {
-  web_user_data_content = sensitive(templatefile("${path.module}/templates/web_user_data.sh", local.web_interpolation_vars))
+  web_user_data_content    = sensitive(templatefile("${path.module}/templates/web_user_data.sh", local.web_interpolation_vars))
   worker_user_data_content = sensitive(templatefile("${path.module}/templates/worker_user_data.sh", local.worker_interpolation_vars))
 }
 

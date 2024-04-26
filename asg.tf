@@ -16,7 +16,7 @@ locals {
     "authentication_config"                 = var.authentication_config
     "cred_store_config"                     = var.cred_store_config
     "feature_flags"                         = var.web_feature_flags
-    "concourse_base_resource_type_defaults" = var.concourse_base_resource_type_defaults != null ? yamlencode(var.concourse_base_resource_type_defaults) : ""
+    "concourse_base_resource_type_defaults" = yamlencode(var.concourse_base_resource_type_defaults)
     "prometheus_enabled"                    = var.prometheus_enabled
     "prometheus_bind_port"                  = var.prometheus_bind_port
     "s3_bucket_name"                        = var.user_data_bucket_name

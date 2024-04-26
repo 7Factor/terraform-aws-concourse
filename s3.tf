@@ -1,6 +1,6 @@
 locals {
-  web_user_data_content    = sensitive(templatefile("${path.module}/templates/web_user_data.sh", local.web_interpolation_vars))
-  worker_user_data_content = sensitive(templatefile("${path.module}/templates/worker_user_data.sh", local.worker_interpolation_vars))
+  web_user_data_content    = templatefile("${path.module}/templates/web_user_data.sh", local.web_interpolation_vars)
+  worker_user_data_content = templatefile("${path.module}/templates/worker_user_data.sh", local.worker_interpolation_vars)
 }
 
 resource "aws_s3_bucket" "user_data" {
@@ -64,13 +64,13 @@ resource "aws_s3_object" "cw_agent_prometheus_init" {
 resource "aws_s3_object" "web_user_data" {
   bucket      = aws_s3_bucket.user_data.id
   key         = "web_user_data.sh"
-  content     = local.web_user_data_content
+  content     = sensitive(local.web_user_data_content)
   source_hash = md5(local.web_user_data_content)
 }
 
 resource "aws_s3_object" "worker_user_data" {
   bucket      = aws_s3_bucket.user_data.id
   key         = "worker_user_data.sh"
-  content     = local.worker_user_data_content
+  content     = sensitive(local.worker_user_data_content)
   source_hash = md5(local.worker_user_data_content)
 }

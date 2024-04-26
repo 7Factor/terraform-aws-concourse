@@ -73,7 +73,7 @@ variable "web_patch_schedule" {
 }
 
 variable "concourse_base_resource_type_defaults" {
-  type        = map({})
+  type        = map(any)
   default     = null
   description = "Pass default base resource type options here. Defaults to nothing."
 }

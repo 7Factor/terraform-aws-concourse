@@ -32,7 +32,7 @@ sudo echo -n "${session_signing_key}" > /etc/concourse/keys/web/session_signing_
 sudo echo -n "${tsa_host_key}" > /etc/concourse/keys/web/tsa_host_key
 sudo find /etc/concourse/keys/web -type f -exec chmod 400 {} \;
 
-sudo echo "${concourse_base_resource_type_defaults}" > /etc/concourse/base_resource_type_defaults.yml
+sudo echo '${concourse_base_resource_type_defaults}' > /etc/concourse/base_resource_type_defaults.yml
 sudo chmod 644 /etc/concourse/base_resource_type_defaults.yml
 
 sudo echo "
